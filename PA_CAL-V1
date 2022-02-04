@@ -50,7 +50,9 @@ gcode:
             G1 E-0.75 F1800                                         ; retract
             G1 Z1 F300                                              ; Move above layer height  
         {% endfor %}
-		
+	
+	M117 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
+
         PRINT_END
 		
     {% endif %}
