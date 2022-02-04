@@ -19,7 +19,7 @@ gcode:
         {% set EXTRUDER = params.EXTRUDER|default(239)|float %}
         {% set PA_START = params.PA_START|default(0.0)|float %}
         {% set PA_STOP = params.PA_STOP|default(0.1)|float %}
-        {% set PA_STEP = (PA_START - PA_STOP) / 20 |float %}
+        {% set PA_STEP = (PA_STOP - PA_START) / 20 |float %}
         {% set NZL_CFG = printer.configfile.config["extruder"]["nozzle_diameter"]|float %}
         {% set NZL = params.NZL|default(NZL_CFG)|float %}
         {% set E20 = (0.1147475 * NZL) * 20|float %}
