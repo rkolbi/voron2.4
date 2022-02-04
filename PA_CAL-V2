@@ -1,8 +1,8 @@
 [gcode_macro PA_CAL]
-# Pressure Advance Simple Test macro, using .4mm nozzle.
-# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.0 PA_STOP=0.1
+# Pressure Advance Simple Test macro.
+# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.0 PA_STOP=0.1 NZL=0.4
 # Or with no parameters, this would execute the same as
-# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STOP=0.1
+# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STOP=0.1 NZL=0.4
 # First prints a line with current set PA, then prints 20 line segments
 # starting with PA_START, increasing to PA_STOP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
@@ -19,6 +19,9 @@ gcode:
         {% set PA_START = params.PA_START|default(0.0)|float %}
         {% set PA_STOP = params.PA_STOP|default(0.1)|float %}
         {% set PA_STEP = (PA_START - PA_STOP) / 20 |float %}
+	{% set NZL = params.NZL|default(0.4)|float %}
+        {% set E20 = (0.1147475 * NZL) * 20|float %}
+        {% set E40 = (0.1147475 * NZL) * 40|float %}
         {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
         {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
 
@@ -31,26 +34,26 @@ gcode:
         G92 E0
         M106 S0 
 		
-        G1 X{(X_MID-40)} Y{(Y_MID-65)} F30000            ; move to start position
-        G1 Z0.25 F300                                    ; move to layer height
-        G1 E0.75 F1800                                   ; un-retract
-        G1 X{(X_MID-20)} Y{(Y_MID-65)} E0.91798 F300     ; print line part one
-        G1 X{(X_MID+20)} Y{(Y_MID-65)} E1.83596 F9000    ; print line part two
-        G1 X{(X_MID+40)} Y{(Y_MID-65)} E0.91798 F300     ; print line part three
-        G1 E-0.75 F1800                                  ; retract
-        G1 Z1 F300                                       ; Move above layer height  
+        G1 X{(X_MID-40)} Y{(Y_MID-65)} F30000          ; move to start position
+        G1 Z0.25 F300                                  ; move to layer height
+        G1 E0.75 F1800                                 ; un-retract
+        G1 X{(X_MID-20)} Y{(Y_MID-65)} E{E20} F300     ; print line part one
+        G1 X{(X_MID+20)} Y{(Y_MID-65)} E{E40} F9000    ; print line part two
+        G1 X{(X_MID+40)} Y{(Y_MID-65)} E{E20} F300     ; print line part three
+        G1 E-0.75 F1800                                ; retract
+        G1 Z1 F300                                     ; Move above layer height  
 		
         {% for i in range(0, 20) %}
             SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
             M117 Testing Pressure Advance at: {PA_START + (i * PA_STEP)}, increased PA by {PA_STEP}.
-            G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000             ; move to start position
-            G1 Z0.25 F300                                           ; move to layer height
-            G1 E0.75 F1800                                          ; un-retract
-            G1 X{(X_MID-20)} Y{(Y_MID-35)+(5*i)} E0.91798 F300      ; print line part one
-            G1 X{(X_MID+20)} Y{(Y_MID-35)+(5*i)} E1.83596 F9000     ; print line part two
-            G1 X{(X_MID+40)} Y{(Y_MID-35)+(5*i)} E0.91798 F300      ; print line part three
-            G1 E-0.75 F1800                                         ; retract
-            G1 Z1 F300                                              ; Move above layer height  
+            G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000           ; move to start position
+            G1 Z0.25 F300                                         ; move to layer height
+            G1 E0.75 F1800                                        ; un-retract
+            G1 X{(X_MID-20)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part one
+            G1 X{(X_MID+20)} Y{(Y_MID-35)+(5*i)} E{E40} F9000     ; print line part two
+            G1 X{(X_MID+40)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part three
+            G1 E-0.75 F1800                                       ; retract
+            G1 Z1 F300                                            ; Move above layer height  
         {% endfor %}
 
         M117 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
