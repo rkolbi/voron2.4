@@ -1,0 +1,56 @@
+[gcode_macro PA_CAL]
+# Pressure Advance Simple Test macro, using .4mm nozzle.
+# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.03 PA_STEP=0.002
+# Or with no parameters as: PA_CAL, this would execute as
+# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STEP=0.005
+# First prints a line with current set PA, then prints 20 line segments
+# starting with PA_START, increasing each line by PA_STEP.
+# Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
+# Assisted by u/imoftendisgruntled and u/scul86
+
+description: Tune Pressure Advance
+gcode:
+    {% if printer.idle_timeout.state == "Printing" %}
+        {action_respond_info("Cannot do that while printing")}
+    {% else %}
+        {% set BED = params.BED|default(99)|float %}
+        {% set EXTRUDER = params.EXTRUDER|default(239)|float %}
+        {% set PA_START = params.PA_START|default(0.0)|float %}
+        {% set PA_STEP = params.PA_STEP|default(0.005)|float %}
+        {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+        {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+
+        PRINT_START BED_TEMP={BED} EXTRUDER_TEMP={EXTRUDER}
+		
+        G21 ; Millimeter units
+        G90 ; Absolute XYZ
+        M83 ; Relative E
+        SET_VELOCITY_LIMIT ACCEL=3000 ACCEL_TO_DECEL=1500
+        G92 E0
+        M106 S0 
+		
+        G1 X{(X_MID-40)} Y{(Y_MID-65)} F30000            ; move to start position
+        G1 Z0.25 F300                                    ; move to layer height
+        G1 E0.75 F1800                                   ; un-retract
+        G1 X{(X_MID-20)} Y{(Y_MID-65)} E0.91798 F300     ; print line part one
+        G1 X{(X_MID+20)} Y{(Y_MID-65)} E1.83596 F9000    ; print line part two
+        G1 X{(X_MID+40)} Y{(Y_MID-65)} E0.91798 F300     ; print line part three
+        G1 E-0.75 F1800                                  ; retract
+        G1 Z1 F300                                       ; Move above layer height  
+		
+        {% for i in range(0, 20) %}
+            SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
+            M117 Testing Pressure Advance at: {PA_START + (i * PA_STEP)}
+            G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000             ; move to start position
+            G1 Z0.25 F300                                           ; move to layer height
+            G1 E0.75 F1800                                          ; un-retract
+            G1 X{(X_MID-20)} Y{(Y_MID-35)+(5*i)} E0.91798 F300      ; print line part one
+            G1 X{(X_MID+20)} Y{(Y_MID-35)+(5*i)} E1.83596 F9000     ; print line part two
+            G1 X{(X_MID+40)} Y{(Y_MID-35)+(5*i)} E0.91798 F300      ; print line part three
+            G1 E-0.75 F1800                                         ; retract
+            G1 Z1 F300                                              ; Move above layer height  
+        {% endfor %}
+		
+        PRINT_END
+		
+    {% endif %}
