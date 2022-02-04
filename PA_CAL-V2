@@ -1,3 +1,4 @@
+#!#!#!# TESTING - BE WARNED #!#!#!#
 [gcode_macro PA_CAL]
 # Pressure Advance Simple Test macro.
 # Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.0 PA_STOP=0.1 NZL=0.4
@@ -6,7 +7,7 @@
 # First prints a line with current set PA, then prints 20 line segments
 # starting with PA_START, increasing to PA_STOP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
-# Assisted by u/imoftendisgruntled and u/scul86
+# Assisted by u/imoftendisgruntled, u/scul86, u/beansisfat, u/stray_r
 
 
 description: Tune Pressure Advance
