@@ -3,7 +3,7 @@
 # Pressure Advance Simple Test macro.
 # Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.03 PA_STEP=0.002 NZL=0.4
 # Or with no parameters as: PA_CAL, this would execute as
-# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STEP=0.005 NZL=0.4
+# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STEP=0.005 NZL=(as per printer.cfg)
 # First prints a line with current set PA, then prints 20 line segments
 # starting with PA_START, increasing each line by PA_STEP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
