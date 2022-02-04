@@ -45,7 +45,7 @@ gcode:
         G1 E-0.75 F1800                                ; retract
         G1 Z1 F300                                     ; Move above layer height  
 		
-        {% for i in range(0, 20) %}
+        {% for i in range(0, 21) %}
             SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
             M117 Testing Pressure Advance at: {PA_START + (i * PA_STEP)}, increased PA by {PA_STEP}.
             G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000           ; move to start position
