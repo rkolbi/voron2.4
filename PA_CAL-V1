@@ -6,7 +6,7 @@
 # First prints a line with current set PA, then prints 20 line segments
 # starting with PA_START, increasing each line by PA_STEP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
-# Assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
+# Assisted by u/imoftendisgruntled, u/scul86, u/beansisfat, u/stray_r
 
 description: Tune Pressure Advance
 gcode:
