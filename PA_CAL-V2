@@ -3,10 +3,10 @@
 # Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.0 PA_STOP=0.1 NZL=0.4
 # Or with no parameters, this would execute the same as
 # PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STOP=0.1 NZL=(as per printer.cfg)
-# First prints a line with current set PA, then prints 21 additional line segments
-# starting with PA_START, and increasing to PA_STOP.
+# First prints a line with current set PA, then prints 20 line segments
+# starting with PA_START, increasing to PA_STOP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
-# Assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
+# Assisted by u/imoftendisgruntled, u/scul86, u/beansisfat, u/stray_r
 
 
 description: Tune Pressure Advance
@@ -44,7 +44,7 @@ gcode:
         G1 E-0.75 F1800                                ; retract
         G1 Z1 F300                                     ; Move above layer height  
 		
-        {% for i in range(0, 21) %}
+        {% for i in range(0, 20) %}
             SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
             M117 Testing Pressure Advance at: {PA_START + (i * PA_STEP)}, increased PA by {PA_STEP}.
             G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000           ; move to start position
