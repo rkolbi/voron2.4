@@ -451,7 +451,6 @@ gcode:
 gcode:
     QUERY_PROBE
     {% if printer.probe.last_query %}
-        BED_MESH_CLEAR
         G28 Z
         G90
         G0 Z30 F800                      ; Get a little bit of height
@@ -468,7 +467,6 @@ gcode:
 gcode:
     QUERY_PROBE
     {% if not printer.probe.last_query %}
-        BED_MESH_CLEAR
         G28 Z
         G90
         G0 Z30 F800                      ; Get a little bit of height
@@ -580,7 +578,7 @@ gcode:
         # Move the nozzle
         G1 X0 Y20 Z30 F3000
         M117 Bringing bed to temperature.
-        M190 {BED_TEMP}
+        M190 S{BED_TEMP}
         HEAT_WAIT MINUTES=20
         SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
         M117 Performing hot level.
