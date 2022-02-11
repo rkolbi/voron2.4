@@ -447,11 +447,11 @@ gcode:
   QUAD_GANTRY_LEVEL_ORIGINIAL
   M402
 
-
 # Macro to Deploy Bed Probe
 [gcode_macro M401]
 gcode:
     G90
+    QUERY_PROBE
     {% if printer.probe.last_query %}
       G0 Z25 F800                      ; Get a little bit of height
       G0 X47 Y356.5 F3500              ; Move directly over probe
@@ -465,6 +465,7 @@ gcode:
 [gcode_macro M402]
 gcode:
     G90
+    QUERY_PROBE
     {% if not printer.probe.last_query %}
      G0 Z25 F800                      ; Get a little bit of height
      G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
