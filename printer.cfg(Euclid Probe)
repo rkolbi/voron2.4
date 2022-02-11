@@ -452,11 +452,12 @@ gcode:
     G90
     QUERY_PROBE
     {% if printer.probe.last_query %}
-        G0 Z25 F800                      ; Get a little bit of height
+        G28 Z
+        G0 Z30 F800                      ; Get a little bit of height
         G0 X47 Y356.5 F3500              ; Move directly over probe
         G0 Z2.5 F800                     ; Lower to just above probe
         G0 X100 Y356.5 F3500             ; Swipe to the side to free probe of cradle
-        G0 Z25 F800                      ; Raise back up
+        G0 Z30 F800                      ; Raise back up
         error_if_probe_not_deployed      ; Verify probe attached
     {% endif %}
 
@@ -467,11 +468,12 @@ gcode:
     G90
     QUERY_PROBE
     {% if not printer.probe.last_query %}
-        G0 Z25 F800                      ; Get a little bit of height
+        G28 Z
+        G0 Z30 F800                      ; Get a little bit of height
         G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
-        G0 Z1.5 F500                     ; Lower to exact postion
+        G0 Z1.7 F500                     ; Lower to exact postion
         G0 X47 Y356.5 F1000              ; Move directly in to cradle
-        G0 Z25 F800                      ; Raise to release magnets and stow probe
+        G0 Z30 F800                      ; Raise to release magnets and stow probe
         error_if_probe_deployed          ; Verify probe detached
     {% endif %}
 
