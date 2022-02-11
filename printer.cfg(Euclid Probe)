@@ -181,7 +181,7 @@ homing_retract_dist: 3
 [tmc2209 stepper_z]
 uart_pin: PC6
 interpolate: false
-run_current: 0.2
+run_current: 0.3
 sense_resistor: 0.110
 stealthchop_threshold: 0
 
@@ -198,7 +198,7 @@ microsteps: 32
 [tmc2209 stepper_z1]
 uart_pin: PC7
 interpolate: false
-run_current: 0.2
+run_current: 0.3
 sense_resistor: 0.110
 stealthchop_threshold: 0
 
@@ -215,7 +215,7 @@ microsteps: 32
 [tmc2209 stepper_z2]
 uart_pin: PF2
 interpolate: false
-run_current: 0.2
+run_current: 0.3
 sense_resistor: 0.110
 stealthchop_threshold: 0
 
@@ -232,7 +232,7 @@ microsteps: 32
 [tmc2209 stepper_z3]
 uart_pin: PE4
 interpolate: false
-run_current: 0.2
+run_current: 0.3
 sense_resistor: 0.110
 stealthchop_threshold: 0
 
@@ -379,6 +379,15 @@ speed:100
 z_hop:10
 
 
+[gcode_macro G32]
+gcode:
+    BED_MESH_CLEAR
+    G28
+    QUAD_GANTRY_LEVEL
+    G28
+    G0 X175 Y175 Z25 F3600
+
+
 [probe]
 # Euclid_Probe
 pin: PG11
@@ -408,6 +417,14 @@ retries: 5
 retry_tolerance: 0.0075
 max_adjust: 10
 
+[gcode_macro QUAD_GANTRY_LEVEL]
+rename_existing: QUAD_GANTRY_LEVEL_ORIGINIAL
+gcode:
+    QUERY_PROBE
+    M401
+    QUAD_GANTRY_LEVEL_ORIGINIAL
+    M402
+
 
 [bed_mesh]
 speed: 300
@@ -420,16 +437,6 @@ probe_count: 9,9
 algorithm: bicubic
 relative_reference_index: 40
 
-
-[gcode_macro G32]
-gcode:
-    BED_MESH_CLEAR
-    G28
-    QUAD_GANTRY_LEVEL
-    G28
-    G0 X175 Y175 Z25 F3600
-
-
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BED_MESH_CALIBRATE_ORIGINIAL
 gcode:
@@ -438,14 +445,6 @@ gcode:
     BED_MESH_CALIBRATE_ORIGINIAL
     M402
 
-
-[gcode_macro QUAD_GANTRY_LEVEL]
-rename_existing: QUAD_GANTRY_LEVEL_ORIGINIAL
-gcode:
-    QUERY_PROBE
-    M401
-    QUAD_GANTRY_LEVEL_ORIGINIAL
-    M402
 
 # M401 - Deploy Bed Euclid Probe
 [gcode_macro M401]
@@ -460,6 +459,7 @@ gcode:
         G0 Z25 F800                      ; Raise back up
         error_if_probe_not_deployed      ; Verify probe attached
     {% endif %}
+
 
 # M402 - Stow Bed Euclid Probe
 [gcode_macro M402]
