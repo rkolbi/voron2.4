@@ -412,7 +412,7 @@ points:
    300,275
    300,25
 speed: 100
-horizontal_move_z: 15
+horizontal_move_z: 20
 retries: 5
 retry_tolerance: 0.0075
 max_adjust: 10
@@ -427,15 +427,15 @@ gcode:
 
 
 [bed_mesh]
-speed: 300
-horizontal_move_z: 15
+speed: 200
+horizontal_move_z: 10
 mesh_min: 40, 40
 mesh_max: 310,310
 fade_start: 0.6
 fade_end: 10.0
-probe_count: 9,9
+probe_count: 11,11
 algorithm: bicubic
-relative_reference_index: 40
+relative_reference_index: 60
 
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BED_MESH_CALIBRATE_ORIGINIAL
@@ -454,7 +454,7 @@ gcode:
     {% if printer.probe.last_query %}
         G0 Z25 F800                      ; Get a little bit of height
         G0 X47 Y356.5 F3500              ; Move directly over probe
-        G0 Z3 F800                       ; Lower to just above probe
+        G0 Z2.5 F800                     ; Lower to just above probe
         G0 X100 Y356.5 F3500             ; Swipe to the side to free probe of cradle
         G0 Z25 F800                      ; Raise back up
         error_if_probe_not_deployed      ; Verify probe attached
@@ -471,7 +471,7 @@ gcode:
         G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
         G0 Z1.5 F500                     ; Lower to exact postion
         G0 X47 Y356.5 F1000              ; Move directly in to cradle
-        G0 Z30 F800                      ; Raise to release magnets and stow probe
+        G0 Z25 F800                      ; Raise to release magnets and stow probe
         error_if_probe_deployed          ; Verify probe detached
     {% endif %}
 
@@ -574,7 +574,7 @@ gcode:
         M117 Performing initial homing.
         G32
         # Move the nozzle
-        G1 X0 Y20 Z50 F3000
+        G1 X0 Y20 Z30 F3000
         M117 Bringing bed to temperature.
         M190 {BED_TEMP}
         HEAT_WAIT MINUTES=20
@@ -616,7 +616,7 @@ gcode:
     M117 Performing initial homing.
     G32
     # Move the nozzle
-    G1 X0 Y20 Z50 F3000
+    G1 X0 Y20 Z30 F3000
     M117 Bringing bed to temperature.
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
