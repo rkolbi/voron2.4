@@ -446,7 +446,7 @@ gcode:
     M402
 
 
-# M401 - Deploy Bed Euclid Probe
+# M401 - Deploy Euclid Probe
 [gcode_macro M401]
 gcode:
     G90
@@ -461,7 +461,7 @@ gcode:
     {% endif %}
 
 
-# M402 - Stow Bed Euclid Probe
+# M402 - Stow Euclid Probe
 [gcode_macro M402]
 gcode:
     G90
