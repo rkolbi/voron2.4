@@ -171,7 +171,7 @@ rotation_distance: 40
 gear_ratio: 80:16
 microsteps: 32
 endstop_pin: PG10
-position_endstop: 0.090 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+position_endstop: 0.135 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
 position_max: 301
 position_min: -5
 homing_speed: 10
@@ -469,8 +469,8 @@ gcode:
     {% if not printer.probe.last_query %}
      G0 Z25 F800                      ; Get a little bit of height
      G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
-     G0 Z2 F800                       ; Lower to exact postion
-     G0 X47 Y356.5 F3500              ; Move directly in to cradle
+     G0 Z1.9 F500                     ; Lower to exact postion
+     G0 X47 Y356.5 F1000              ; Move directly in to cradle
      G0 Z30 F800                      ; Raise to release magnets and stow probe
      error_if_probe_deployed          ; Verify probe detached
     {% endif %}
@@ -574,7 +574,7 @@ gcode:
         M117 Performing initial homing.
         G32
         # Move the nozzle
-        G1 Z50 F3000
+        G1 X0 Y20 Z50 F3000
         M117 Bringing bed to temperature.
         M190 {BED_TEMP}
         HEAT_WAIT MINUTES=20
@@ -615,7 +615,7 @@ gcode:
     M117 Performing initial homing.
     G32
     # Move the nozzle
-    G1 Z50 F3000
+    G1 X0 Y20 Z50 F3000
     M117 Bringing bed to temperature.
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
