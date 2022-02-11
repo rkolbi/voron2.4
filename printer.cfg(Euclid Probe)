@@ -376,7 +376,7 @@ initial_WHITE: 0.0
 [safe_z_home]
 home_xy_position:232,353
 speed:100
-z_hop:10
+z_hop:15
 
 
 [gcode_macro G32]
@@ -415,7 +415,7 @@ speed: 100
 horizontal_move_z: 20
 retries: 5
 retry_tolerance: 0.0075
-max_adjust: 10
+max_adjust: 15
 
 [gcode_macro QUAD_GANTRY_LEVEL]
 rename_existing: QUAD_GANTRY_LEVEL_ORIGINIAL
@@ -427,7 +427,7 @@ gcode:
 
 
 [bed_mesh]
-speed: 200
+speed: 100
 horizontal_move_z: 10
 mesh_min: 40, 40
 mesh_max: 310,310
@@ -449,10 +449,11 @@ gcode:
 # M401 - Deploy Euclid Probe
 [gcode_macro M401]
 gcode:
-    G90
     QUERY_PROBE
     {% if printer.probe.last_query %}
+        BED_MESH_CLEAR
         G28 Z
+        G90
         G0 Z30 F800                      ; Get a little bit of height
         G0 X47 Y356.5 F3500              ; Move directly over probe
         G0 Z2.5 F800                     ; Lower to just above probe
@@ -465,13 +466,14 @@ gcode:
 # M402 - Stow Euclid Probe
 [gcode_macro M402]
 gcode:
-    G90
     QUERY_PROBE
     {% if not printer.probe.last_query %}
+        BED_MESH_CLEAR
         G28 Z
+        G90
         G0 Z30 F800                      ; Get a little bit of height
         G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
-        G0 Z1.7 F500                     ; Lower to exact postion
+        G0 Z1.8 F500                     ; Lower to exact postion
         G0 X47 Y356.5 F1000              ; Move directly in to cradle
         G0 Z30 F800                      ; Raise to release magnets and stow probe
         error_if_probe_deployed          ; Verify probe detached
