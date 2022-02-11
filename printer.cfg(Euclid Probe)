@@ -131,6 +131,7 @@ run_current: 0.4
 sense_resistor: 0.105
 stealthchop_threshold: 0
 
+
 # A Stepper - Right, Connected to MOTOR_1, Endstop connected to DIAG_1
 [stepper_y]
 step_pin: PG0
@@ -308,7 +309,6 @@ kick_start_time: 0.5
 # if your fan is not able to slow down effectively
 off_below: 0.10
 
-
 # Hotend Fan - FAN1
 [heater_fan hotend_fan]
 pin: PE5
@@ -433,19 +433,21 @@ gcode:
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BED_MESH_CALIBRATE_ORIGINIAL
 gcode:
-  M401
-  BED_MESH_CALIBRATE_ORIGINIAL
-  M402
+    QUERY_PROBE
+    M401
+    BED_MESH_CALIBRATE_ORIGINIAL
+    M402
 
 
 [gcode_macro QUAD_GANTRY_LEVEL]
 rename_existing: QUAD_GANTRY_LEVEL_ORIGINIAL
 gcode:
-  M401
-  QUAD_GANTRY_LEVEL_ORIGINIAL
-  M402
+    QUERY_PROBE
+    M401
+    QUAD_GANTRY_LEVEL_ORIGINIAL
+    M402
 
-# Macro to Deploy Bed Probe
+# M401 - Deploy Bed Euclid Probe
 [gcode_macro M401]
 gcode:
     G90
@@ -459,7 +461,7 @@ gcode:
       error_if_probe_not_deployed      ; Verify probe attached
     {% endif %}
 
-# Macro to Stow Bed Leveling Probe
+# M402 - Stow Bed Euclid Probe
 [gcode_macro M402]
 gcode:
     G90
@@ -474,28 +476,27 @@ gcode:
     {% endif %}
 
 
-# Euclid Probe Safety Check
+#...................................................................................................
+# Euclid Probe Safety Checks
+
 [gcode_macro do_error_if_probe_deployed]
 gcode:
     {% if not printer.probe.last_query %}
       {action_raise_error("probe already deployed - remove and return to dock")}
     {% endif %}
 
-# Euclid Probe Safety Check
 [gcode_macro error_if_probe_deployed]
 gcode:
     G4 P300
     QUERY_PROBE
     do_error_if_probe_deployed
 
-# Euclid Probe Safety Check
 [gcode_macro do_error_if_probe_not_deployed]
 gcode:
     {% if printer.probe.last_query %}
       {action_raise_error("probe unsuccessfully deployed")}
     {% endif %}
 
-# Euclid Probe Safety Check
 [gcode_macro error_if_probe_not_deployed]
 gcode:
     G4 P300
@@ -505,7 +506,7 @@ gcode:
 
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-#  MACROS required for this configuration
+#  MACROS required for the base configuration
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 #...................................................................................................
@@ -572,13 +573,12 @@ gcode:
         SET_GCODE_OFFSET Z=0.0
         M117 Performing initial homing.
         G32
-        # Move the nozzle near the bed
-        G1 Z5 F3000
+        # Move the nozzle
+        G1 Z50 F3000
         M117 Bringing bed to temperature.
         M190 {BED_TEMP}
         HEAT_WAIT MINUTES=20
         SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
-        G1 Z5 F3000
         M117 Performing hot level.
         CURRENT_HIGH
         M400
@@ -590,6 +590,7 @@ gcode:
         BED_MESH_OUTPUT PGP=1
         M117 Bed mesh calibration completed.
         TURN_OFF_HEATERS
+        M400
         SAVE_CONFIG
         PRINT_END
     {% endif %}
@@ -613,15 +614,14 @@ gcode:
     SET_GCODE_OFFSET Z=0.0
     M117 Performing initial homing.
     G32
-    # Move the nozzle near the bed
-    G1 Z5 F3000
+    # Move the nozzle
+    G1 Z50 F3000
     M117 Bringing bed to temperature.
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
     M190 S{BED_TEMP}
     HEAT_WAIT MINUTES=15 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
     SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
-    G1 Z5 F3000
     M117 Performing hot level.
     CURRENT_HIGH
     M400
