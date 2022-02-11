@@ -590,6 +590,7 @@ gcode:
         BED_MESH_OUTPUT PGP=1
         M117 Bed mesh calibration completed.
         TURN_OFF_HEATERS
+	CURRENT_NORMAL
         M400
         SAVE_CONFIG
         PRINT_END
