@@ -595,14 +595,13 @@ gcode:
         TURN_OFF_HEATERS
         CURRENT_NORMAL
         M400
-        SAVE_CONFIG
         G90
-        G0 X{X_MAX} Y20 Z{Z_MAX} F3600; park nozzle at top front-right but allow room for hotend fan to pull air
-        M107                           ; turn off fan
+        G0 X0 Y20 Z50 F3600; park nozzle at front-right but allow room for hotend fan to pull air
         M18 X Y E
-        BED_MESH_CLEAR
         SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
         M117 Finished mesh.
+        SAVE_CONFIG
+        BED_MESH_CLEAR
     {% endif %}
 
 
