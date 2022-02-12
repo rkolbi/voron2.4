@@ -271,7 +271,7 @@ pressure_advance_smooth_time: 0.030
 [tmc2209 extruder]
 uart_pin: PE1
 interpolate: false
-run_current: 0.6
+run_current: 0.5
 sense_resistor: 0.110
 stealthchop_threshold: 0
 
@@ -678,6 +678,7 @@ gcode:
 gcode:
     {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}  
     {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
+    {% set Z_POS = printer.toolhead.position.z + 10 %}
     SAVE_GCODE_STATE NAME=STATE_PRINT_END
     M400                           ; wait for buffer to clear
     G92 E0                         ; zero the extruder
@@ -685,7 +686,7 @@ gcode:
     TURN_OFF_HEATERS
     CURRENT_NORMAL
     G90
-    G0 X{X_MAX} Y20 Z30 F3600; park nozzle at front-right but allow room for hotend fan to pull air
+    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600; ; park nozzle at top (75% or greater Z) front-right but allow room for hotend fan to pull air
     M107                           ; turn off fan
     M18 X Y E
     BED_MESH_CLEAR
@@ -763,6 +764,7 @@ rename_existing: CANCEL_PRINT_BASE
 gcode:
     {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}
     {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
+    {% set Z_POS = printer.toolhead.position.z + 10 %}
     SAVE_GCODE_STATE NAME=STATE_PRINT_END
     M400                           ; wait for buffer to clear
     G92 E0                         ; zero the extruder
@@ -771,7 +773,7 @@ gcode:
     CANCEL_PRINT_BASE
     CURRENT_NORMAL
     G90
-    G0 X{X_MAX} Y20 Z{Z_MAX} F3600; park nozzle at top front-right but allow room for hotend fan to pull air
+    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600; ; park nozzle at top (75% or greater Z) front-right but allow room for hotend fan to pull air
     M107                           ; turn off fan
     M18 X Y E
     BED_MESH_CLEAR
@@ -788,10 +790,9 @@ gcode:
         {% if printer.idle_timeout.state == "Printing" and printer.pause_resume.is_paused %}
            SAVE_GCODE_STATE NAME=HLF_state
             M83                       ; relative positioning on extruder    
-            G0 X175 Y20               ; move to area where can easily load filament
+            G0 X175 Y20 F3500         ; move to area where can easily load filament
             G0 E50 F400               ; prime extruder
             G0 E50 F400               ; prime extruder
-            G0 E50 F200               ; prime extruder
             G0 E50 F200               ; prime extruder
             G1 E-0.5 F1800            ; .5mm retraction
             G92 E0                    ; reset extruder
@@ -808,12 +809,11 @@ gcode:
         {% set TEMP = params.TEMP|default(235)|float %}
         M117 Heating nozzle to LOAD filamnet.
         G90                       ; absolute positioning
-        G0 X175 Y20               ; move to area where can easily load filament
+        G0 X175 Y20 F3500         ; move to area where can easily load filament
         M109 S{TEMP}              ; set hotend temperature and wait
         M83                       ; relative positioning on extruder    
         G0 E50 F400               ; prime extruder
         G0 E50 F400               ; prime extruder
-        G0 E50 F200               ; prime extruder
         G0 E50 F200               ; prime extruder
         G1 E-0.5 F1800            ; .5mm retraction
         G92 E0                    ; reset extruder
@@ -831,7 +831,7 @@ gcode:
         {% if printer.idle_timeout.state == "Printing" and printer.pause_resume.is_paused %}
             SAVE_GCODE_STATE NAME=HUF_state
             M83                       ; relative positioning on extruder    
-            G0 X175 Y20               ; move to area where can easily load filament  
+            G0 X175 Y20 F3500         ; move to area where can easily load filament  
             G0 E-50 F1000             ; retract additional filament to move out of melt zone
             G0 E-50 F1000             ; retract additional filament to move out of melt zone
             G0 E-50 F1000             ; retract additional filament to move out of melt zone
@@ -850,7 +850,7 @@ gcode:
         {% set TEMP = params.TEMP|default(235)|float %}
         M117 Heating nozzle to UNLOAD filamnet.
         G90                       ; absolute positioning
-        G0 X175 Y20               ; move to area where can easily load filament
+        G0 X175 Y20 F3500         ; move to area where can easily load filament
         M109 S{TEMP}              ; set hotend temperature and wait    
         M83                       ; relative positioning on extruder
         G0 E-50 F1000             ; retract additional filament to move out of melt zone
