@@ -2,76 +2,138 @@
 # VORON 2.4/350mm/24v/BTT Octopus/Bondtech LGX/Phaetus Dragon HF/Bondtech .4 CHT/Euclid Probe/Hall Effect Endstop  
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#  NOTES & INFORMATION
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# I have found that Z-height inconsistencies were in many cases attributed to extruded plastic being
+# present on the nozzle after printing. If not cleaned off, this plastic will lead to z-height being
+# incorrect during the next homing cycle. The PRINT_END macro will place the nozzle at the top, front-right
+# position when the print has completed. This allows for easy inspection and a reminder to do so.	 
+#  
+# PRINT_START will home and the level the gantry, perform a heat soak, then G32, finally bringing hotend to
+# temp, places a purge line from the front left across X-axis to check/verify easily, and then begin the print.	 
+#  
+# PRINT_END performs a cooling period by turning part fan fully on, and parks nozzle towards the top.
+# The parked Z position will be at least 75% of the max axis height or at the printed object's Z
+# height + 10 - whichever is taller. Additionally, during PRINT_END or PRINT_START, the toolhead is
+# placed back at Y20 to allow room for the fan(s) to pull air.	 
+#  
+# On this configuration, I am using the Euclid probe with the dock mounted on the bed rail. For fetching
+# and docking the probe, use M401 and M402 as they have safety checks to prevent crashes! _PROBE_DEPLOY
+# and _PROBE_STOW are the basic movements only - edit these to match your printer.	 
+# The following STL files were used:  
+# https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl
+# https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl
+
+
+#...................................................................................................
+#  Slicer Setup
+#
 # SuperSlicer's start print gcode should only contain the following:
 # PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature]
+#
+# SuperSlicer's end print gcode should contain the following:
+# Use PRINT_END for the slicer ending script
 
 
+#...................................................................................................
+# Macros contained withing this printer.cfg:
 
-[mcu]
-# Obtain definition by "ls -l /dev/serial/by-id/" then unplug to verify
-serial: /dev/serial/by-id/usb-Klipper_stm32f446xx_160022001950534146373920-if00
-restart_method: command
+#...................................................................................................
+# G32
+# No additional options.
+# Usage: G32
+# Homes the toolhead, performs quad gantry leveling, and homes again.
 
-[printer]
-kinematics: corexy
-max_velocity: 300  
-max_accel: 3000             #Max 4000
-max_z_velocity: 20          #Max 15 for 12V TMC Drivers, can increase for 24V
-max_z_accel: 350
-square_corner_velocity: 5.0
+#...................................................................................................
+# M401
+# No additional options.
+# Usage: M401
+# Attach the Euclid probe to the toolhead.
 
-[virtual_sdcard]
-path: ~/gcode_files
+#...................................................................................................
+# M402
+# No additional options.
+# Usage: M402
+# Remove the Euclid probe from the toolhead by placing it in the dock.
 
-[display_status]
-# For mainsail
+#...................................................................................................
+# HOTMESH
+# Optional parameters: BED_TEMP
+# Usage: HOTMESH, HOTMESH BED_TEMP=110
+# Perform a heat soak, followed by a bed mesh. If no BED_TEMP is specified, 100c will be used.
 
-[pause_resume]
-# For mainsail
+#...................................................................................................
+# LOAD_FILAMENT
+# Optional parameters: TEMP
+# Usage: LOAD_FILAMENT, LOAD_FILAMENT TEMP=240
+# It brings the toolhead to the front, heats up (if not already hot), and extrudes 150mm of filament.
+# If no TEMP is specified, 235c will be used.
 
-[respond]
-default_type: echo
+#...................................................................................................
+# UNLOAD_FILAMENT
+# Optional parameters: TEMP
+# Usage: UNLOAD_FILAMENT, UNLOAD_FILAMENT TEMP=240
+# It brings the toolhead to the front, heats up (if not already hot), and retracts 200mm of filament.
+# If no TEMP is specified, 235c will be used.
 
-[idle_timeout]
-timeout: 1800
+#...................................................................................................
+# NZL_PID
+# Optional parameters: BED_TEMP, NZL_TEMP
+# Usage: NZL_PID, NZL_PID NZL_TEMP=240 BED_TEMP=100
+# It performs bed heat soak and then nozzle PID tune. If no parameters are specified, BED_TEMP will be
+# 100c, and NZL_TEMP will be 235c.
+
+#...................................................................................................
+# BED_PID
+# Optional parameters: BED_TEMP
+# Usage: BED_PID, BED_PID BED_TEMP=110
+# It performs bed PID tune. If no parameters are specified, BED_TEMP will be 100c.
+
+#...................................................................................................
+# PA_CAL
+# Optional parameters: BED, EXTRUDER, PA_START, PA_STEP, NZL
+# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.03 PA_STEP=0.002 NZL=0.4
+# It performs a quick and simple line pressure advance test. First prints a line with the currently
+# set PA, move 30mm and then prints 20 line segments, 5mm apart, starting with PA_START, increasing each
+# line by PA_STEP. If no parameters are specified, PA_CAL will use the following:
+# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STEP=0.005 NZL=(as per printer.cfg)
 
 
-
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#...................................................................................................
 #  GCODE File Network Share Setup
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
+# 
 # To set up a network file share, making your gcode files available to either windows or mac file
 # explorers, perform the following once ssh'd into your klipper rPi.
 #
 # -Install file serving smb service:
-#$sudo apt-get install samba winbind -y
+# $sudo apt-get install samba winbind -y
 #
 # -Configure file share.  Add the following to the end of the smb.conf file, remove all '#':
-#$sudo nano /etc/samba/smb.conf
-#
-#[MYVORON]
-#   comment = Voron gcode file directory
-#   path = /home/pi/gcode_files/
-#   browseable = Yes
-#   writeable = Yes
-#   only guest = no
-#   create mask = 0777
-#   directory mask = 0777
-#   public = yes
-#   read only = no
-#   force user = root
-#   force group = root
-#
+# $sudo nano /etc/samba/smb.conf
+
+# [MYVORON]
+#    comment = Voron gcode file directory
+#    path = /home/pi/gcode_files/
+#    browseable = Yes
+#    writeable = Yes
+#    only guest = no
+#    create mask = 0777
+#    directory mask = 0777
+#    public = yes
+#    read only = no
+#    force user = root
+#    force group = root
+
 # -Reboot rPi:
-#$sudo reboot
+# $sudo reboot
 
 
-
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#...................................................................................................
 #  ADXL345 Resonance Testing Setup
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
+# 
 # For Resonance Testing using Arduino UNO to rPi via USB cable.
 # 
 # rPi software setup:
@@ -87,9 +149,11 @@ timeout: 1800
 #   SDA ------ 11/PB3
 #   SCL ------ 13/PB5
 #
-# Shutdown rPi and power off printer. Connect Arduino to rPi via USB cable, attach ADXL345 to toolhead.
-# Power-on printer, uncomment the following lines, restart printer. Open terminal, run G32, then
-# SHAPER_CALIBRATE, and when done, SAVE_CONFIG to save found settings.
+# Shutdown rPi and power off printer. Connect Arduino to rPi via USB cable, attach ADXL345 to toolhead. 
+# Power-on printer, uncomment the following lines, restart printer. Open terminal, run CURRENT_HIGH, then G32,
+# close doors, use masking tape if needed. Bring bed up to printing temp (110) and nozzle to 150. Once bed has
+# reached temp, heat soak for 20 minutes.
+# Perform SHAPER_CALIBRATE, and when done, SAVE_CONFIG to save found settings.
 
 # [mcu ardu]
 # serial: /dev/serial/by-id/usb-Silicon_Labs_CP2104_USB_to_UART_Bridge_Controller_0199928E-if00-port0
@@ -100,6 +164,61 @@ timeout: 1800
 # [resonance_tester]
 # accel_chip: adxl345
 # probe_points: 175,175,20
+
+
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#  Printer Configuration
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+[mcu]
+# Obtain definition by "ls -l /dev/serial/by-id/" then unplug to verify
+serial: /dev/serial/by-id/usb-Klipper_stm32f446xx_160022001950534146373920-if00
+restart_method: command
+
+[printer]
+kinematics: corexy
+max_velocity: 300  
+max_accel: 3500             #Max 4000
+max_z_velocity: 20          #Max 15 for 12V TMC Drivers, can increase for 24V
+max_z_accel: 350
+square_corner_velocity: 5.0
+
+[virtual_sdcard]
+path: ~/gcode_files
+
+[save_variables]
+filename: ~/klipper_config/variables.cfg
+
+[force_move]
+enable_force_move: true
+
+[display_status]
+# For mainsail
+
+[pause_resume]
+# For mainsail
+
+[respond]
+default_type: echo
+
+[idle_timeout]
+timeout: 1800
+
+[delayed_gcode prerun]
+initial_duration: 1
+gcode:
+    QUERY_PROBE
+    M117 Printer online.
+    {% for s in range(0, 30) %}
+        SET_LED LED=nozzle INDEX=1 RED=1 GREEN=0 BLUE=1
+        SET_LED LED=nozzle INDEX=2 RED=.5 GREEN=.5 BLUE=.5
+        G4 P100
+        SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
+        SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=1
+        G4 P50
+    {% endfor %}
+    SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
 
 
 
@@ -171,7 +290,7 @@ rotation_distance: 40
 gear_ratio: 80:16
 microsteps: 32
 endstop_pin: PG10
-position_endstop: 0.135 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+position_endstop: 0.05 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
 position_max: 301
 position_min: -5
 homing_speed: 10
@@ -262,9 +381,9 @@ max_temp: 270
 max_power: 1.0
 min_extrude_temp: 170
 control: pid
-pid_kp: 31.851
-pid_ki: 1.685
-pid_kd: 150.496
+pid_kp: 31.201
+pid_ki: 1.664
+pid_kd: 146.256
 pressure_advance: 0.055 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
 pressure_advance_smooth_time: 0.030
 
@@ -290,9 +409,11 @@ max_power: 0.75
 min_temp: 0
 max_temp: 120
 control: pid
-pid_kp: 38.665
-pid_ki: 1.193
-pid_kd: 313.184
+pid_kp: 45.529
+pid_ki: 1.399
+pid_kd: 370.495
+#pwm_cycle_time = 1/mains hz (1/50 = 0.02 for 50hz, 1/60 = 0.0166 for 60hz)
+#pwm_cycle_time: 0.02
 
 
 
@@ -379,27 +500,44 @@ speed:100
 z_hop:15
 
 
-[gcode_macro G32]
-gcode:
-    BED_MESH_CLEAR
-    G28
-    QUAD_GANTRY_LEVEL
-    G28
-    G0 X175 Y175 Z25 F3600
-
-
 [probe]
 # Euclid_Probe
 pin: PG11
 x_offset: 0
 y_offset: 25.0
 z_offset: 10.00
-speed: 10.0
-samples: 3
+speed: 04.0
+lift_speed: 10.0
+samples: 5
 samples_result: median
-sample_retract_dist: 3.0
-samples_tolerance: 0.006
+sample_retract_dist: 1.5
+samples_tolerance: 0.0075
 samples_tolerance_retries: 3
+
+
+#...................................................................................................
+# Raw GCODE for deploying and stowing probe, edit as needed to match printer.
+
+[gcode_macro _PROBE_DEPLOY]
+gcode:
+    G90
+    G0 Z25 F800                      ; Get a little bit of height
+    G0 X47 Y356.5 F3500              ; Move directly over probe
+    G0 Z2.5 F800                     ; Lower to just above probe
+    G0 X100 Y356.5 F3500             ; Swipe to the side to free probe of cradle
+    G0 Z25 F800                      ; Raise back up
+    _error_if_probe_not_deployed     ; Verify probe attached
+
+
+[gcode_macro _PROBE_STOW]
+gcode:
+    G90
+    G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
+    G0 Z2.0 F500                     ; Lower to exact postion
+    G0 X47 Y356.5 F1000              ; Move directly in to cradle
+    G0 Z30 F800                      ; Raise to release magnets and stow probe
+    _error_if_probe_deployed         ; Verify probe detached
+#...................................................................................................
 
 
 [quad_gantry_level]
@@ -411,11 +549,12 @@ points:
    50,275
    300,275
    300,25
-speed: 100
-horizontal_move_z: 20
+speed: 75
+horizontal_move_z: 15
 retries: 5
 retry_tolerance: 0.0075
 max_adjust: 15
+
 
 [gcode_macro QUAD_GANTRY_LEVEL]
 rename_existing: QUAD_GANTRY_LEVEL_ORIGINIAL
@@ -437,6 +576,7 @@ probe_count: 11,11
 algorithm: bicubic
 relative_reference_index: 60
 
+
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BED_MESH_CALIBRATE_ORIGINIAL
 gcode:
@@ -446,19 +586,49 @@ gcode:
     M402
 
 
+[gcode_macro G32]
+gcode:
+    BED_MESH_CLEAR
+    G28
+    QUERY_PROBE
+    {% if printer.probe.last_query %}
+        M118 Fetching Euclid Probe.
+        _PROBE_DEPLOY
+    {% endif %}
+    QUAD_GANTRY_LEVEL_ORIGINIAL
+    G28
+    M118 Stowing Euclid Probe.
+    _PROBE_STOW
+    QUERY_PROBE
+
+
+[gcode_macro _G32WBM]
+gcode:
+    BED_MESH_CLEAR
+    G28
+    QUERY_PROBE
+    {% if printer.probe.last_query %}
+        M118 Fetching Euclid Probe.
+        _PROBE_DEPLOY
+    {% endif %}
+    QUAD_GANTRY_LEVEL_ORIGINIAL
+	BED_MESH_PROFILE LOAD=HOTMESH
+    G28
+    M118 Stowing Euclid Probe.
+    _PROBE_STOW
+    QUERY_PROBE
+
+
 # M401 - Deploy Euclid Probe
 [gcode_macro M401]
 gcode:
     QUERY_PROBE
     {% if printer.probe.last_query %}
+        M118 Fetching Euclid Probe.
         G28 Z
-        G90
-        G0 Z30 F800                      ; Get a little bit of height
-        G0 X47 Y356.5 F3500              ; Move directly over probe
-        G0 Z2.5 F800                     ; Lower to just above probe
-        G0 X100 Y356.5 F3500             ; Swipe to the side to free probe of cradle
-        G0 Z30 F800                      ; Raise back up
-        error_if_probe_not_deployed      ; Verify probe attached
+        _PROBE_DEPLOY
+    {% else %}
+        M118 ?!Probe is already attached.
     {% endif %}
 
 
@@ -467,43 +637,44 @@ gcode:
 gcode:
     QUERY_PROBE
     {% if not printer.probe.last_query %}
+        M118 Stowing Euclid Probe.
         G28 Z
-        G90
-        G0 Z30 F800                      ; Get a little bit of height
-        G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
-        G0 Z2.0 F500                     ; Lower to exact postion
-        G0 X47 Y356.5 F1000              ; Move directly in to cradle
-        G0 Z30 F800                      ; Raise to release magnets and stow probe
-        error_if_probe_deployed          ; Verify probe detached
+        _PROBE_STOW
+    {% else %}
+        M118 ?!Probe is not attached.
     {% endif %}
 
 
 #...................................................................................................
 # Euclid Probe Safety Checks
 
-[gcode_macro do_error_if_probe_deployed]
+[gcode_macro _do_error_if_probe_deployed]
 gcode:
     {% if not printer.probe.last_query %}
-        {action_raise_error("probe already deployed - remove and return to dock")}
+        {action_raise_error("ERROR: probe still deployed - remove and return to dock.")}
+    {% else %}
+        M118 Euclid Probe has been stowed.  
     {% endif %}
 
-[gcode_macro error_if_probe_deployed]
+[gcode_macro _error_if_probe_deployed]
 gcode:
     G4 P300
     QUERY_PROBE
-    do_error_if_probe_deployed
+    _do_error_if_probe_deployed
 
-[gcode_macro do_error_if_probe_not_deployed]
+[gcode_macro _do_error_if_probe_not_deployed]
 gcode:
     {% if printer.probe.last_query %}
-        {action_raise_error("probe unsuccessfully deployed")}
+        {action_raise_error("ERROR: probe unsuccessfully deployed.")}
+    {% else %}
+        M118 Euclid Probe has been attached.
     {% endif %}
 
-[gcode_macro error_if_probe_not_deployed]
+[gcode_macro _error_if_probe_not_deployed]
 gcode:
     G4 P300
     QUERY_PROBE
-    do_error_if_probe_not_deployed
+    _do_error_if_probe_not_deployed
 
 
 
@@ -542,7 +713,7 @@ gcode:
 
 
 #...................................................................................................
-[gcode_macro HEAT_WAIT]
+[gcode_macro _HEAT_WAIT]
 gcode:
     {% set MINUTES = params.MINUTES|default(12)|int %}
     {% for i in range(0, MINUTES) %}
@@ -556,6 +727,26 @@ gcode:
             G4 P500
         {% endfor %}
     {% endfor %}
+
+
+
+#...................................................................................................
+[gcode_macro _COOL_WAIT]
+gcode:
+    M106 S250
+    {% set MINUTES = params.MINUTES|default(1)|int %}
+    {% for i in range(0, MINUTES) %}
+        M117 Cooling... {MINUTES-i} minute remaining.
+        {% for s in range(0, 60) %}
+            SET_LED LED=nozzle INDEX=1 RED=0 GREEN=0 BLUE=0
+            SET_LED LED=nozzle INDEX=2 RED=0 GREEN=0 BLUE=.5
+            G4 P500
+            SET_LED LED=nozzle INDEX=1 RED=0 GREEN=0 BLUE=.5
+            SET_LED LED=nozzle INDEX=2 RED=0 GREEN=0 BLUE=0
+            G4 P500
+        {% endfor %}
+    {% endfor %}
+    M107
 
 
 
@@ -576,40 +767,41 @@ gcode:
         M117 Performing initial homing.
         G32
         # Move the nozzle
-        G1 X0 Y20 Z30 F3000
+        G1 X0 Y20 Z25 F3000
         M117 Bringing bed to temperature.
         M190 S{BED_TEMP}
-        HEAT_WAIT MINUTES=20
+        _HEAT_WAIT MINUTES=20
         SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
         M117 Performing hot level.
         CURRENT_HIGH
         M400
-        G28
-        QUAD_GANTRY_LEVEL
+        QUERY_PROBE
+        {% if printer.probe.last_query %}
+            M118 Fetching Euclid Probe.
+            _PROBE_DEPLOY
+        {% endif %}
+        QUAD_GANTRY_LEVEL_ORIGINIAL
         M117 Performing heated bed mesh calibration.
         BED_MESH_PROFILE REMOVE=HOTMESH
-        BED_MESH_CALIBRATE
+        BED_MESH_CALIBRATE_ORIGINIAL
         BED_MESH_PROFILE SAVE=HOTMESH
         BED_MESH_OUTPUT PGP=1
-        M117 Bed mesh calibration completed.
+        M118 Bed mesh calibration completed.
         TURN_OFF_HEATERS
         CURRENT_NORMAL
-        M400
+        M402
         G90
-        G0 X0 Y20 Z50 F3600; park nozzle at front-right but allow room for hotend fan to pull air
+        G0 X0 Y20 Z50 F3600
         M18 X Y E
         SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
         M117 Finished mesh.
         SAVE_CONFIG
-        BED_MESH_CLEAR
     {% endif %}
 
 
 
 #...................................................................................................
 [gcode_macro PRINT_START]
-# SuperSlicer's start print gcode should contain the following:
-# PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature]
 gcode:
     BED_MESH_CLEAR
     SET_LED LED=nozzle RED=.2 GREEN=.2 BLUE=1
@@ -624,24 +816,19 @@ gcode:
     M117 Performing initial homing.
     G32
     # Move the nozzle
-    G1 X0 Y20 Z30 F3000
+    G1 X0 Y20 Z25 F3000
     M117 Bringing bed to temperature.
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
     M190 S{BED_TEMP}
-    HEAT_WAIT MINUTES=15 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+    _HEAT_WAIT MINUTES=15 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
     SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
     M117 Performing hot level.
     CURRENT_HIGH
     M400
-    BED_MESH_CLEAR
-    G28
-    QUAD_GANTRY_LEVEL
-    BED_MESH_PROFILE LOAD=HOTMESH
+    # Do G32 with bedmesh applied afterwards, and then G28
+    _G32WBM
     M104 S{EXTRUDER_TEMP}
-    G28
-    # Purge line will be extruded from front left across X axis to easily check/verify.
-    # Move close to start of purge line and bring hotend to full temperature.
     G1 X0 Y20 F5000.0
     G1 Z0.5
     M117 Bringing nozzle to temperature.
@@ -650,8 +837,11 @@ gcode:
     M109 S{EXTRUDER_TEMP}
     M117 Purging the extruder.
     SET_LED LED=nozzle RED=1 GREEN=0 BLUE=0
+    G1 X0 Y19.8 Z0.3 F1500.0
+    G1 E5.0 F3600
+    M400
     # Move to purge line start
-    G1 X0 Y0 F5000.0
+    G1 X0 Y0 Z0.3 F1500.0
     # Draw 1st line
     G1 X130 Y0.0 Z0.3 F1500.0 E15
     # Move to side a little
@@ -670,11 +860,6 @@ gcode:
 #...................................................................................................
 [gcode_macro PRINT_END]
 # Use PRINT_END for the slicer ending script
-# I have found that Z-height inconsistencies were in many cases attributed
-# to extruded plastic being present on the nozzle after printing. If not
-# cleaned off, this plastic will lead to z-height being incorrect during the
-# next homing cycle. The macro places the nozzle at the top, front-right
-# position when the print has completed, allowing easy inspection.
 gcode:
     {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}  
     {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
@@ -685,12 +870,17 @@ gcode:
     G1 E-2.0 F3600                 ; retract filament
     TURN_OFF_HEATERS
     CURRENT_NORMAL
+    G91
+    G0 Z5
     G90
-    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600; ; park nozzle at top (75% or greater Z) front-right but allow room for hotend fan to pull air
+    M400
+    _COOL_WAIT MINUTES=1
+    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600 ; park nozzle at top (75% or greater Z) front-right but allow room for hotend fan to pull air
     M107                           ; turn off fan
     M18 X Y E
     BED_MESH_CLEAR
     RESTORE_GCODE_STATE NAME=STATE_PRINT_END
+    _COOL_WAIT MINUTES=2
     SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
     M117 Finished printing, check nozzle clear.
 
@@ -772,14 +962,17 @@ gcode:
     TURN_OFF_HEATERS
     CANCEL_PRINT_BASE
     CURRENT_NORMAL
+    M106 S250
     G90
-    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600; ; park nozzle at top (75% or greater Z) front-right but allow room for hotend fan to pull air
+    G0 X{X_MAX} Y20 Z{ [(Z_MAX*0.75), [Z_POS, Z_MAX]|min]|max } F3600
     M107                           ; turn off fan
     M18 X Y E
     BED_MESH_CLEAR
     RESTORE_GCODE_STATE NAME=STATE_PRINT_END
+    _COOL_WAIT MINUTES=3
     SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
     M117 Cancelled print, check nozzle clear.
+    M118 Cancelled print, check nozzle clear.
     
 
 
@@ -878,22 +1071,31 @@ gcode:
     {% else %}
         {% set BED_TEMP = params.BED_TEMP|default(100)|float %}
         {% set NZL_TEMP = params.NZL_TEMP|default(235)|float %}
+        {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+        {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+        {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}
+        {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
+        SET_LED LED=nozzle RED=.5 GREEN=.5 BLUE=0
         G90
-        SET_GCODE_OFFSET Z=0.0
         M117 Performing initial homing.
         G32
-        G1 Z5 F3000
+        G1 Z5 Y{Y_MID} X{X_MID} F3000
         M117 Bringing bed to temperature.
         M190 S{BED_TEMP}
-        HEAT_WAIT MINUTES=12
-        SET_LED LED=nozzle RED=.1 GREEN=1 BLUE=1
+        _HEAT_WAIT MINUTES=12
+        SET_LED LED=nozzle RED=.5 GREEN=.5 BLUE=0
         M106 S64
         M117 Starting PID calibration.
         PID_CALIBRATE HEATER=extruder TARGET={NZL_TEMP}
-        SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
         M117 Finished PID calibration.
-        SAVE_CONFIG
         TURN_OFF_HEATERS
+        CURRENT_NORMAL
+        G90
+        G0 X{X_MAX} Y20 Z{(Z_MAX*0.75)} F3600 ; park nozzle at top front-right 
+        M18 X Y E
+        SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
+	_COOL_WAIT MINUTES=3
+        SAVE_CONFIG
     {% endif %}
 
 
@@ -906,34 +1108,33 @@ gcode:
         {action_respond_info("Cannot do that while printing")}
     {% else %}
         {% set BED_TEMP = params.BED_TEMP|default(100)|float %}
+        {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+        {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+        {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}
+        {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
+        SET_LED LED=nozzle RED=.5 GREEN=.5 BLUE=0
         G90
-        SET_GCODE_OFFSET Z=0.0
         M117 Performing initial homing.
         G32
-        G1 Z5 F3000
-        SET_LED LED=nozzle RED=.1 GREEN=1 BLUE=1
+        G1 Z5 Y{Y_MID} X{X_MID} F3000
         M106 S64
         M117 Starting PID calibration.
         PID_CALIBRATE HEATER=heater_bed TARGET={BED_TEMP}
-        SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
-        M117 Finished PID calibration.
-        SAVE_CONFIG 
+        M117 Finished PID calibration. 
         TURN_OFF_HEATERS
+        CURRENT_NORMAL
+        G90
+        G0 X{X_MAX} Y20 Z{(Z_MAX*0.75)} F3600 ; park nozzle at top front-right 
+        M18 X Y E
+        SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
+        _COOL_WAIT MINUTES=1
+        SAVE_CONFIG
     {% endif %}
 
 
 
 #...................................................................................................
 [gcode_macro PA_CAL]
-# Pressure Advance Simple Test macro.
-# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.03 PA_STEP=0.002 NZL=0.4
-# Or with no parameters as: PA_CAL, this would execute as
-# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STEP=0.005 NZL=(as per printer.cfg)
-# First prints a line with current set PA, then prints 20 line segments
-# starting with PA_START, increasing each line by PA_STEP.
-# Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
-# Assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
-
 description: Tune Pressure Advance
 gcode:
     {% if printer.idle_timeout.state == "Printing" or printer.pause_resume.is_paused %}
@@ -983,79 +1184,11 @@ gcode:
         {% endfor %}
 	
 	M117 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
+	M118 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
 
         PRINT_END
 		
     {% endif %}
-
-
-
-#...................................................................................................
-[gcode_macro PA_CAL2]
-# Pressure Advance Simple Test macro.
-# Usage: PA_CAL BED=100 EXTRUDER=240 PA_START=0.0 PA_STOP=0.1 NZL=0.4
-# Or with no parameters, this would execute the same as
-# PA_CAL BED=99 EXTRUDER=239 PA_START=0.0 PA_STOP=0.1 NZL=(as per printer.cfg)
-# First prints a line with current set PA, then prints 21 additional line segments
-# starting with PA_START, and increasing to PA_STOP.
-# Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
-# Assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
-
-
-description: Tune Pressure Advance
-gcode:
-    {% if printer.idle_timeout.state == "Printing" or printer.pause_resume.is_paused %}
-        {action_respond_info("Cannot do that while printing")}
-    {% else %}
-        {% set BED = params.BED|default(99)|float %}
-        {% set EXTRUDER = params.EXTRUDER|default(239)|float %}
-        {% set PA_START = params.PA_START|default(0.0)|float %}
-        {% set PA_STOP = params.PA_STOP|default(0.1)|float %}
-        {% set PA_STEP = (PA_STOP - PA_START) / 20 |float %}
-        {% set NZL_CFG = printer.configfile.config["extruder"]["nozzle_diameter"]|float %}
-        {% set NZL = params.NZL|default(NZL_CFG)|float %}
-        {% set E20 = (0.1147475 * NZL) * 20|float %}
-        {% set E40 = (0.1147475 * NZL) * 40|float %}
-        {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
-        {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
-
-        PRINT_START BED_TEMP={BED} EXTRUDER_TEMP={EXTRUDER}
-		
-        G21 ; Millimeter units
-        G90 ; Absolute XYZ
-        M83 ; Relative E
-        SET_VELOCITY_LIMIT ACCEL=3000 ACCEL_TO_DECEL=1500
-        G92 E0
-        M106 S0 
-		
-        G1 X{(X_MID-40)} Y{(Y_MID-65)} F30000          ; move to start position
-        G1 Z0.25 F300                                  ; move to layer height
-        G1 E0.75 F1800                                 ; un-retract
-        G1 X{(X_MID-20)} Y{(Y_MID-65)} E{E20} F300     ; print line part one
-        G1 X{(X_MID+20)} Y{(Y_MID-65)} E{E40} F9000    ; print line part two
-        G1 X{(X_MID+40)} Y{(Y_MID-65)} E{E20} F300     ; print line part three
-        G1 E-0.75 F1800                                ; retract
-        G1 Z1 F300                                     ; Move above layer height  
-		
-        {% for i in range(0, 20) %}
-            SET_PRESSURE_ADVANCE ADVANCE={PA_START + (i * PA_STEP)} ; set Pressure Advance
-            M117 Testing Pressure Advance at: {PA_START + (i * PA_STEP)}, increased PA by {PA_STEP}.
-            G1 X{(X_MID-40)} Y{(Y_MID-35)+(5*i)} F30000           ; move to start position
-            G1 Z0.25 F300                                         ; move to layer height
-            G1 E0.75 F1800                                        ; un-retract
-            G1 X{(X_MID-20)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part one
-            G1 X{(X_MID+20)} Y{(Y_MID-35)+(5*i)} E{E40} F9000     ; print line part two
-            G1 X{(X_MID+40)} Y{(Y_MID-35)+(5*i)} E{E20} F300      ; print line part three
-            G1 E-0.75 F1800                                       ; retract
-            G1 Z1 F300                                            ; Move above layer height  
-        {% endfor %}
-
-        M117 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
-		
-        PRINT_END
-		
-    {% endif %}
-
 
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
