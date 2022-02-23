@@ -290,7 +290,7 @@ rotation_distance: 40
 gear_ratio: 80:16
 microsteps: 32
 endstop_pin: PG10
-position_endstop: 0.05 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+position_endstop: 0.05 #    <----------------<----------------<----------------<----------------<----------------<---------------<Z-Offset<<<
 position_max: 301
 position_min: -5
 homing_speed: 10
@@ -384,7 +384,7 @@ control: pid
 pid_kp: 31.201
 pid_ki: 1.664
 pid_kd: 146.256
-pressure_advance: 0.055 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+pressure_advance: 0.055 #    <----------------<----------------<----------------<----------------<----------------<---------------<Pressure Advance<<<
 pressure_advance_smooth_time: 0.030
 
 [tmc2209 extruder]
@@ -495,7 +495,7 @@ initial_WHITE: 0.0
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 [safe_z_home]
-home_xy_position:232,353
+home_xy_position:232,353 #    <----------------<----------------<----------------<----------------<----------------<-------------<Z-Endstop Position<<<
 speed:100
 z_hop:15
 
@@ -520,7 +520,7 @@ samples_tolerance_retries: 3
 
 [gcode_macro _PROBE_DEPLOY]
 gcode:
-    G90
+    G90 #    <----------------<----------------<----------------<----------------<----------------<------------------------------<Euclid Deploy Position<<<
     G0 Z25 F800                      ; Get a little bit of height
     G0 X47 Y356.5 F3500              ; Move directly over probe
     G0 Z2.5 F800                     ; Lower to just above probe
@@ -531,7 +531,7 @@ gcode:
 
 [gcode_macro _PROBE_STOW]
 gcode:
-    G90
+    G90 #    <----------------<----------------<----------------<----------------<----------------<------------------------------<Euclid Stow Position<<<
     G0 X100 Y356.5 F3500             ; Get in to approach postion to stow probe
     G0 Z2.0 F500                     ; Lower to exact postion
     G0 X47 Y356.5 F1000              ; Move directly in to cradle
@@ -566,7 +566,7 @@ gcode:
 
 
 [bed_mesh]
-speed: 50
+speed: 50 #    <----------------<----------------<----------------<----------------<----------------<----------------------------<Bed-mesh Settings<<<
 horizontal_move_z: 15
 mesh_min: 40, 40
 mesh_max: 310,310
@@ -688,7 +688,7 @@ description: Raises stepper current for printing routine.
 # Setting are for Moons' MS17HD6P420I-04, Rated current @ 2A, Maximum current in RMS = 1.4
 # but also consider stepper driver and cooling
 gcode:
-    M117 Increased motor currents.
+    M117 Increased motor currents. #    <----------------<----------------<----------------<----------------<----------------<---<Stepper Print Currents<<<
     SET_TMC_CURRENT STEPPER=stepper_x CURRENT=1.1
     SET_TMC_CURRENT STEPPER=stepper_y CURRENT=1.1
     SET_TMC_CURRENT STEPPER=stepper_z CURRENT=0.8
@@ -770,7 +770,7 @@ gcode:
         G1 X0 Y20 Z25 F3000
         M117 Bringing bed to temperature.
         M190 S{BED_TEMP}
-        _HEAT_WAIT MINUTES=20
+        _HEAT_WAIT MINUTES=20 #    <----------------<----------------<----------------<----------------<----------------<--------<Hotmesh Heatsoak Minutes<<<
         SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
         M117 Performing hot level.
         CURRENT_HIGH
@@ -821,7 +821,7 @@ gcode:
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
     M190 S{BED_TEMP}
-    _HEAT_WAIT MINUTES=15 #    <----------------<----------------<----------------<----------------<----------------<----------------<----------------<<<
+    _HEAT_WAIT MINUTES=15 #    <----------------<----------------<----------------<----------------<----------------<------------<Pre-Print Heatsoak Minutes<<<
     SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
     M117 Performing hot level.
     CURRENT_HIGH
@@ -880,7 +880,7 @@ gcode:
     M18 X Y E
     BED_MESH_CLEAR
     RESTORE_GCODE_STATE NAME=STATE_PRINT_END
-    _COOL_WAIT MINUTES=2
+    _COOL_WAIT MINUTES=2 #    <----------------<----------------<----------------<----------------<----------------<-------------<Post-Print Cooldown Minutes<<<
     SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
     M117 Finished printing, check nozzle clear.
 
@@ -969,7 +969,7 @@ gcode:
     M18 X Y E
     BED_MESH_CLEAR
     RESTORE_GCODE_STATE NAME=STATE_PRINT_END
-    _COOL_WAIT MINUTES=3
+    _COOL_WAIT MINUTES=3 #    <----------------<----------------<----------------<----------------<----------------<-------------<Cancelled Print Cooldown Minutes<<<
     SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
     M117 Cancelled print, check nozzle clear.
     M118 Cancelled print, check nozzle clear.
@@ -1082,7 +1082,7 @@ gcode:
         G1 Z5 Y{Y_MID} X{X_MID} F3000
         M117 Bringing bed to temperature.
         M190 S{BED_TEMP}
-        _HEAT_WAIT MINUTES=12
+        _HEAT_WAIT MINUTES=12 #    <----------------<----------------<----------------<----------------<----------------<--------<Pre Nozzle-PID Heatsoak Minutes<<<
         SET_LED LED=nozzle RED=.5 GREEN=.5 BLUE=0
         M106 S64
         M117 Starting PID calibration.
