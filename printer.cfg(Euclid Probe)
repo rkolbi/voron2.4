@@ -602,7 +602,7 @@ gcode:
     QUERY_PROBE
 
 
-[gcode_macro _G32WBM]
+[gcode_macro G3200]
 gcode:
     BED_MESH_CLEAR
     G28
@@ -776,14 +776,15 @@ gcode:
         M117 Performing hot level.
         CURRENT_HIGH
         M400
-	G28
+        BED_MESH_CLEAR
+        G28
         QUERY_PROBE
         {% if printer.probe.last_query %}
             M118 Fetching Euclid Probe.
             _PROBE_DEPLOY
         {% endif %}
         QUAD_GANTRY_LEVEL_ORIGINIAL
-	G28 Z
+        G28
         M117 Performing heated bed mesh calibration.
         BED_MESH_PROFILE REMOVE=HOTMESH
         BED_MESH_CALIBRATE_ORIGINIAL
@@ -829,8 +830,7 @@ gcode:
     M117 Performing hot level.
     CURRENT_HIGH
     M400
-    # Do G32 with bedmesh applied afterwards, and then G28
-    _G32WBM
+    G3200
     M104 S{EXTRUDER_TEMP}
     G1 X0 Y20 F5000.0
     G1 Z0.5
