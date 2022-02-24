@@ -610,9 +610,10 @@ gcode:
     {% if printer.probe.last_query %}
         M118 Fetching Euclid Probe.
         _PROBE_DEPLOY
+	G28 Z
     {% endif %}
     QUAD_GANTRY_LEVEL_ORIGINIAL
-	BED_MESH_PROFILE LOAD=HOTMESH
+    BED_MESH_PROFILE LOAD=HOTMESH
     G28
     M118 Stowing Euclid Probe.
     _PROBE_STOW
@@ -775,12 +776,14 @@ gcode:
         M117 Performing hot level.
         CURRENT_HIGH
         M400
+	G28
         QUERY_PROBE
         {% if printer.probe.last_query %}
             M118 Fetching Euclid Probe.
             _PROBE_DEPLOY
         {% endif %}
         QUAD_GANTRY_LEVEL_ORIGINIAL
+	G28 Z
         M117 Performing heated bed mesh calibration.
         BED_MESH_PROFILE REMOVE=HOTMESH
         BED_MESH_CALIBRATE_ORIGINIAL
