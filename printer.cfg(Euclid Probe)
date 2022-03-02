@@ -16,6 +16,12 @@ variable_euclidStowZ: 2.0              # Lower to exact postion for dock entry/e
 variable_euclidZCompensation: 9.44     # Z0 Compensation based off probe height, used in G3201. 0 to disable (Testing)
                                        # G3201 Description and usage below, ~line 100
 
+variable_ZprobeSpeed: 5.0              # Probing speed for Z Measurements
+variable_ZprobeSamples: 7              # Samples probed per position, yeilding as calculated median. Keep this number odd e.g. 3,5,7...
+variable_ZprobeTolerance: 0.050        # Sample Tolerance per Z Point
+variable_ZprobeAbortTolerance: 1.0     # Tolerance to apply the Measured Z-0 Point or throw an error to check things
+variable_ZprobeRetract: 1.5            # Retract from each probing for a D2F-5 1.2 should be good                                       
+
 #----------------------------------------------- PRESSURE ADVANCE ------------------------------------------------ 
 variable_PressureAdvance: 0.055        # Pressure Advance
 variable_PressureAdvanceST: 0.030      # Pressure Advance Smooth Time
@@ -82,6 +88,7 @@ gcode:
 # Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/
 # Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/
 
+# Thanks to Daniel0815 for testing & assistance on Z compensation.
 
 #.................................................................................................................
 # Slicer Setup
@@ -99,9 +106,9 @@ gcode:
 #.................................................................................................................
 # G3201 - No additional options / Usage: G3201
 #   Homes the toolhead, performs quad gantry leveling, homes Z, and then probes five bed center points. The five
-#   probing resultant median values are then averaged and compared to [variable_euclidZCompensation]. The difference
-#   between the probe findings and this variable is applied to the current Z height which is defined as NEW_CURRENT_Z
-#   and then set with SET_KINEMATIC_POSITION.
+#   probing resultant median values are then averaged and compared to [variable_euclidZCompensation]. If the difference
+#   between the probe findings and this variable is within [ZprobeAbortTolerance], then it will applied to the current
+#   Z height which is defined as NEW_CURRENT_Z and then set with SET_KINEMATIC_POSITION.
 #  *If [variable_euclidZCompensation] is set to 0, compensation will not be applied. Additionally, once
 #   the Z-axis is homed, any existing compensation from G3201 will be discarded.
 #  -To figure the ZCompensation value, do the following: Check nozzle clean and free of debris, same for bed.
@@ -640,6 +647,10 @@ gcode:
 gcode:
     {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
     {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     BED_MESH_CLEAR
     G28
     QUERY_PROBE
@@ -655,48 +666,68 @@ gcode:
     G90
     G0 X{X_MID} Y{Y_MID} F3500
     G91  
-    PROBE samples_result=median samples=7 speed=5.0 samples_tolerance=0.050 samples_tolerance_retries=3 sample_retract_dist=2.0
+    PROBE samples_result=median samples={ZSamples} speed={ZSpeed} samples_tolerance={ZTolerance} samples_tolerance_retries=3 sample_retract_dist={ZRetract}
     _CHECK_PROBE1
 
 [gcode_macro _CHECK_PROBE1]
 gcode:
     {% set PROBE_PASS = printer.probe.last_z_result %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     G0 Z2 F500
     G0 X-10 Y-10 F2500
-    PROBE samples_result=median samples=7 speed=5.0 samples_tolerance=0.050 samples_tolerance_retries=3 sample_retract_dist=2.0
+    PROBE samples_result=median samples={ZSamples} speed={ZSpeed} samples_tolerance={ZTolerance} samples_tolerance_retries=3 sample_retract_dist={ZRetract}
     _CHECK_PROBE2 PASS={PROBE_PASS}
 
 [gcode_macro _CHECK_PROBE2]
 gcode:
     {% set PASS = params.PASS|float %}
     {% set PROBE_PASS = printer.probe.last_z_result %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     G0 Z2 F500
     G0 X20 F2500
-    PROBE samples_result=median samples=7 speed=5.0 samples_tolerance=0.050 samples_tolerance_retries=3 sample_retract_dist=2.0
+    PROBE samples_result=median samples={ZSamples} speed={ZSpeed} samples_tolerance={ZTolerance} samples_tolerance_retries=3 sample_retract_dist={ZRetract}
     _CHECK_PROBE3 PASS={PROBE_PASS + PASS}
 
 [gcode_macro _CHECK_PROBE3]
 gcode:
     {% set PASS = params.PASS|float %}
     {% set PROBE_PASS = printer.probe.last_z_result %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     G0 Z2 F500
     G0 Y20 F2500
-    PROBE samples_result=median samples=7 speed=5.0 samples_tolerance=0.050 samples_tolerance_retries=3 sample_retract_dist=2.0
+    PROBE samples_result=median samples={ZSamples} speed={ZSpeed} samples_tolerance={ZTolerance} samples_tolerance_retries=3 sample_retract_dist={ZRetract}
     _CHECK_PROBE4 PASS={PROBE_PASS + PASS}
 
 [gcode_macro _CHECK_PROBE4]
 gcode:
     {% set PASS = params.PASS|float %}
     {% set PROBE_PASS = printer.probe.last_z_result %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     G0 Z2 F500
     G0 X-20 F2500
-    PROBE samples_result=median samples=7 speed=5.0 samples_tolerance=0.050 samples_tolerance_retries=3 sample_retract_dist=2.0
+    PROBE samples_result=median samples={ZSamples} speed={ZSpeed} samples_tolerance={ZTolerance} samples_tolerance_retries=3 sample_retract_dist={ZRetract}
     _CHECK_PROBE5 PASS={PROBE_PASS + PASS}
 
 [gcode_macro _CHECK_PROBE5]
 gcode:
     {% set PASS = params.PASS|float %}
     {% set PROBE_PASS = printer.probe.last_z_result %}
+    {% set ZSpeed = printer["gcode_macro configvars"].zprobesamples|float %}
+    {% set ZSamples = printer["gcode_macro configvars"].zprobesamples|int %}
+    {% set ZTolerance = printer["gcode_macro configvars"].zprobetolerance|float %}
+    {% set ZRetract = printer["gcode_macro configvars"].zproberetract|float %}
     G90
     G0 Z25 F3500
     _CHECK_PROBE6 PASS={(PROBE_PASS + PASS)/5}
@@ -704,6 +735,7 @@ gcode:
 [gcode_macro _CHECK_PROBE6]
 gcode:
     {% set ZP_CAL = printer["gcode_macro configvars"].euclidzcompensation|float %}
+    {% set ZAbortTolerance = printer["gcode_macro configvars"].zprobeaborttolerance|float %}
     {% set PASS = params.PASS|float %}
     {% set Z_POS = printer.toolhead.position.z|float %}
     {% set Z_OFFSET = PASS - ZP_CAL|float %}
@@ -711,7 +743,7 @@ gcode:
     M118 Current Average is: {PASS}
     M118 Z-Probe calibration is: {ZP_CAL}
     M118 Offset: {Z_OFFSET}
-    {% if Z_OFFSET|abs > 1 %}
+    {% if Z_OFFSET|abs > ZAbortTolerance %}
         M118 ! ! !  Z-OFFSET is > 1mm, check nozzle cleanliness and printer  ! ! !
         M118 Not applying calculated offset to Z.
       {% else %}
