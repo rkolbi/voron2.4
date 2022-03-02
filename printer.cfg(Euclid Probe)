@@ -12,12 +12,23 @@ variable_euclidSafeStowZ: 30           # Z Safe height following stowing the pro
 variable_euclidDeployZ: 2.5            # Lower to just above probe, no physical contact
 variable_euclidStowZ: 2.0              # Lower to exact postion for dock entry/exit
 
-#------------------------------------------------ Z Compensation ------------------------------------------------- 
-variable_euclidZCompensation: 9.41     # Z0 Compensation based off probe height, set to 0 to disable (Testing)
+#------------------------------------------------ Z COMPENSATION ------------------------------------------------- 
+variable_euclidZCompensation: 9.44     # Z0 Compensation based off probe height, used in G3201. 0 to disable (Testing)
+                                       # G3201 Description and usage below, ~line 100
 
-#---------------------------------------------- HEATSOAK & COOLING ----------------------------------------------- 
+#----------------------------------------------- PRESSURE ADVANCE ------------------------------------------------ 
+variable_PressureAdvance: 0.055        # Pressure Advance
+variable_PressureAdvanceST: 0.030      # Pressure Advance Smooth Time
+
+#------------------------------------------------- RETRACTIONS --------------------------------------------------- 
+variable_PurgeRetract: 0.1             # After completing purgeline, how much retraction to perform (Not normally needed)
+variable_EndRetract: 2.0               # After print has completed, how much to retraction to perform
+
+#---------------------------------------------- HEATSOAK & COOLING -----------------------------------------------
+variable_QGLbeforeSoakMesh: True       # (True/False) Perfrom QGL before applying heat soak for HOTMESH 
+variable_QGLbeforeSoakPrint: True      # (True/False) Perfrom QGL before applying heat soak for PRINT
 variable_hotmeshSoakMinutes: 20        # Minutes to heat-soak prior to running mesh
-variable_preprintSoakMinutes: 20       # Minutes to heat-soak prior to printing
+variable_preprintSoakMinutes: 15       # Minutes to heat-soak prior to printing
 variable_postprintCool: 1              # Post-Print cooling to prevent nozzle string, minutes of cooling
 variable_postprintParkCool: 2          # Once parks, minutes of cooling
 
@@ -26,12 +37,12 @@ variable_printCurrentXY: 1.1           # Steppermotor current to be used while p
 variable_printCurrentZ: 0.8            # Steppermotor current to be used while printing
 
 #--------------------------------------------- DEFAULT TEMPERATURES ---------------------------------------------- 
-variable_defaultTempNozzle: 240        # The default temperature if none is specified
-variable_defaultWarmNozzle: 160        # The default temperature if none is specified
-variable_defaultTempBed: 110           # The default temperature if none is specified
+variable_defaultTempNozzle: 240        # The default Nozzle Extruding temperature if none is specified
+variable_defaultWarmNozzle: 160        # The default Nozzle Warming temperature if none is specified
+variable_defaultTempBed: 110           # The default Bed temperature if none is specified
 
 
-#      ! ! ! ADDITIONAL SETTINGS ARE WITHIN THE PRINTER CONFIGURATION PORTION BELOW, STARTING ~LINE 150 ! ! !
+#  ! ! ! ! ! ADDITIONAL SETTINGS ARE WITHIN THE PRINTER CONFIGURATION PORTION BELOW, STARTING ~LINE 160 ! ! ! ! !
 gcode:
 
 
@@ -40,13 +51,9 @@ gcode:
 #  NOTES & INFORMATION
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-# Once you have followed the commissioning procedures found here: https://docs.vorondesign.com/build/startup/,
-# run HOTMESH to store a good working mesh - this is required for this configuration. After HOTMESH, calibrate
-# with G3201 as stated below.
-#
-# PRINT_START will home and the level the gantry, perform a heat soak, then G3201, and lastly bring the hotend
+# PRINT_START will home and the level the gantry*, perform a heat soak, then G3201, and lastly bring the hotend
 # to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge
-# line extrusion rate will be calculated by using the [nozzle_diameter] value.
+# line extrusion rate will be calculated by using the [nozzle_diameter] value. (*if value is True above)
 #
 # PRINT_END will raise by 10mm when the print has completed, then performs a cooling period by turning the fan
 # fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least
@@ -61,18 +68,19 @@ gcode:
 # https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl
 # https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl
 #
-# My Github (This file)              https://github.com/rkolbi/voron2.4/blob/main/printer.cfg
-# Klipper Documentation (Main):      https://www.klipper3d.org/Overview.html
-# Klipper Configuration Reference:   https://www.klipper3d.org/Config_Reference.html
-# Klipper G-Code Reference:          https://www.klipper3d.org/G-Codes.html
-# Klipper Github:                    https://github.com/Klipper3d
-# Klipper Reddit:                    https://www.reddit.com/r/klippers/
-# Voron Documentation:               https://docs.vorondesign.com/build/
-# Voron Github:                      https://github.com/VoronDesign
-# Voron Reddit:                      https://www.reddit.com/r/VORONDesign/
-# Euclid Probe:                      https://euclidprobe.github.io/
-# Bondtech LGX:                      https://www.bondtech.se/product/lgx-large-gears-extruder/
-# Bontech CHT Nozzle:                https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/
+# My Github (This file)                     https://github.com/rkolbi/voron2.4/blob/main/printer.cfg
+# RepRap G-code Wiki                        https://reprap.org/wiki/G-code
+# Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html
+# Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html
+# Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html
+# Klipper Github:                           https://github.com/Klipper3d
+# Klipper Reddit:                           https://www.reddit.com/r/klippers/
+# Voron Documentation:                      https://docs.vorondesign.com/build/
+# Voron Github:                             https://github.com/VoronDesign
+# Voron Reddit:                             https://www.reddit.com/r/VORONDesign/
+# Euclid Probe:                             https://euclidprobe.github.io/
+# Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/
+# Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/
 
 
 #.................................................................................................................
@@ -90,19 +98,20 @@ gcode:
 
 #.................................................................................................................
 # G3201 - No additional options / Usage: G3201
-#   Homes the toolhead, performs quad gantry leveling, homes Z, applies HOTMESH, homes Z again, then
-#   probes four-bed center points. The four probing resultant median values are then averaged and
-#   compared to [variable_euclidZCompensation]. The difference between the probe findings and this variable is
-#   applied to the current Z height (Z25), defined as NEW_CURRENT_Z and then set with SET_KINEMATIC_POSITION.
+#   Homes the toolhead, performs quad gantry leveling, homes Z, and then probes four-bed center points. The four
+#   probing resultant median values are then averaged and compared to [variable_euclidZCompensation]. The difference
+#   between the probe findings and this variable is applied to the current Z height which is defined as NEW_CURRENT_Z
+#   and then set with SET_KINEMATIC_POSITION.
 #  *If [variable_euclidZCompensation] is set to 0, compensation will not be applied. Additionally, once
 #   the Z-axis is homed, any existing compensation from G3201 will be discarded.
-#   To figure ZCompensation, do the following: Check nozzle clean and free of debris, same for bed. Run a G3201
-#   and then place a sheet of paper over the bed center. Then slowly, using the -1mm button, move the nozzle
-#   toward the bed. Once the nozzle is close, shift to the 0.1mm button and continue until the nozzle touches
-#   a piece of paper on top of the build plate. If the current Z position is greater than 0, subtract the
-#   current Z position from the currently set [variable_euclidZCompensation]. If the current Z position is less
-#   than 0, a negative number, then take that number and add it to the current [variable_euclidZCompensation].
-
+#  -To figure the ZCompensation value, do the following: Check nozzle clean and free of debris, same for bed.
+#   Set [variable_euclidZCompensation] to 0 to disable G3201 from applying changes. Then dial-in your Z height as
+#   set forth in the procedures found here: https://docs.vorondesign.com/build/startup/. Once you are satisfied with
+#   your Z height, run G3201 from console. When it is done, note what it states as 'Current Average is:' - place
+#   that yeilded value in the top-panel settings for [variable_euclidZCompensation]. Perform a first-layer print test
+#   and adjust this setting up/down as required. Increasing this value will set the nozzle closer to the bed. For
+#   example, if you were using a value of 9.4 and wanted a little more 'squish', try 9.44.
+ 
 #.................................................................................................................
 # G32 - No additional options / Usage: G32
 #   Homes the toolhead, performs quad gantry leveling, and homes again.
@@ -333,6 +342,7 @@ sense_resistor: 0.110
 stealthchop_threshold: 0
  
 
+#.................................................................................................................
 [stepper_z]
 # Z0 Stepper - Front Left, Connected to MOTOR_2, Endstop connected to DIAG_2
 step_pin: PF11
@@ -492,10 +502,13 @@ gcode:
         SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=1
         G4 P50
     {% endfor %}
+    SET_PRESSURE_ADVANCE ADVANCE={printer["gcode_macro configvars"].pressureadvance|float} ; set Pressure Advance
+    SET_PRESSURE_ADVANCE SMOOTH_TIME={printer["gcode_macro configvars"].pressureadvancest|float} ; set Pressure Advance Smooth Time
     SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
-	
-	
-	
+    STATUS
+
+
+
 #.................................................................................................................
 # M401 - Deploy Euclid Probe
 [gcode_macro M401]
@@ -527,25 +540,22 @@ gcode:
 
 
 #.................................................................................................................
-# Euclid Probe Safety Checks
+# Euclid probe safety checks block
 
-#.................................................................................................................
 [gcode_macro _do_error_if_probe_deployed]
 gcode:
     {% if not printer.probe.last_query %}
         {action_raise_error("ERROR: probe still deployed - remove and return to dock.")}
     {% else %}
         M118 Euclid Probe has been stowed.  
-    {% endif %}
-	
-#.................................................................................................................
+    {% endif %}	
+
 [gcode_macro _error_if_probe_deployed]
 gcode:
     G4 P300
     QUERY_PROBE
     _do_error_if_probe_deployed
-	
-#.................................................................................................................
+
 [gcode_macro _do_error_if_probe_not_deployed]
 gcode:
     {% if printer.probe.last_query %}
@@ -553,15 +563,14 @@ gcode:
     {% else %}
         M118 Euclid Probe has been attached.
     {% endif %}
-	
-#.................................................................................................................
+
 [gcode_macro _error_if_probe_not_deployed]
 gcode:
     G4 P300
     QUERY_PROBE
     _do_error_if_probe_not_deployed
 	
-	
+
 
 #.................................................................................................................
 [gcode_macro _PROBE_DEPLOY]
@@ -642,7 +651,8 @@ gcode:
         G28 Z
     {% endif %}
     QUAD_GANTRY_LEVEL_ORIGINIAL
-    BED_MESH_PROFILE LOAD=HOTMESH
+    #BED_MESH_PROFILE LOAD=HOTMESH
+    # Wait until after Z correction is performed to apply mesh. This now happens at the end of _CHECK_PROBE6 
     G28 Z
     G90
     G0 X{X_MID} Y{Y_MID} F3500
@@ -713,6 +723,7 @@ gcode:
     {% else %}
         M118 ?!Probe is not attached.
     {% endif %}
+    BED_MESH_PROFILE LOAD=HOTMESH
 
 
 
@@ -813,9 +824,14 @@ gcode:
         # Reset the G-Code Z offset
         SET_GCODE_OFFSET Z=0.0
         M117 Performing initial homing.
-        G32
-        # Move the nozzle
-        G1 X0 Y20 Z25 F3000
+        {% if printer["gcode_macro configvars"].qglbeforesoakmesh|default() == true %}
+            G32
+            # Move the nozzle
+            G1 X0 Y20 Z25 F3000
+          {% else %}
+            G28
+            # Not moving the probe if QGL was not peroformed
+        {% endif %}
         M117 Bringing bed to temperature.
         M190 S{BED_TEMP}
         _HEAT_WAIT MINUTES={printer["gcode_macro configvars"].hotmeshsoakminutes|float}
@@ -850,8 +866,11 @@ gcode:
     CLEAR_PAUSE
     BED_MESH_CLEAR
     SET_LED LED=nozzle RED=.2 GREEN=.2 BLUE=1
-	{% set defaultTN = printer["gcode_macro configvars"].defaulttempnozzle|float %}
+    {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+    {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+    {% set defaultTN = printer["gcode_macro configvars"].defaulttempnozzle|float %}
     {% set defaultWN = printer["gcode_macro configvars"].defaultwarmnozzle|float %}
+    {% set purgeRetract = printer["gcode_macro configvars"].purgeretract|float %}
     {% set defaultTB = printer["gcode_macro configvars"].defaulttempbed|float %}
     {% set BED_TEMP = params.BED_TEMP|default(defaultTB)|float %}
     {% set EXTRUDER_TEMP = params.EXTRUDER_TEMP|default(defaultTN)|float %}
@@ -863,9 +882,14 @@ gcode:
     # Reset the G-Code Z offset
     SET_GCODE_OFFSET Z=0.0
     M117 Performing initial homing.
-    G32
-    # Move the nozzle
-    G1 X0 Y20 Z25 F3000
+        {% if printer["gcode_macro configvars"].qglbeforesoakprint|default() == true %}
+            G32
+            # Move the nozzle
+            G1 X0 Y20 Z25 F3000
+          {% else %}
+            G28
+            # Not moving the probe if QGL was not peroformed
+        {% endif %}
     M117 Bringing bed to temperature.
     SET_LED LED=nozzle INDEX=2 RED=1 GREEN=0 BLUE=0
     SET_LED LED=nozzle INDEX=1 RED=.5 GREEN=.5 BLUE=.5
@@ -895,8 +919,10 @@ gcode:
     G1 X010 Y0.3 Z0.3 F1500.0 E{(75.0 * NZLD)}
     M400
     G92 E0
-    # Purge line completed
+    # Purge line completed, now retract is defined
+    G1 E-{purgeRetract} F2000
     G1 Z5.0 F3000
+    G1 X{X_MID} Y{Y_MID} F3000
     M117 Printing gcode file.
     SET_LED LED=nozzle RED=.5 GREEN=.5 BLUE=.5
 
@@ -906,13 +932,14 @@ gcode:
 [gcode_macro PRINT_END]
 # Use PRINT_END for the slicer ending script
 gcode:
+    {% set EndRetract = printer["gcode_macro configvars"].endretract|float %}
     {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}  
     {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
     {% set Z_POS = printer.toolhead.position.z + 10 %}
     SAVE_GCODE_STATE NAME=STATE_PRINT_END
     M400                           ; wait for buffer to clear
     G92 E0                         ; zero the extruder
-    G1 E-2.0 F3600                 ; retract filament
+    G1 E-{EndRetract} F3600        ; retract filament
     TURN_OFF_HEATERS
     CURRENT_NORMAL
     G91
@@ -992,13 +1019,14 @@ gcode:
 description: Cancel the actual running print
 rename_existing: CANCEL_PRINT_BASE
 gcode:
+    {% set EndRetract = printer["gcode_macro configvars"].endretract|float %}
     {% set Z_MAX = printer.configfile.config["stepper_z"]["position_max"]|float -1 %}
     {% set X_MAX = printer.configfile.config["stepper_x"]["position_max"]|float -1 %}
     {% set Z_POS = printer.toolhead.position.z + 10 %}
     SAVE_GCODE_STATE NAME=STATE_PRINT_END
     M400                           ; wait for buffer to clear
     G92 E0                         ; zero the extruder
-    G1 E-2.0 F3600                 ; retract filament
+    G1 E-{EndRetract} F3600        ; retract filament
     CLEAR_PAUSE
     TURN_OFF_HEATERS
     CANCEL_PRINT_BASE
@@ -1104,6 +1132,7 @@ gcode:
         TURN_OFF_HEATERS
         M117 Finished filament unload.
     {% endif %}
+
 
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
