@@ -2,23 +2,33 @@
 # VORON 2.4/350mm/24v/BTT Octopus/Bondtech LGX/Phaetus Dragon HF/Bondtech .4 CHT/Euclid Probe/Hall Effect Endstop  
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#  Macro settings 
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 [gcode_macro configvars]
 #------------------------------------------------- EUCLID PROBE -------------------------------------------------- 
-variable_euclidX: 47                   # X Position directly over probe
-variable_euclidY: 356.5                # Y Position directly over probe
-variable_euclidSwipeX: 100             # X Position, swipe to the side to free probe of dock
-variable_euclidSafeDeployZ: 25         # Z Safe height for deployment approach
-variable_euclidSafeStowZ: 30           # Z Safe height following stowing the probe (break mag pull)
-variable_euclidDeployZ: 2.5            # Lower to just above probe, no physical contact
-variable_euclidStowZ: 2.0              # Lower to exact postion for dock entry/exit
+variable_EuclidX: 47                   # X Position directly over probe
+variable_EuclidY: 356.5                # Y Position directly over probe
+variable_EuclidSwipeX: 100             # X Position, swipe to the side to free probe of dock
+variable_EuclidSafeDeployZ: 25         # Z Safe height for deployment approach
+variable_EuclidSafeStowZ: 30           # Z Safe height following stowing the probe (break mag pull)
+variable_EuclidDeployZ: 2.5            # Lower to just above probe, no physical contact
+variable_EuclidStowZ: 2.0              # Lower to exact postion for dock entry/exit
 
 #------------------------------------------------ Z COMPENSATION ------------------------------------------------- 
-variable_euclidZCompensation: 9.44     # Z0 Compensation based off probe height, used in G3201. 0 to disable.
+variable_EuclidZCompensation: 9.44     # Z0 Compensation based off probe height, used in G3201. 0 to disable.
                                        # G3201 Description and usage below, ~line 110
 
 variable_ProbeBoundingBox: 20          # Bounding box size to take probe samples, this is used for X & Y
-variable_DoApplyMesh: True             # Apply mesh prior to probe sampling
-variable_MeshToApply: "HOTMESH"        # The Mesh name to apply, mesh name must enclosed with ""
+variable_DoApplyMesh: True             # Apply mesh prior to probe sampling, for Z Compensation
+variable_MeshToApply: "HOTMESH"        # The saved mesh to apply, mesh name must be enclosed with "". The bundled HOTMESH
+                                       # macro will save it's results as "HOTMESH"
+                                       # *!* To perform a fresh in-situation mesh calibration, instead of loading a saved
+                                       # mesh, use "INSITU" for MeshToApply. This will be applied before Z Comp probing.
+                                       # *!* To completely skip applying mesh, use "NONE" for MeshToApply
+
 variable_ZprobeSpeed: 5.0              # Probing speed for Z Measurements
 variable_ZprobeSamples: 7              # Samples probed per position, yeilding as calculated median. Keep this number odd e.g. 3,5,7...
 variable_ZprobeTolerance: 0.050        # Sample Tolerance per Z Point
@@ -36,24 +46,22 @@ variable_EndRetract: 2.0               # After print has completed, how much ret
 #---------------------------------------------- HEATSOAK & COOLING -----------------------------------------------
 variable_QGLbeforeSoakMesh: True       # (True/False) Perfrom QGL before applying heat soak for HOTMESH 
 variable_QGLbeforeSoakPrint: True      # (True/False) Perfrom QGL before applying heat soak for PRINT
-variable_hotmeshSoakMinutes: 15        # Minutes to heat-soak prior to running mesh
-variable_preprintSoakMinutes: 15       # Minutes to heat-soak prior to printing
-variable_postprintCool: 1              # Post-Print cooling to prevent nozzle string, minutes of cooling
-variable_postprintParkCool: 2          # Once parks, minutes of cooling
+variable_HotmeshSoakMinutes: 15        # Minutes to heat-soak prior to running mesh
+variable_PrePrintSoakMinutes: 15       # Minutes to heat-soak prior to printing
+variable_InsituMeshSoakMinutes: 01     # Minutes to heat-soak prior to performing an insitu mesh (in addition to PrePrintSoak)
+variable_PostPrintCool: 1              # Post-Print cooling to prevent nozzle string, minutes of cooling
+variable_PostPrintParkCool: 2          # Once parks, minutes of cooling
 
 #------------------------------------------- PRINTING MOTOR CURRENTS --------------------------------------------- 
-variable_printCurrentXY: 1.1           # Steppermotor current to be used while printing
-variable_printCurrentZ: 0.8            # Steppermotor current to be used while printing
+variable_PrintCurrentXY: 1.1           # Steppermotor current to be used while printing
+variable_PrintCurrentZ: 0.8            # Steppermotor current to be used while printing
 
 #--------------------------------------------- DEFAULT TEMPERATURES ---------------------------------------------- 
 variable_defaultTempNozzle: 240        # The default Nozzle Extruding temperature if none is specified
 variable_defaultWarmNozzle: 160        # The default Nozzle Warming temperature if none is specified
 variable_defaultTempBed: 110           # The default Bed temperature if none is specified
-
-
-#  ! ! ! ! ! ADDITIONAL SETTINGS ARE WITHIN THE PRINTER CONFIGURATION PORTION BELOW, STARTING ~LINE 160 ! ! ! ! !
 gcode:
-
+#                          !  !  !  !  Klipper Configuration starts ~line 180  !  !  !  !  
 
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -103,8 +111,9 @@ gcode:
 #   Use PRINT_END for the slicer ending script
 
 
+
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Macros contained withing this configuration:
+# Bundled Macros withing this configuration:
 
 #.................................................................................................................
 # G3201 - No additional options / Usage: G3201
@@ -168,7 +177,7 @@ gcode:
 
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-#  Printer Configuration
+#  Klipper Settings
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 [mcu]
@@ -494,8 +503,10 @@ initial_WHITE: 0.0
 
 
 
+
+
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-#  MACROS required for the base configuration
+#  Required MACROS
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 #.................................................................................................................
@@ -657,20 +668,23 @@ gcode:
     {% set MeshToApply = printer["gcode_macro configvars"].meshtoapply|default() %}
     BED_MESH_CLEAR
     G28
-    QUERY_PROBE
-    {% if printer.probe.last_query %}
-        M118 Fetching Euclid Probe.
-        _PROBE_DEPLOY
-        G28 Z
-    {% endif %}
-    QUAD_GANTRY_LEVEL_ORIGINIAL
-    {% if printer["gcode_macro configvars"].doapplymeshh|default() == true %}
-        BED_MESH_PROFILE LOAD={MeshToApply}
-        M118 Applying {MeshToApply} mesh prior to sampling.
+    {% if MeshToApply == "INSITU" %}
+        _INSITUMESH
     {% else %}
-        M118 Not applying {MeshToApply} mesh prior to sampling.
-    {% endif %}        
-    # Wait until after Z correction is performed to apply mesh. This now happens at the end of _CHECK_PROBE6 
+		QUERY_PROBE
+		{% if printer.probe.last_query %}
+			M118 Fetching Euclid Probe.
+			_PROBE_DEPLOY
+			G28 Z
+		{% endif %}
+		QUAD_GANTRY_LEVEL_ORIGINIAL
+		{% if printer["gcode_macro configvars"].doapplymesh|default() == true and MeshToApply != "NONE" %}
+			BED_MESH_PROFILE LOAD={MeshToApply}
+			M118 Applying {MeshToApply} mesh prior to sampling.
+		{% else %}
+			M118 Not applying {MeshToApply} mesh prior to sampling.
+		{% endif %}
+    {% endif %}
     G28 Z
     G90
     G0 X{X_MID} Y{Y_MID} F3500
@@ -776,7 +790,7 @@ gcode:
     {% else %}
         M118 ?!Probe is not attached.
     {% endif %}
-    {% if printer["gcode_macro configvars"].doapplymeshh|default() == false %}
+    {% if printer["gcode_macro configvars"].doapplymesh|default() == false and MeshToApply != "INSITU" and MeshToApply != "NONE" %}
         BED_MESH_PROFILE LOAD={MeshToApply}
         M118 Applied {MeshToApply} mesh post sampling.
     {% endif %}
@@ -913,6 +927,34 @@ gcode:
         M117 Finished mesh.
         SAVE_CONFIG
     {% endif %}
+
+
+
+#.................................................................................................................
+[gcode_macro _INSITUMESH]
+gcode:
+        {% set defaultWN = printer["gcode_macro configvars"].defaultwarmnozzle|float %}
+        {% set defaultTB = printer["gcode_macro configvars"].defaulttempbed|float %}
+        {% set BED_TEMP = params.BED_TEMP|default(defaultTB)|float %}
+        SET_LED LED=nozzle RED=.2 GREEN=.2 BLUE=1
+        # Bring bed to full temperature, only warm hotend
+        M140 S{BED_TEMP}
+        M104 S{defaultWN} 
+        G90 
+        # Reset the G-Code Z offset
+        SET_GCODE_OFFSET Z=0.0
+        M117 Bringing bed to temperature.
+        M190 S{BED_TEMP}
+        _HEAT_WAIT MINUTES={printer["gcode_macro configvars"].insitumeshsoakminutes|float}
+        SET_LED LED=nozzle RED=.5 GREEN=0 BLUE=.5
+        M401
+        QUAD_GANTRY_LEVEL_ORIGINIAL
+        G28 Z
+        BED_MESH_CALIBRATE_ORIGINIAL
+        BED_MESH_PROFILE SAVE=INSITUMESH
+        BED_MESH_OUTPUT PGP=1
+        M118 INSITU Bed mesh calibration completed and applied.
+        SET_LED LED=nozzle RED=.2 GREEN=.5 BLUE=.2
 
 
 
@@ -1318,6 +1360,7 @@ gcode:
         M118 Find best line and multiply it by ({PA_START} + (line * {PA_STEP}) ) to find your PA setting.
         PRINT_END
     {% endif %}
+
 
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
