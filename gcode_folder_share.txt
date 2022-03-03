@@ -8,7 +8,7 @@
  -Install file serving smb service:
 $sudo apt-get install samba winbind -y
 
- -Configure file share.  Add the following to the end of the smb.conf file, remove all '#':
+ -Configure file share.  Add the following to the end of the smb.conf file:
 $sudo nano /etc/samba/smb.conf
 
 [MYVORON]
