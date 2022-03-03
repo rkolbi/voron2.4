@@ -12,7 +12,7 @@ Main files:
 
 **[:wrench:](printer.cfg)Full Monolithic printer.cfg (Euclid probe with Z-Compensation).**
 
-**[:wrench:](voron_retro_euclid.cfg)Portable Euclid probe macros with Z-Compensation.**
+**[:wrench:](Euclid)Portable Euclid probe macros with Z-Compensation.**
 
 <br><br>
 :zap: If you have any suggestions for a change, addition, or correction - please feel free to submit it [here](https://github.com/rkolbi/voron2.4/discussions/new?category=ideas). 
