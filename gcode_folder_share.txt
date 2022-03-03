@@ -1,0 +1,28 @@
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  GCODE File Network Share Setup
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+ To set up a network file share, making your gcode files available to either windows or mac file
+ explorers, perform the following once ssh'd into your klipper rPi.
+
+ -Install file serving smb service:
+$sudo apt-get install samba winbind -y
+
+ -Configure file share.  Add the following to the end of the smb.conf file, remove all '#':
+$sudo nano /etc/samba/smb.conf
+
+[MYVORON]
+   comment = Voron gcode file directory
+   path = /home/pi/gcode_files/
+   browseable = Yes
+   writeable = Yes
+   only guest = no
+   create mask = 0777
+   directory mask = 0777
+   public = yes
+   read only = no
+   force user = root
+   force group = root
+
+ -Reboot rPi:
+$sudo reboot
