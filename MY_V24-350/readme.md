@@ -35,22 +35,22 @@ pull air without being blocked by being pressed up against the doors.
 NOTE: This configuration utilizes the Euclid probe with the dock mounted on the bed rail. For fetching and
 docking the probe, use M401 and M402 as they have safety checks to prevent crashes! 
 The following STL files were used:  
-https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl
-https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl
+https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
+https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 
-My Github (This file)                     https://github.com/rkolbi/voron2.4/blob/main/printer.cfg
-RepRap G-code Wiki                        https://reprap.org/wiki/G-code
-Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html
-Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html
-Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html
-Klipper Github:                           https://github.com/Klipper3d
-Klipper Reddit:                           https://www.reddit.com/r/klippers/
-Voron Documentation:                      https://docs.vorondesign.com/build/
-Voron Github:                             https://github.com/VoronDesign
-Voron Reddit:                             https://www.reddit.com/r/VORONDesign/
-Euclid Probe:                             https://euclidprobe.github.io/
-Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/
-Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/
+My Github (This file)                     https://github.com/rkolbi/voron2.4/blob/main/printer.cfg  
+RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
+Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html  
+Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html  
+Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html  
+Klipper Github:                           https://github.com/Klipper3d  
+Klipper Reddit:                           https://www.reddit.com/r/klippers/  
+Voron Documentation:                      https://docs.vorondesign.com/build/  
+Voron Github:                             https://github.com/VoronDesign  
+Voron Reddit:                             https://www.reddit.com/r/VORONDesign/  
+Euclid Probe:                             https://euclidprobe.github.io/  
+Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/  
+Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/  
 
 Thanks to Daniel0815 for testing & assistance on Z compensation.
 
@@ -61,42 +61,44 @@ Thanks to Daniel0815 for testing & assistance on Z compensation.
  SAMBA Setup - GCODE File Network Share Setup
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
- To set up a network file share, making your gcode files available to either windows or mac file
- explorers, perform the following once ssh'd into your klipper rPi.
+ To set up a network file share, making your gcode files available to either windows or mac file  
+ explorers, perform the following once ssh'd into your klipper rPi.  
 
- -Install file serving smb service:
-$sudo apt-get install samba winbind -y
+ -Install file serving smb service:  
+$`sudo apt-get install samba winbind -y`  
 
- -Configure file share.  Add the following to the end of the smb.conf file:
-$sudo nano /etc/samba/smb.conf
+ -Configure file share.  Add the following to the end of the smb.conf file:  
+$`sudo nano /etc/samba/smb.conf`  
 	
-[voron]
-   comment = Vonon_gCode_files
-   path = /home/pi/gcode_files
-   browseable = Yes
-   writeable = Yes
-   only guest = no
-   create mask = 0777
-   directory mask = 0777
-   public = yes
-   read only = no
-   force user = root
-   force group = root
+```
+[voron]  
+   comment = Vonon_gCode_files  
+   path = /home/pi/gcode_files  
+   browseable = Yes  
+   writeable = Yes  
+   only guest = no  
+   create mask = 0777  
+   directory mask = 0777  
+   public = yes  
+   read only = no  
+   force user = root  
+   force group = root  
 
-[voron-klipper_config]
-   comment = Vonon_Klipper
-   path = /home/pi/klipper_config
-   browseable = Yes
-   writeable = Yes
-   only guest = no
-   create mask = 0777
-   directory mask = 0777
-   public = yes
-   read only = no
-   force user = root
-   force group = root
+[voron-klipper_config]  
+   comment = Vonon_Klipper  
+   path = /home/pi/klipper_config  
+   browseable = Yes  
+   writeable = Yes  
+   only guest = no  
+   create mask = 0777  
+   directory mask = 0777  
+   public = yes  
+   read only = no  
+   force user = root  
+   force group = root  
+```
 
 
 
- -Reboot rPi:
-$sudo reboot
+ -Reboot rPi:  
+$`sudo reboot`  
