@@ -1,25 +1,13 @@
+**NOTES & INFORMATION**
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- NOTES & INFORMATION
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-This Klipper configuration will pull all files from the ACTIVE directory that end in .cfg, ignoring any files in
-the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and
-edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such,
-renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example,
-[do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba
-network sharing is below.
+This Klipper configuration will pull all files from the ACTIVE directory that end in .*cfg*, ignoring any files in the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such, renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example, [do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba network sharing is below.  
 
-The [printer.cfg] in the root directory loads all the files ending with [.cfg] extension from the ACTIVE directory;
-the INACTIVE directory is merely a container to place the files that you may not want to be run at this particular
-time, such as [ARDU_ADXL.cfg]. [printer. cfg] also contains any global variables needed or shared by the macros.
-Any other dictionary required should be placed here to central localize all settings, making it easier to change
-parameters later. Additionally, any saved parameters written by Klipper will be at the bottom of [printer.cfg].
+The [printer.cfg] in the root directory loads all the files ending with [.cfg] extension from the ACTIVE directory; the INACTIVE directory is merely a container to place the files that you may not want to be run at this particular time, such as [ARDU_ADXL.cfg]. [printer. cfg] also contains any global variables needed or shared by the macros. Any other dictionary required should be placed here to central localize all settings, making it easier to change parameters later. Additionally, any saved parameters written by Klipper will be at the bottom of [printer.cfg].  
 
-Lastly, all the printer-specific settings should be placed in a file such as [CONFIG-VORON24_350.cfg]; these are
-the Klipper configurations specific to your core printer. The contents can be further split if you wish; remember
-that the [printer.cfg] will load all files from the ACTIVE directory, regardless of name, just so long as they end
-with the [.cfg] extension. Make them something that makes sense to you and may be easily portable for an easy future. 
+Lastly, all the printer-specific settings should be placed in a file such as [CONFIG-VORON24_350.cfg]; these are the Klipper configurations specific to your core printer. The contents can be further split if you wish; remember that the [printer.cfg] will load all files from the ACTIVE directory, regardless of name, just so long as they end with the [.cfg] extension. Make them something that makes sense to you and may be easily portable for an easy future.  
 
+<br>
 
 PRINT_START will home and the level the gantry*, perform a heat soak, then G3201, and lastly bring the hotend
 to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge
@@ -31,7 +19,7 @@ fully on and then parks the toolhead at the top, front-right position. The parke
 easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally
 to note, during PRINT_END or PRINT_START, the toolhead is placed back at Y20 to allow room for the fan(s) to
 pull air without being blocked by being pressed up against the doors. 
- 
+
 NOTE: This configuration utilizes the Euclid probe with the dock mounted on the bed rail. For fetching and
 docking the probe, use M401 and M402 as they have safety checks to prevent crashes! 
 The following STL files were used:  
@@ -57,8 +45,8 @@ Thanks to Daniel0815 for testing & assistance on Z compensation.
 
 
 
--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
- SAMBA Setup - GCODE File Network Share Setup
+
+**SAMBA Setup - GCODE File Network Share Setup**
 -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
  To set up a network file share, making your gcode files available to either windows or mac file  
