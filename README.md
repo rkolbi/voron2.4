@@ -10,6 +10,8 @@ Main files:
 
 **[:bulb:](PA_CAL-V2)Pressure Advance Macro - version 2.**
 
+**[:zap:](MY_V24-350**)My currently running configuration setup (Euclid probe with Z-Compensation).**
+
 **[:wrench:](printer.cfg)Full Monolithic printer.cfg (Euclid probe with Z-Compensation).**
 
 **[:wrench:](Euclid)Portable Euclid probe macros with Z-Compensation.**
