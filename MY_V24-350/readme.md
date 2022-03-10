@@ -20,7 +20,7 @@ The following STL files were used:
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 
-My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350
+My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
 RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
 Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html  
 Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html  
