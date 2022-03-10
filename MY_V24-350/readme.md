@@ -43,8 +43,7 @@ Thanks to Daniel0815 for testing & assistance on Z compensation.
 **SAMBA Setup - GCODE File Network Share Setup**
 =================================================================================================================
 
- To set up a network file share, making your gcode files available to either windows or mac file  
- explorers, perform the following once ssh'd into your klipper rPi.  
+To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either windows or mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to restrict access to these samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
 
  -Install file serving smb service:  
 $`sudo apt-get install samba winbind -y`  
