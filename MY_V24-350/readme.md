@@ -29,17 +29,17 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMount
 **Links:**  
 My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
 RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
-Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html  
-Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html  
-Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html  
-Klipper Github:                           https://github.com/Klipper3d  
-Klipper Reddit:                           https://www.reddit.com/r/klippers/  
-Voron Documentation:                      https://docs.vorondesign.com/build/  
-Voron Github:                             https://github.com/VoronDesign  
-Voron Reddit:                             https://www.reddit.com/r/VORONDesign/  
-Euclid Probe:                             https://euclidprobe.github.io/  
-Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/  
-Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/  
+Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html    
+Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html    
+Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html    
+Klipper Github:                           https://github.com/Klipper3d    
+Klipper Reddit:                           https://www.reddit.com/r/klippers/    
+Voron Documentation:                      https://docs.vorondesign.com/build/    
+Voron Github:                             https://github.com/VoronDesign    
+Voron Reddit:                             https://www.reddit.com/r/VORONDesign/    
+Euclid Probe:                             https://euclidprobe.github.io/    
+Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
+Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
 
 Thanks to Daniel0815 for testing & assistance on Z compensation.
 
