@@ -25,7 +25,8 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMount2NativeCarriage.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMount2_Bkt.stl  
 
-<br>
+<br>  
+**Links:**  
 My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
 RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
 Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html  
