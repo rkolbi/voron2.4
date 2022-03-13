@@ -42,7 +42,6 @@ Euclid Probe:                             https://euclidprobe.github.io/
 Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
 Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
 
-Thanks to Daniel0815 for testing & assistance on Z compensation.
 
 
 
