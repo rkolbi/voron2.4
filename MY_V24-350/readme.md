@@ -15,7 +15,7 @@ Lastly, all the printer-specific settings should be placed in a file such as [CO
 
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least 75% of the max axis height or at the printed object's Z height + 10 - whichever is taller - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
-**NOTE:** These configurations utilize the Euclid probe. There are two slightly different variants; Bed Mounted (BM) docking, where the dock has been mounted on the bottom rail opposite the Z-Endstop, and Gantry Mounted (GM) docking, where the dock is mounted on the gantry by the stepper motor. I have decided to switch and stay with Gantry mount as it provides a better solution for my needs and will update this set (GM) as expected. I will update the (BM) set with any critical fixes, but they are very stable and offer a solid experience as is. For fetching and docking the probe, use M401 and M402 as they have safety checks to prevent crashes! The following STL files were used:  
+**NOTE:** These configurations utilize the Euclid probe. There are two slightly different variants; Bed Mounted (BM) docking, where the dock has been mounted on the bottom rail opposite the Z-Endstop, and Gantry Mounted (GM) docking, where the dock is mounted on the gantry by the stepper motor. I have decided to switch and stay with Gantry mount as it provides a better solution for my needs and will update this set (GM) as expected. I will update the (BM) set, which are located in the INACTIVE directory, with any critical fixes but they are very stable and offer a solid experience as is. For fetching and docking the probe, use M401 and M402 as they have safety checks to prevent crashes! The following STL files were used:  
 
 [Bed mounted dock]  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
@@ -42,7 +42,6 @@ Euclid Probe:                             https://euclidprobe.github.io/
 Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
 Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
 
-Thanks to Daniel0815 for testing & assistance on Z compensation.
 
 
 
