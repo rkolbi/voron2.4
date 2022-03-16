@@ -25,9 +25,8 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMount
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 
 [Gantery mounted dock]  
-https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMount2NativeCarriage.stl  
-https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMount2_Bkt.stl  
-
+https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMountyRev2.stl  
+https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 <BR>
 
 **Links:**  
