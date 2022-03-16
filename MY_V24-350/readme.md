@@ -19,7 +19,7 @@ Lastly, all the printer-specific settings should be placed in a file such as [CO
 
 <br>  
 The following STL files were used:  
-
+  
 [Bed mounted dock]  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
