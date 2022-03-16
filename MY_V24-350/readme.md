@@ -17,9 +17,9 @@ Lastly, all the printer-specific settings should be placed in a file such as [CO
 
 **NOTE:** These configurations utilize the Euclid probe. There are two slightly different variants, each with its own flavor. The Bed Mounted (BM) docking is mounted on the bottom rail opposite the Z-Endstop, utilizing the Z-axis endstop switch for homing. The Gantry Mounted (GM) docking, where the dock is mounted on the gantry by the stepper motor, no longer requires the Z-axis endstop switch, as it uses the Euclid probe to find Z home. I have decided to switch and stay with Gantry mount as it provides a better solution for my needs and will update this set (GM) as expected. I will update the (BM) set, which is located in the INACTIVE directory, with any critical fixes, but they are very stable and offer a solid experience as is. In either case, for fetching and docking the probe, use M401 and M402 as they have safety checks to prevent crashes!  
 
-<br>  
+  
 The following STL files were used:  
-<br>  
+  
 [Bed mounted dock]  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
