@@ -9,7 +9,8 @@ Lastly, all the printer-specific settings should be placed in a file such as [CO
 
 <br>
 
-**PRINT_START** will home and the level the gantry*, perform a heat soak, then G3201, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value.  
+**PRINT_START** will home and the level the gantry, perform a heat soak, then G3201*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value.  
+*The G3201 command does similar to G32 but adds a few more functions. After completing the quad gantry leveling, the macro will perform a center probe of the bed to determine the most accurate z-offset and then handles mesh application per defined settings.*
 
  
 
