@@ -120,7 +120,7 @@ Pertinent links:
 ```
 
 -Shutdown rPi and power off printer. Connect Arduino to rPi via USB cable, physically attach the ADXL345 to toolhead. Power-on printer, ssh into klipper systerm, and run $`ls /dev/serial/by-id/*` to detect name of serial device.  
--Make needed change to the [mcu ardu] device and restart printer. Open terminal, run CURRENT_HIGH, then G32, close doors, use masking tape if needed. Bring bed up to printing temp (110) and nozzle to 150.  
+-Make needed change to the [mcu ardu] device, adjust 'probe_points: X,Y,Z' to match X & Y center of your printer, and restart printer. Open terminal, run CURRENT_HIGH, then G32, close doors, use masking tape if needed. Bring bed up to printing temp (110) and nozzle to 150.  
 -Once bed has reached temp, heat soak for 20 minutes. Perform `SHAPER_CALIBRATE`, and when done, `SAVE_CONFIG` to save found settings.  
   
 ```
