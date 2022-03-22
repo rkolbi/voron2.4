@@ -44,7 +44,8 @@ Voron Reddit:                             https://www.reddit.com/r/VORONDesign/
 Euclid Probe:                             https://euclidprobe.github.io/    
 Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
 Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
-
+MandalaRoseWorks Kinematic Mounts:        https://mandalaroseworks.com/products/matched-height-kinematic-kit   
+MandalaRoseWorks Ultraflat Mag Bed:       https://mandalaroseworks.com/products/voron-350-ultraflat-bed	
 
 
 
