@@ -5,7 +5,7 @@ This Klipper configuration will pull all files from the ACTIVE directory that en
 
 The [printer.cfg] in the root directory loads all the files ending with [.cfg] extension from the ACTIVE directory; the INACTIVE directory is merely a container to place the files that you may not want to be run at this particular time, such as [ARDU_ADXL.cfg]. [printer. cfg] also contains any global variables needed or shared by the macros. Any other dictionary required should be placed here to central localize all settings, making it easier to change parameters later. Additionally, any saved parameters written by Klipper will be at the bottom of [printer.cfg].  
 
-Lastly, all the printer-specific settings should be placed in a file such as [CONFIG-VORON24_350.cfg]; these are the Klipper configurations specific to your core printer. The contents can be further split if you wish; remember that the [printer.cfg] will load all files from the ACTIVE directory, regardless of name, just so long as they end with the [.cfg] extension. Make them something that makes sense to you and may be easily portable for an easy future.  
+Lastly, all the printer-specific configurations should be placed in a file such as [CONFIG-VORON24_350.cfg]; these are the Klipper configurations specific to your core printer. The contents can be further split if you wish; remember that the [printer.cfg] will load all files from the ACTIVE directory, regardless of name, just so long as they end with the [.cfg] extension. Make them something that makes sense to you and may be easily portable for an easy future.  
 
 <br>
 
