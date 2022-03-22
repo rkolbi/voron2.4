@@ -95,7 +95,7 @@ $`sudo nano /etc/samba/smb.conf`
  -Reboot rPi:  
 $`sudo reboot`  
 	
-<br><br>  
+<br>  
 **ADXL345 (via Arduino) Resonance Testing Setup**
 =================================================================================================================
 
