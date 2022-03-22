@@ -109,15 +109,15 @@ Pertinent links:
    `https://www.klipper3d.org/Installation.html#building-and-flashing-the-micro-controller`  
   
   
- ```
- Wire the Arduino / ADXL345 as follows:
+ 
+ -Wire the Arduino / ADXL345 as follows:  
+```	
  ADXL345      ARDUINO
    CS ------- 10/PB2
    SD0 ------ 12/PB4
    SDA ------ 11/PB3
    SCL ------ 13/PB5
 ```
-
 
 -Shutdown rPi and power off printer. Connect Arduino to rPi via USB cable, physically attach the ADXL345 to toolhead. Power-on printer, ssh into klipper systerm, and run $`ls /dev/serial/by-id/*` to detect name of serial device.  
 -Make needed change to the [mcu ardu] device and restart printer. Open terminal, run CURRENT_HIGH, then G32, close doors, use masking tape if needed. Bring bed up to printing temp (110) and nozzle to 150.  
