@@ -96,6 +96,7 @@ $`sudo nano /etc/samba/smb.conf`
 $`sudo reboot`  
 	
 <br>  
+	
 **ADXL345 (via Arduino) Resonance Testing Setup**
 =================================================================================================================
 
