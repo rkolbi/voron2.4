@@ -18,9 +18,9 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 **NOTE:** These configurations utilize the Euclid probe. There are two slightly different variants, each with its own flavor. The Bed Mounted (BM) docking is mounted on the bottom rail opposite the Z-Endstop, utilizing the Z-axis endstop switch for homing. The Gantry Mounted (GM) docking, where the dock is mounted on the gantry by the stepper motor, no longer requires the Z-axis endstop switch, as it uses the Euclid probe to find Z home. I have decided to switch and stay with Gantry mount as it provides a better solution for my needs and will update this set (GM) as expected. I will update the (BM) set, which is located in the INACTIVE directory, with any critical fixes, but they are very stable and offer a solid experience as is. In either case, for fetching and docking the probe, use M401 and M402 as they have safety checks to prevent crashes!  
 
-  
+
 The following STL files were used:  
-  
+
 [Bed mounted dock]  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/Voron2.4BedMountV3.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
@@ -29,6 +29,10 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMountyRev2.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 <BR>
+
+The method in which my Euclid probe is connected to the Octopus controller follows:  
+
+![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
 **Links:**  
 My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
@@ -108,9 +112,9 @@ Pertinent links:
    `https://www.klipper3d.org/Measuring_Resonances.html`  
  Arduino software setup:   
    `https://www.klipper3d.org/Installation.html#building-and-flashing-the-micro-controller`  
+
   
-  
- 
+
  -Wire the Arduino / ADXL345 as follows:  
 ```	
  ADXL345      ARDUINO
@@ -127,7 +131,7 @@ Pertinent links:
 -Bring bed up to printing temp (110) and nozzle to 150.  
 -Once bed has reached temp, heat soak for ~20 minutes.  
 -Perform `SHAPER_CALIBRATE`, and when done, `SAVE_CONFIG` to save found settings.  
-  
+
 ```
 [mcu ardu]
    serial: /dev/serial/by-id/usb-Silicon_Labs_CP2104_USB_to_UART_Bridge_Controller_0199928E-if00-port0
