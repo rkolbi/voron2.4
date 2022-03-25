@@ -32,7 +32,7 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron
 
 **! ! ! Before wiring up to the the probe, please read the pertinent documentation here: http://euclidprobe.github.io/ ! ! !**  
 **! ! ! Following probe wiring or macro modification, you must be ready to emergency stop the printer when testing ! ! !**  
-*When testing probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
+*When testing the probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
 *stop, hit emergency stop and verify setup.*  
   
 The method in which I wired the Euclid to my Octopus controller follows:
