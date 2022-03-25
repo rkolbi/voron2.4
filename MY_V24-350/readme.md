@@ -30,7 +30,8 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMoun
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 <BR>
 
-The method in which my Euclid probe is connected to the Octopus controller follows:
+Before wiring up to the the probe, please read the pertinent documentation here: http://euclidprobe.github.io/  
+The method in which I wired the Euclid to my Octopus controller follows:
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
 **Links:**  
