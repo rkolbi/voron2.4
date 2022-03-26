@@ -30,6 +30,18 @@ https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMoun
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 <BR>
 
+If copying the Euclid macro into your existing setup, check the following:  
+Do include QUERY_PROBE in your startup macro. If you do not have one, follows is a simple example you can use.  
+```   
+[delayed_gcode prerun]  
+initial_duration: 1  
+gcode:  
+    QUERY_PROBE  
+    M117 Printer online.  
+```  
+Ensure [stepper_z] has endstop_pin defined as follows:  
+`endstop_pin: probe:z_virtual_endstop`  
+	
 **! ! ! Before wiring up to the the probe, please read the pertinent documentation here: http://euclidprobe.github.io/ ! ! !**  
 **! ! ! Following probe wiring or macro modification, you must be ready to emergency stop the printer when testing ! ! !**  
 *When testing the probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
