@@ -58,6 +58,7 @@ Klipper Configuration Reference:          https://www.klipper3d.org/Config_Refer
 Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html    
 Klipper Github:                           https://github.com/Klipper3d    
 Klipper Reddit:                           https://www.reddit.com/r/klippers/    
+Jinja2 Syntax & Semantics:                https://jinja.palletsprojects.com/en/2.10.x/templates/	
 Voron Documentation:                      https://docs.vorondesign.com/build/    
 Voron Github:                             https://github.com/VoronDesign    
 Voron Reddit:                             https://www.reddit.com/r/VORONDesign/    
