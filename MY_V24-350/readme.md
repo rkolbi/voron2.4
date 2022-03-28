@@ -20,7 +20,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 	
 <br>  
 	
-**EUCLID Probe notes**
+***EUCLID Probe notes***
 =================================================================================================================
 
 For this configuration, the following STL files were used:  
