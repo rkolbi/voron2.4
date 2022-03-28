@@ -48,8 +48,7 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 *When testing the probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
 *stop, hit emergency stop and verify setup.*  
 <br>  
-	  
-The method in which I wired the Euclid to my Octopus controller follows:  
+	    
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
 **Links:**  
