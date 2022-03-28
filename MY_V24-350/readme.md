@@ -20,7 +20,9 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 	
 <br>  
 	
-**EUCLID Probe notes**
+**EUCLID Probe notes**  
+=================================================================================================================
+
 
 For this configuration, the following STL files were used:  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMountyRev2.stl  
