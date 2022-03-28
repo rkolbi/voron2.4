@@ -20,7 +20,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 	
 <br>  
 	
-**EUCLID Probe notes**  
+**EUCLID Probe Notes**  
 =================================================================================================================
 
 
@@ -51,7 +51,7 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 	    
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
-<br><br>
+<br>
 
 **SAMBA Setup - GCODE File Network Share Setup**
 =================================================================================================================
