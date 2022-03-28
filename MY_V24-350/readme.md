@@ -51,26 +51,6 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 	    
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
-**Links:**  
-My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
-RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
-Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html    
-Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html    
-Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html    
-Klipper Github:                           https://github.com/Klipper3d    
-Klipper Reddit:                           https://www.reddit.com/r/klippers/    
-Jinja2 Syntax & Semantics:                https://jinja.palletsprojects.com/en/2.10.x/templates/    
-Voron Documentation:                      https://docs.vorondesign.com/build/    
-Voron Github:                             https://github.com/VoronDesign    
-Voron Reddit:                             https://www.reddit.com/r/VORONDesign/    
-Euclid Probe:                             https://euclidprobe.github.io/    
-Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
-Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
-MandalaRoseWorks Kinematic Mounts:        https://mandalaroseworks.com/products/matched-height-kinematic-kit   
-MandalaRoseWorks Ultraflat Mag Bed:       https://mandalaroseworks.com/products/voron-350-ultraflat-bed	
-
-
-
 <br><br>
 
 **SAMBA Setup - GCODE File Network Share Setup**
@@ -162,3 +142,26 @@ Pertinent links:
    accel_chip: adxl345
    probe_points: 175,175,20
 ```
+<br>  
+	
+**Links**
+=================================================================================================================
+
+
+
+My Github (This file)                     https://github.com/rkolbi/voron2.4/tree/main/MY_V24-350  
+RepRap G-code Wiki                        https://reprap.org/wiki/G-code  
+Klipper Documentation (Main):             https://www.klipper3d.org/Overview.html    
+Klipper Configuration Reference:          https://www.klipper3d.org/Config_Reference.html    
+Klipper G-Code & Additional Commands:     https://www.klipper3d.org/G-Codes.html    
+Klipper Github:                           https://github.com/Klipper3d    
+Klipper Reddit:                           https://www.reddit.com/r/klippers/    
+Jinja2 Syntax & Semantics:                https://jinja.palletsprojects.com/en/2.10.x/templates/    
+Voron Documentation:                      https://docs.vorondesign.com/build/    
+Voron Github:                             https://github.com/VoronDesign    
+Voron Reddit:                             https://www.reddit.com/r/VORONDesign/    
+Euclid Probe:                             https://euclidprobe.github.io/    
+Bondtech LGX:                             https://www.bondtech.se/product/lgx-large-gears-extruder/    
+Bontech CHT Nozzle:                       https://www.bondtech.se/product/bondtech-cht-coated-brass-nozzle/    
+MandalaRoseWorks Kinematic Mounts:        https://mandalaroseworks.com/products/matched-height-kinematic-kit   
+MandalaRoseWorks Ultraflat Mag Bed:       https://mandalaroseworks.com/products/voron-350-ultraflat-bed	 
