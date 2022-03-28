@@ -49,7 +49,7 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 *stop, hit emergency stop and verify setup.*  
 <br>  
 	  
-<center>The method in which I wired the Euclid to my Octopus controller follows:</center>  
+The method in which I wired the Euclid to my Octopus controller follows:  
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
 **Links:**  
