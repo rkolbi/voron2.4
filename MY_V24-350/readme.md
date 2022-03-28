@@ -20,10 +20,11 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 	
 <br>  
 	
-**Euclid Porbe notes**
+**EUCLID Probe notes**
 =================================================================================================================
 
 For this configuration, the following STL files were used:  
+
 [Gantery mounted dock]  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/EuclidGantryMountyRev2.stl  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
