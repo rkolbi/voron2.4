@@ -47,8 +47,9 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 **! ! ! Following probe wiring or macro modification, you must be ready to emergency stop the printer when testing ! ! !**  
 *When testing the probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
 *stop, hit emergency stop and verify setup.*  
-  
-The method in which I wired the Euclid to my Octopus controller follows:
+<br>  
+	  
+	<center>The method in which I wired the Euclid to my Octopus controller follows:</center>
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
 
 **Links:**  
