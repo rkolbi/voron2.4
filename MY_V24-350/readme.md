@@ -15,7 +15,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
   `PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature]`  
 -Cura's start print gcode should contain the following:  
   `PRINT_START BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}`  
--The following optional parameters can be specified. If not specified, the values set in printer.cfg will be used.  
+-The following optional parameters can be specified. If not specified, the values set in the filament .cfg will be used.  
    -EXTRUDER_READY temperature, just below extruding temperature. The goal is to get the nozzle hot enough to almost start oozing.  
     For example, if using 240 for normal extruding, something such as EXTRUDER_READY=210 would be sufficient.  
    -ENCLOSURE_TEMP temperature, as ENCLOSURE_TEMP=40  
