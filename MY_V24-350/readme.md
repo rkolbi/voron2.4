@@ -12,10 +12,21 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 **PRINT_START** will home and the level the gantry, perform a heat soak, then G3201*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value.  
 *The G3201 command does similar to G32 but adds a few more functions. After completing the quad gantry leveling, the macro will perform a center probe of the bed to determine the most accurate z-offset and then handles mesh application per defined settings.*
 
- 
+-SuperSlicer's start print gcode should contain the following:  
+  `PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature]`  
+-Cura's start print gcode should contain the following:  
+  `PRINT_START BED_TEMP={material_bed_temperature_layer_0} EXTRUDER_TEMP={material_print_temperature_layer_0}`
+-The following optional parameters can be specified. If not specified, the values set in printer.cfg will be used.
+   -EXTRUDER_READY temperature, just below extruding temperature. The goal is to get the nozzle hot enough to almost start oozing.
+    For example, if using 240 for normal extruding, something such as EXTRUDER_READY=210 would be sufficient.
+   -ENCLOSURE_TEMP temperature, as ENCLOSURE_TEMP=40
+   -Minutes to Soak, as SOAK=15
 
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
+-SuperSlicer's & Cura's end print gcode should contain the following:
+  Use PRINT_END for the slicer ending script
+  
 **NOTE:** These configurations utilize the Euclid probe. There are two slightly different variants, each with its own flavor. The Bed Mounted (BM) docking is mounted on the bottom rail opposite the Z-Endstop, utilizing the Z-axis endstop switch for homing. The Gantry Mounted (GM) docking, where the dock is mounted on the gantry by the stepper motor, no longer requires the Z-axis endstop switch, as it uses the Euclid probe to find Z home. I have decided to switch and stay with Gantry mount as it provides a better solution for my needs and will update this set (GM) as expected. I will update the (BM) set, which is located in the INACTIVE directory, with any critical fixes, but they are very stable and offer a solid experience as is. In either case, for fetching and docking the probe, use M401 and M402 as they have safety checks to prevent crashes!  
 	
 <br>  
