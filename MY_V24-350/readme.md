@@ -36,6 +36,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 For this configuration, the following STL files were used:  
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Voron/VoronGantryMountRev2.stl  
+*(https://github.com/nionio6915/Euclid_Probe/blob/9a0e1a2542d16efde8fed8edd19702ff49643af6/stls/Voron/VoronGantryMountRev2.stl)*
 https://github.com/nionio6915/Euclid_Probe/blob/main/stls/Mount%20Adapters/Omron/OmronFotekM2_V3.stl  
 <BR>
 
