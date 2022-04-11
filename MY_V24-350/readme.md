@@ -107,6 +107,12 @@ $`sudo nano /etc/samba/smb.conf`
  -Reboot rPi:  
 $`sudo reboot`  
 	
+  
+In the event that windows shows a red-x through the mapped share, I have found the following helpful in restoring mapped network shares:  
+- Run `CMD` as administrator  
+- `net stop workstation /y`  
+- `net start workstation`  
+
 <br>  
 	
 **ADXL345 (via Arduino) Resonance Testing Setup**
