@@ -352,8 +352,6 @@ gcode:
 gcode:
     {% set ZP_CAL = printer["gcode_macro euclidvars"].euclidzcompensation|float %}
     {% set ZAbortTolerance = printer["gcode_macro euclidvars"].zprobeaborttolerance|float %}
-    {% set MeshToApply = printer["gcode_macro euclidvars"].meshtoapply|default() %}
-    {% set DoApplyMesh = printer["gcode_macro euclidvars"].doapplymesh|int %}
     {% set PASS = params.PASS|float %}
     {% set Z_POS = printer.toolhead.position.z|float %}
     {% set Z_OFFSET = PASS - ZP_CAL|float %}
