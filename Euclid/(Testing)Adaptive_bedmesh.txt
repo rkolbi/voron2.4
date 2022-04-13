@@ -93,14 +93,9 @@ variable_ZprobeSpeed: 3.0                          # Probing speed for Z Measure
 variable_ProbeBoundingBox: #30                     # Bounding box size to take probe samples, this is used for X & Y.            <-----------
 variable_ZprobeSamples: 5                          # Samples probed per Z Point as the point is calculated out of median         <-----------
                                                    # keep this number odd e.g. 3,5,7...
-variable_ZprobeTolerance: 0.020                    # Sample Tolerance per Z Point <-----------
+variable_ZprobeTolerance: 0.020                    # Sample Tolerance per Z Point                                                <-----------
 variable_ZprobeAbortTolerance: 1.0                 # Tolerance to apply the Measured Z-0 Point or throw an error to check things <-----------
 variable_ZprobeRetract: 1.2                        # Retract from each probing for a D2F-5 Switch 1.2 should be good             <-----------
-variable_DoApplyMesh: True                         # Apply mesh prior to probe sampling, for Z Compensation
-variable_MeshToApply: "NONE"                       # The saved mesh to apply, mesh name must be enclosed with ""
-                                                   # *!* To perform a fresh in-situation mesh calibration, instead of loading a saved
-                                                   # mesh, use "INSITU" for MeshToApply. This will be applied before Z Comp probing.
-                                                   # *!* To completely skip applying mesh, use "NONE" for MeshToApply
 gcode:
 
 #*********  Neccecary things.... ********* 
@@ -239,7 +234,6 @@ gcode:
     {% set ZTolerance = printer["gcode_macro euclidvars"].zprobetolerance|float %}
     {% set ZRetract = printer["gcode_macro euclidvars"].zproberetract|float %}
     {% set ZP_CAL = printer["gcode_macro euclidvars"].euclidzcompensation|float %}
-    {% set MeshToApply = printer["gcode_macro euclidvars"].meshtoapply|default() %}
     {% set FL_SIZE = params.SIZE|default("0_0_0_0")|string %}
     BED_MESH_CLEAR
     M118 Probing Z is done using following Settings:
@@ -256,18 +250,6 @@ gcode:
     M401
     QUAD_GANTRY_LEVEL_ORIGINIAL
     G28 Z
-    {% if MeshToApply == "INSITU" %}
-        BED_MESH_CALIBRATE_ORIGINIAL SAMPLES=3
-        BED_MESH_PROFILE SAVE=INSITUMESH
-        BED_MESH_OUTPUT PGP=0
-    {% else %}
-        {% if printer["gcode_macro euclidvars"].doapplymesh|default() == true and MeshToApply != "NONE" %}
-            BED_MESH_PROFILE LOAD={MeshToApply}
-            M118 Applying {MeshToApply} mesh prior to sampling.
-        {% else %}
-            M118 Not applying a mesh prior to sampling.
-        {% endif %}
-    {% endif %}
     G90
     G0 X{X_MID} Y{Y_MID} F3500
     G91  
