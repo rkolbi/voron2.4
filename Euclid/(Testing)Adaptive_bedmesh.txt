@@ -41,6 +41,19 @@
 # ProbeBoundingBox sets the square boundry of the sampling area. A setting of 30 would yeild X=30mm & Y=30mm.
 # 10% of the bed size is a good start. Please change the ProbeBoundingBox value in the Z Compensation settings below.
 #
+#   Setting: To determine a starting euclidZCompensation value, take the following steps. Check nozzle clean and
+#   free of debris, same for bed. Set euclidZCompensation to 0 to disable G3201 from applying changes, and restart
+#   Klipper. Dial-in your Z height as outlined in the procedures found here: https://docs.vorondesign.com/build/startup/.
+#   Once you are satisfied with your Z height, run G3201 from the console. Once completed, review the console output
+#   for 'Current Average is:' and place that value as euclidZCompensation. Following a save and restart, perform a
+#   first-layer print test, babystep Z until happy, and apply the babystep total to the euclidZCompensation value.
+#   Increasing this value will set the nozzle closer to the bed, and vice versa. For example, if you were using a
+#   value of 9.4 and wanted a little more 'squish', try 9.44.
+#
+# ! Note: A safety feature exists that checks the distance between the Z-endstop trigger to the newly calculated
+#   0-Point; if this difference is greater than the defined ZprobeAbortTolerance, the compensation will not be applied.
+# ! Note: For docking and undocking, the probe movement routines are tailored for the probe cradle affixed to the left
+#   side, on the outboard left bed extrusion.
 #
 # This is done using the following macros:
 #               - G3201
