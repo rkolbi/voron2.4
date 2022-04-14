@@ -332,7 +332,7 @@ gcode:
 
 [gcode_macro _CHECK_PROBE5]
 gcode:
-    {% set PASS = params.PASS|float|float %}
+    {% set PASS = params.PASS|float %}
     {% set PROBE_PASS = printer.probe.last_z_result %}
     {% set ZSpeed = printer["gcode_macro euclidvars"].zprobespeed|float %}
     {% set ZSamples = printer["gcode_macro euclidvars"].zprobesamples|int %}
