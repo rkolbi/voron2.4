@@ -372,6 +372,7 @@ gcode:
     {% else %}
         M118 ?!Probe is not attached.
     {% endif %}
+    Calling ADAPTIVE_BED_MESH SIZE={FL_SIZE}
     ADAPTIVE_BED_MESH SIZE={FL_SIZE}
     PARKCENTER                        
     M118 :-) Ready to Print :-)
@@ -393,6 +394,7 @@ gcode:
 #    M104 S{defaultWN}                                                                                          <-----------
 #    M190 S{bedtemp}                                                       
 #    TEMPERATURE_WAIT SENSOR="temperature_sensor Chamber" MINIMUM={chambertemp}   
+#    M118 Calling G3201 SIZE={FL_SIZE}
 #    G3201 SIZE={FL_SIZE}                                                                                       <-----------
 #    PARKCENTER
 #    M109 S{hotendtemp} 
