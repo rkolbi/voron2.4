@@ -65,7 +65,7 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 3 - Turn the printer on, enter the following into the console, and press return:  
 `G28 KEEP_PROBE:TRUE`  
 4 - This will home the X and Y axis and then move to bed center and home the Z-axis; the probe will remain attached.  
-5- You will be able to jog the toolhead, with the probe attached, into the dock and copy those values into the printer.cfg file.	  
+5 - You will be able to jog the toolhead, with the probe attached, into the dock and copy those values into the printer.cfg file.	  
 <br>  
 	    
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
