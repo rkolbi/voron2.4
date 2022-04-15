@@ -58,6 +58,14 @@ Ensure [stepper_z] has endstop_pin defined as follows:
 **! ! ! Following probe wiring or macro modification, you must be ready to emergency stop the printer when testing ! ! !**  
 *When testing the probe, have at least 100mm space between probe and plate, use your finger to depress probe switch, if it doesn't*  
 *stop, hit emergency stop and verify setup.*  
+	
+Newly commissioned: You will have to sight in the gantry dock, recording the x-axis and y-axis values to adjust the Euclid settings in printer.cfg. Recommend you take the following actions.  
+1 - Turn off the printer and manually raise the gantry about halfway up.  
+2 - With the printer off, manually attach the Euclid probe.  
+3 - Turn the printer on, enter the following into the console, and press return:  
+`G28 KEEP_PROBE:TRUE`  
+4 - This will home the X and Y axis and then move to bed center and home the Z-axis; the probe will remain attached.  
+5- You will be able to jog the toolhead, with the probe attached, into the dock and copy those values into the printer.cfg file.	  
 <br>  
 	    
 ![MyEuclidWiring1](MyEuclidWiring1.PNG)
