@@ -2,7 +2,7 @@
 
 Main files:
 
-**[:zap:](MY_V24-350\ ADAPTIVE_MESH)My currently running configuration setup (Euclid probe).**
+**[:zap:](MY_V24-350/ ADAPTIVE_MESH)My currently running configuration setup (Euclid probe).**
 
 **[:bulb:](gcode_folder_share.txt)How to network share your gcode folder.**
 
