@@ -7,7 +7,8 @@
 # starting with PA_START, and increasing to PA_STOP.
 # Based http://realdeuce.github.io/Voron/PA/pressure_advance.html
 # Assisted by u/imoftendisgruntled, u/scul86, and thanks to u/beansisfat, u/stray_r
-
+# If using BOWDEN setup and having difficulty, try increasing retraction/un-retraction
+# settings below to 1.25 vice 0.75. Search/replace 0.75 with 1.25
 
 description: Tune Pressure Advance
 gcode:
@@ -25,6 +26,9 @@ gcode:
         {% set E40 = (0.1147475 * NZL) * 40|float %}
         {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
         {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+# For DELTA replace the previous two lines with:
+        # {% set X_MID = 0|float %}
+        # {% set Y_MID = 0|float %}
 
         PRINT_START BED_TEMP={BED} EXTRUDER_TEMP={EXTRUDER}
 		
