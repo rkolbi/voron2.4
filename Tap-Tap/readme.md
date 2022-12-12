@@ -1,4 +1,4 @@
-**NOTES & INFORMATION**
+**NOTES & INFORMATION (! ! !  THIS IS IN TESTING - BE CAREFUL  ! ! !)**
 =================================================================================================================
 
 This Klipper configuration will pull all files from the ACTIVE directory that end in .*cfg*, ignoring any files in the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such, renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example, [do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba network sharing is below.  
