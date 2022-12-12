@@ -26,7 +26,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 -SuperSlicer's & Cura's end print gcode should contain the following:  
   `PRINT_END`    
     
-**NOTE:** These configurations utilize the TAP probe.  
+**NOTE:** These configurations utilize the TAP probe with signal going to pin Octopus PG11 pin, +5v provided by bltouch port, GND provided by PG11 endstop port GND pin.  
 	
 <br>  
 	
