@@ -27,7 +27,10 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
   `PRINT_END`    
     
 **NOTE:** These configurations utilize the TAP probe with signal going to pin Octopus PG11 pin, +5v provided by bltouch port, GND provided by PG11 endstop port GND pin.  
-	
+
+**NOTE:** These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
+          -with stealthburner led config located here: https://github.com/julianschill/klipper-led_effect/blob/master/examples/Voron_Stealthburner/stealthburner_led_effects_3_leds.cfg  
+
 <br>  
 	
 
