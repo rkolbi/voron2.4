@@ -1,4 +1,4 @@
-**NOTES & INFORMATION (! ! !  THIS IS IN TESTING - BE CAREFUL  ! ! !)**
+**TAP CONFIG NOTES & INFORMATION**
 =================================================================================================================
 
 This Klipper configuration will pull all files from the ACTIVE directory that end in .*cfg*, ignoring any files in the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such, renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example, [do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba network sharing is below.  
@@ -9,7 +9,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 <br>
 
-**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. *The heatsoak cycle can be terminated early by running the WAIT_QUIT macro. The G3201 command does similar to G32 but adds a few more functions. After completing the quad gantry leveling, the macro will perform a center probe of the bed to determine the most accurate z-offset and then handles mesh application per defined settings.*
+**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds a few more functions. After completing the quad gantry leveling, the macro will perform a center probe of the bed to determine the most accurate z-offset and then runs adaptive mesh application.*
 
 -SuperSlicer's start print gcode should contain the following:  
 
@@ -29,7 +29,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 **NOTE:** These configurations utilize the TAP probe with signal going to pin Octopus PG11 pin, +5v provided by bltouch port, GND provided by PG11 endstop port GND pin.  
 
 **NOTE:** These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
-          -with stealthburner led config located here: https://github.com/julianschill/klipper-led_effect/blob/master/examples/Voron_Stealthburner/stealthburner_led_effects_3_leds.cfg  
+          
 
 <br>  
 	
