@@ -23,12 +23,16 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
--SuperSlicer's & Cura's end print gcode should contain the following:  
+-SuperSlicer's end print gcode should contain the following:  
   `PRINT_END`    
     
-**NOTE:** These configurations utilize the TAP probe with signal going to pin Octopus PG11 pin, +5v provided by bltouch port, GND provided by PG11 endstop port GND pin.  
-
 **NOTE:** These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
+
+**NOTE:** These configurations utilize the TAP probe (optical) with Huvud toolhead controller, toolhead wiring diagram follows.
+
+![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
+
+
           
 
 <br>  
