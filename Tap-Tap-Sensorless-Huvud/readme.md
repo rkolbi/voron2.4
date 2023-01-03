@@ -92,50 +92,7 @@ In the event that windows shows a red-x through the mapped share, I have found t
 
 <br>  
 	
-**ADXL345 (via Arduino) Resonance Testing Setup**
-=================================================================================================================
 
-
-This quickly outlines the setup and configuration to allow Resonance Testing, using an ADXL345 wired to an Arduino UNO, connected to klipper (in my case a raspberrypi) via USB cable.
-
-Pertinent links:   
- rPi software setup:  
-   `https://www.klipper3d.org/Measuring_Resonances.html`  
- Arduino software setup:   
-   `https://www.klipper3d.org/Installation.html#building-and-flashing-the-micro-controller`  
-
-  
-
- -Wire the Arduino / ADXL345 as follows:  
-```	
- ADXL345      ARDUINO
-   CS ------- 10/PB2
-   SD0 ------ 12/PB4
-   SDA ------ 11/PB3
-   SCL ------ 13/PB5
-```
-
--Shutdown rPi and power off printer. Connect Arduino to rPi via USB cable, physically attach the ADXL345 to toolhead.  
--Power-on printer, ssh into klipper systerm, and run $`ls /dev/serial/by-id/*` to detect name of serial device.  
--Make needed change to the [mcu ardu] device, adjust `probe_points: X,Y,Z` to match X & Y center of your printer, and restart printer.  
--Open terminal, run CURRENT_HIGH, then G32, close doors, use masking tape if needed.  
--Bring bed up to printing temp (110) and nozzle to 150.  
--Once bed has reached temp, heat soak for ~20 minutes.  
--Perform `SHAPER_CALIBRATE`, and when done, `SAVE_CONFIG` to save found settings.  
-
-```
-[mcu ardu]
-   serial: /dev/serial/by-id/usb-Silicon_Labs_CP2104_USB_to_UART_Bridge_Controller_0199928E-if00-port0
-   # Be sure to change serial address below as per output of 'ls /dev/serial/by-id/*'
-
-[adxl345]
-   cs_pin: ardu:PB2
- 
-[resonance_tester]
-   accel_chip: adxl345
-   probe_points: 175,175,20
-```
-<br>  
 	
 **Links**
 =================================================================================================================
