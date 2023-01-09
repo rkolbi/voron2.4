@@ -28,7 +28,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
     
 **NOTE:** These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
 
-**NOTE:** These configurations utilize the TAP probe (optical) with Huvud toolhead controller, toolhead wiring diagram follows.
+**NOTE:** These configurations utilize the TAP probe (optical) with Huvud toolhead controller, toolhead wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
 
 ![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
 
@@ -53,7 +53,7 @@ $`sudo nano /etc/samba/smb.conf`
 	
 ```
 [voron]  
-   comment = Vonon_gCode_files  
+   comment = Voron_gCode_files  
    path = /home/pi/gcode_files  
    browseable = Yes  
    writeable = Yes  
@@ -66,7 +66,7 @@ $`sudo nano /etc/samba/smb.conf`
    force group = root  
 
 [voron-klipper_config]  
-   comment = Vonon_Klipper  
+   comment = Voron_Klipper  
    path = /home/pi/klipper_config  
    browseable = Yes  
    writeable = Yes  
@@ -79,7 +79,7 @@ $`sudo nano /etc/samba/smb.conf`
    force group = root  
    
 [Klipper_Storage]
-   comment = Vonon_Storage
+   comment = Voron_Storage
    path = /home/pi/Storage
    browseable = Yes
    writeable = Yes
