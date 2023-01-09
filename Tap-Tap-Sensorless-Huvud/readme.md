@@ -28,11 +28,11 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 -SuperSlicer's end print gcode should contain the following:  
   `PRINT_END`    
     
-**NOTE:** These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
+:bulb: These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
 
-**NOTE:** Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
+:bulb: Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
 
-**NOTE:** TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
+:bulb: TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
 
 ![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
 
