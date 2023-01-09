@@ -32,7 +32,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 
 **NOTE:** Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
 
-**NOTE:** These configurations utilize the TAP probe (optical) with Huvud toolhead controller, toolhead wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
+**NOTE:** TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
 
 ![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
 
