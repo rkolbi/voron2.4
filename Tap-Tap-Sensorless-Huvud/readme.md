@@ -33,7 +33,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 ![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
 
 
-          
+​          
 
 <br>  
 	
@@ -77,6 +77,19 @@ $`sudo nano /etc/samba/smb.conf`
    read only = no  
    force user = root  
    force group = root  
+   
+[Klipper_Storage]
+   comment = Vonon_Storage
+   path = /home/pi/Storage
+   browseable = Yes
+   writeable = Yes
+   only guest = no
+   create mask = 0777
+   directory mask = 0777
+   public = yes
+   read only = no
+   force user = root
+   force group = root  
 ```
 
 
@@ -93,7 +106,7 @@ In the event that windows shows a red-x through the mapped share, I have found t
 <br>  
 	
 
-	
+
 **Links**
 =================================================================================================================
 
