@@ -28,7 +28,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 -SuperSlicer's end print gcode should contain the following:  
   `PRINT_END`    
     
-=========================================================================================================  
+=========================================================================================================
   
 :bulb: These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
 
