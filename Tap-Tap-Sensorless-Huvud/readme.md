@@ -14,13 +14,15 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 -SuperSlicer's start print gcode should contain the following:  
 
   ```
-PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] PA=0.45 ST=0.21 SIZE={first_layer_print_min[0]}_{first_layer_print_min[1]}_{first_layer_print_max[0]}_{first_layer_print_max[1]}
+PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}_{first_layer_print_min[1]}_{first_layer_print_max[0]}_{first_layer_print_max[1]}
   ```
   See `https://github.com/Frix-x/klipper-voron-V2/blob/main/macros/probing/bed_mesh.cfg`  
 
--The following optional parameters can be specified. If not specified, the values set in the filament .cfg will be used.  
-   -Minutes to Soak, as `SOAK=15`  
-
+-The following optional parameters can be specified. If not specified, the values set in printer.cfg will be used.  
+   -PA, PRESSURE ADVANCE, as `PA=0.045`  
+   -ST, PRESSURE ADVANCE SMOOTH TIME, as `ST=0.21`  
+   -SOAK, MINUTES TO HEAT-SOAK PRIOR TO INITIALIZING PRINT, as `SOAK=15`  
+  
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
 -SuperSlicer's end print gcode should contain the following:  
