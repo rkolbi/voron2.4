@@ -22,12 +22,12 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
    -PA, pressure advance, as `PA=0.045`  
    -ST, pressure advance smooth-time, as `ST=0.21`  
    -SOAK, minutes to heat-soak prior to final G32, meshing, and printing, as `SOAK=15`  
-  
+
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
 -SuperSlicer's end print gcode should contain the following:  
   `PRINT_END`    
-   
+
 
 :bulb: These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
 :bulb: Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
@@ -54,6 +54,7 @@ To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`
 dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25  
 dtoverlay=spi0-hw-cs  
 `  
+
 And also set `/etc/network/interfaces.d/can0` as:  
 `auto can0  
 iface can0 can static  
@@ -62,12 +63,15 @@ iface can0 can static
  pre-up ip link set can0 type can bitrate 1000000  
  pre-up ip link set can0 txqueuelen 128  
 `  
-  
+
+<br>
+
 May be releated to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`  
 `arm_freq=1200  
 core_freq=500  
 core_freq_min=500  
 `  
+
 And made the following changes to `/etc/rc.local`  
 `# Print the IP address  
 _IP=$(hostname -I) || true  
@@ -78,7 +82,7 @@ iwconfig wlan0 power off
 echo "performance" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_governor  
 exit 0  
 `	  
-  
+
 <br>
 
 **SAMBA Setup - GCODE File Network Share Setup**
