@@ -56,7 +56,7 @@ I got many daily RX errors (`ip -details -statistics link show can0`). While not
 To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`  
 ```
 dtparam=spi=on  
-dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=12000000  
+dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=10000000  
 dtoverlay=spi0-hw-cs  
 enable_uart=0  
 ```
