@@ -43,7 +43,8 @@ TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detai
 ​          
 
 <br>  
-**Solving Excessive CAN0 RX Errors, running rPi4 64bit, klipper latest 64bit**  
+**Solving Excessive CAN0 RX Errors, running rPi4 64bit, klipper latest 64bit**
+
 *-Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux*  
 *-WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal*  
 
