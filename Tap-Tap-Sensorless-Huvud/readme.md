@@ -35,7 +35,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 **HUVUD Setup**
 =================================================================================================================
 
-:bulb: TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
+TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
 
 ![HUVUD_TAP_Wiring](huvud_tap_connection.jpg)
 
@@ -43,42 +43,42 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 ​          
 
 <br>  
-Solving Excessive CAN0 RX Errors, running rPi4 64bit, klipper latest 64bit 
--Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux
--WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal
+**Solving Excessive CAN0 RX Errors, running rPi4 64bit, klipper latest 64bit**  
+*-Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux*  
+*-WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal*  
 
-I got many daily RX errors (`ip -details -statistics link show can0`). While not showing any errors in Klipper, I suffered a communication timeout error twice over the past few days. Through some internet diving, SPI speeds with 64bit OS are an issue, suggesting they are about halved and change based on the core speed of the rPi. I think this situation was made worse by WaveShare's documentation to set `spimaxfrequency=2000000`. As of now, I have been RX error free by using the following. Please research these changes before implementing them, as I am no rPi expert - just letting you know what worked for me.
+I got many daily RX errors (`ip -details -statistics link show can0`). While not showing any errors in Klipper, I suffered a communication timeout error twice over the past few days. Through some internet diving, SPI speeds with 64bit OS are an issue, suggesting they are about halved and change based on the core speed of the rPi. I think this situation was made worse by WaveShare's documentation to set `spimaxfrequency=2000000`. As of now, I have been RX error free by using the following. Please research these changes before implementing them, as I am no rPi expert - just letting you know what worked for me.  
 
-To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`
-`dtparam=spi=on
-dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25
-dtoverlay=spi0-hw-cs
-`
-And also set `/etc/network/interfaces.d/can0` as:
-`auto can0
-iface can0 can static
- bitrate 1000000
- up ifconfig $IFACE txqueuelen 128
- pre-up ip link set can0 type can bitrate 1000000
- pre-up ip link set can0 txqueuelen 128
-`
-
-May be releated to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`
-`arm_freq=1200
-core_freq=500
-core_freq_min=500
-`
-And made the following changes to `/etc/rc.local`
-`# Print the IP address
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "My IP address is %s\n" "$_IP"
-fi
-iwconfig wlan0 power off
-echo "performance" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
-exit 0
-`	
-
+To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`  
+`dtparam=spi=on  
+dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25  
+dtoverlay=spi0-hw-cs  
+`  
+And also set `/etc/network/interfaces.d/can0` as:  
+`auto can0  
+iface can0 can static  
+ bitrate 1000000  
+ up ifconfig $IFACE txqueuelen 128  
+ pre-up ip link set can0 type can bitrate 1000000  
+ pre-up ip link set can0 txqueuelen 128  
+`  
+  
+May be releated to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`  
+`arm_freq=1200  
+core_freq=500  
+core_freq_min=500  
+`  
+And made the following changes to `/etc/rc.local`  
+`# Print the IP address  
+_IP=$(hostname -I) || true  
+if [ "$_IP" ]; then  
+  printf "My IP address is %s\n" "$_IP"  
+fi  
+iwconfig wlan0 power off  
+echo "performance" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_governor  
+exit 0  
+`	  
+  
 <br>
 
 **SAMBA Setup - GCODE File Network Share Setup**
