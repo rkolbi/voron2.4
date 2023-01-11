@@ -31,7 +31,9 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 
 :bulb: These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
 :bulb: Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
-<br><br>
+
+<br>  
+<br>  
 **HUVUD Setup**
 =================================================================================================================
 
