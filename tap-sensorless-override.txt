@@ -1,3 +1,9 @@
+# Accomplishes the following:
+#  -If Z axis has not been homed, it will raise by 10mm and home all
+#  -If Z axis has been homed, it will raise by 1mm before any movements
+#  -Will grab max positions of X and Y from printer cofig to use for centering nozzle when homing Z
+#  -Will store the insitu X and Y currents before changing them to home, and then set them back to what they were when done
+
 #.................................................................................................................
 [homing_override]
 axes: xyz
