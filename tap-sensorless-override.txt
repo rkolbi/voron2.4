@@ -1,0 +1,100 @@
+#.................................................................................................................
+[homing_override]
+axes: xyz
+gcode:
+    STATUS_HOMING
+    SET_NOZZLE_LEDS_ON
+    {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
+    {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
+    {% set home_all = 'X' not in params and 'Y' not in params and 'Z' not in params %}
+    {% set Z_POS = printer.toolhead.position.z %}
+
+#......Conditional Z-Hop
+#      ! If the Z axis is not already homed, a full homed sequence will be run. If this is not desired, comment out the below line with !!!!!
+#      The 'Safety On' line below crudely gets around the issue of a false homed state when either 'set_position_z: 0.0' or 'SET_KINEMATIC_POSITION Z=0'
+#      The problem is that if either of these commands are issued, and the Z axis is not currently homed, it will now register as homed and potentially cause
+#      issues with that false homed state later. Conditional flags could be set on the onset, saving which axes were already homed before using
+#      'SET_KINEMATIC_POSITION Z=0' to then be followed by logic to execute M18 [AXIS that wasn't homed] to reflect the true state of things, but klipper
+#      M18/M84 does not take axis flag - it's all or nothing.
+
+    {% if "z" not in printer.toolhead.homed_axes %} ; Check if Z not already homed
+        {% set home_all = 'Safety On' %} ; !!!!! THIS WILL HOME ALL AXIS IF Z IS NOT HOMED, COMMENT OUT IF THIS IS NOT DESIRED !!!!!
+        SET_KINEMATIC_POSITION Z=0
+        G0 Z10 F3600 ; Raise toolhead 10mm since unknown/not homed
+      {% else %}
+        {% if Z_POS < 10 %}
+            G90
+            G0 Z10 ; Make sure Z height is at least 10mm
+          {% else %}
+            G91
+            G0 Z1 F3600 ; If Z was above 10mm, raise by 1mm for safety
+            G90
+        {% endif %}
+    {% endif %} 
+
+
+#......Sort X
+    {% if home_all or 'X' in params %}
+      _HOME_X
+    {% endif %}
+  
+#......Sort Y
+    {% if home_all or 'Y' in params %}
+      _HOME_Y
+    {% endif %}
+  
+#......Sort Z
+    {% if home_all or 'Z' in params %}
+      G90
+      #......Go to printer center
+      G0 X{X_MID} Y{Y_MID} F4000
+      #......Finally perfrom actual G28 Z
+      G28 Z
+      G1 Z10
+    {% endif %}
+    STATUS_READY
+    SET_NOZZLE_LEDS_ON
+
+#.................................................................................................................
+[gcode_macro _HOME_X]
+gcode:
+    # Always use consistent run_current on A/B steppers during sensorless homing
+    {% set RUN_CURRENT_X = printer['tmc2209 stepper_x'].run_current|float %}
+    {% set RUN_CURRENT_Y = printer['tmc2209 stepper_y'].run_current|float %}
+    {% set HOME_CURRENT = 0.7 %}
+    SET_TMC_CURRENT STEPPER=stepper_x CURRENT={HOME_CURRENT}
+    SET_TMC_CURRENT STEPPER=stepper_y CURRENT={HOME_CURRENT}
+
+    # Home
+    G28 X
+    # Move away
+    G91
+    G1 X-10 F1200
+    
+    # Wait just a second… (give StallGuard registers time to clear)
+    G4 P1000
+    # Set current during print
+    SET_TMC_CURRENT STEPPER=stepper_x CURRENT={RUN_CURRENT_X}
+    SET_TMC_CURRENT STEPPER=stepper_y CURRENT={RUN_CURRENT_Y}
+
+#.................................................................................................................
+[gcode_macro _HOME_Y]
+gcode:
+    # Set current for sensorless homing
+    {% set RUN_CURRENT_X = printer['tmc2209 stepper_x'].run_current|float %}
+    {% set RUN_CURRENT_Y = printer['tmc2209 stepper_y'].run_current|float %}
+    {% set HOME_CURRENT = 0.7 %}
+    SET_TMC_CURRENT STEPPER=stepper_x CURRENT={HOME_CURRENT}
+    SET_TMC_CURRENT STEPPER=stepper_y CURRENT={HOME_CURRENT}
+
+    # Home
+    G28 Y
+    # Move away
+    G91
+    G1 Y-10 F1200
+
+    # Wait just a second… (give StallGuard registers time to clear)
+    G4 P1000
+    # Set current during print
+    SET_TMC_CURRENT STEPPER=stepper_x CURRENT={RUN_CURRENT_X}
+    SET_TMC_CURRENT STEPPER=stepper_y CURRENT={RUN_CURRENT_Y}    
