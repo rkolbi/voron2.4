@@ -9,7 +9,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 <br>
 
-**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds a few more functions. After completing the quad gantry leveling, the macro will perform a center probe of the bed to determine the most accurate z-offset and then runs adaptive mesh application.*
+**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
 
 -SuperSlicer's start print gcode should contain the following:  
 
@@ -50,7 +50,7 @@ TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detai
 *-WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal*  
 
 I got many daily RX errors (`ip -details -statistics link show can0`). While not showing any errors in Klipper, I suffered a communication timeout error twice over the past few days. Through some internet diving, SPI speeds with 64bit OS are an issue, suggesting they are about halved and change based on the core speed of the rPi. I think this situation was made worse by WaveShare's documentation to set `spimaxfrequency=2000000`. As of now, I have been RX error free by using the following @ bitrate of 1,000,000.  
-  
+
 :zap:*Please research these changes before implementing them, as I am no rPi expert - just letting you know what worked for me.*  
 <br>  
 To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`  
