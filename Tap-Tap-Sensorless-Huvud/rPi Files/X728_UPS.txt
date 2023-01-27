@@ -9,31 +9,41 @@
 
 import time
 import RPi.GPIO as GPIO
+import logging
 
-# Pins definitions
-signal_pin = 6
-powerbutton_pin = 26
-buzzer_pin = 20
+# Logging configuration
+logging.basicConfig(level=logging.DEBUG, filename='power_loss_detection.log')
+
+# Constants
+POWER_LOSS_PIN = 6
+POWER_BUTTON_PIN = 26
+BUZZER_PIN = 20
+
+# Amount of time to alert with buzzer
+BUZZER_TIME = 0.2
+
+# Power off delay
+POWER_OFF_DELAY = 3
+
+GPIO.setwarnings(False)
 
 # Set up pins
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(signal_pin, GPIO.IN)
-GPIO.setup(powerbutton_pin, GPIO.OUT)
-GPIO.setup(buzzer_pin, GPIO.OUT)
+GPIO.setup(POWER_LOSS_PIN, GPIO.IN)
+GPIO.setup(POWER_BUTTON_PIN, GPIO.OUT)
+GPIO.setup(BUZZER_PIN, GPIO.OUT)
 
-# If loss of power is detected, simulate pressing power button
 try:
     while True:
-        if GPIO.input(signal_pin):
-            GPIO.output(buzzer_pin, 1)
-            time.sleep(0.2)
-            GPIO.output(buzzer_pin, 0)
-            GPIO.output(26, GPIO.HIGH)
-            time.sleep(3)
-            GPIO.output(26, GPIO.LOW)
-
-        else:
-            time.sleep(5)
+        power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING)
+        if power_loss:
+            logging.debug("Power loss detected")
+            GPIO.output(BUZZER_PIN, 1)
+            time.sleep(BUZZER_TIME)
+            GPIO.output(BUZZER_PIN, 0)
+            GPIO.output(POWER_BUTTON_PIN, 1)
+            time.sleep(POWER_OFF_DELAY)
+            GPIO.output(POWER_BUTTON_PIN, 0)
 
 # When you press ctrl+c, this will be called
 finally:
