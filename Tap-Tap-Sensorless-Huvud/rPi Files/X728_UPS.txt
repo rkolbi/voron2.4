@@ -1,0 +1,58 @@
+# ----------------------------------------------------------------------------------
+# x728 UPS script - will safely shutdown rPi on powerloss (when turning off printer)
+# file location: /home/pi/UPS.py
+#
+# Product wiki: http://wiki.geekworm.com/X728#X728_V2.3
+# Base software: Follow x728 install directions (https://wiki.geekworm.com/X728-Software)
+# up until step 5.
+# ----------------------------------------------------------------------------------
+
+import time
+import RPi.GPIO as GPIO
+
+# Pins definitions
+signal_pin = 6
+powerbutton_pin = 26
+buzzer_pin = 20
+
+# Set up pins
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(signal_pin, GPIO.IN)
+GPIO.setup(powerbutton_pin, GPIO.OUT)
+GPIO.setup(buzzer_pin, GPIO.OUT)
+
+# If loss of power is detected, simulate pressing power button
+try:
+    while True:
+        if GPIO.input(signal_pin):
+            GPIO.output(buzzer_pin, 1)
+            time.sleep(0.2)
+            GPIO.output(buzzer_pin, 0)
+            GPIO.output(26, GPIO.HIGH)
+            time.sleep(3)
+            GPIO.output(26, GPIO.LOW)
+
+        else:
+            time.sleep(5)
+
+# When you press ctrl+c, this will be called
+finally:
+    GPIO.cleanup()
+
+
+
+
+
+# ----------------------------------------------------------------------------------
+# x728 UPS Service - Uses above script to make a running UPS service
+# file location: /etc/systemd/system/ups.service
+# ----------------------------------------------------------------------------------
+
+[Unit]
+Description=UPS Script
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/UPS.py
+
+[Install]
+WantedBy=multi-user.target
