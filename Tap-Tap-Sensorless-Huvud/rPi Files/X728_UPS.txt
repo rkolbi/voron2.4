@@ -1,6 +1,12 @@
 # ----------------------------------------------------------------------------------
-# x728 UPS script - will safely shutdown rPi on powerloss (when turning off printer)
-# file location: /home/pi/UPS.py
+# A simple power loss detection and shutdown script for a Raspberry Pi.
+# Upon start the script sends a signal to a buzzer to indicate that the system is ready.
+# The script then enters a loop that waits for a rising edge on the POWER_LOSS_PIN. If a
+# rising edge is detected, the script logs the power loss event, activates the buzzer for
+# a short period of time, sends a signal to the POWER_BUTTON_PIN to simulate a power
+# button press, which then safely shuts down the Raspberry Pi.
+#
+# File's reccomended location: /home/pi/UPS.py
 #
 # Product wiki: http://wiki.geekworm.com/X728#X728_V2.3
 # Base software: Follow x728 install directions (https://wiki.geekworm.com/X728-Software)
@@ -44,7 +50,7 @@ time.sleep(BUZZER_TIME/4)
 GPIO.output(BUZZER_PIN, 0)
 
 
-
+# Main loop for detecting power loss
 try:
     while True:
         power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING)
@@ -56,6 +62,7 @@ try:
             GPIO.output(POWER_BUTTON_PIN, 1)
             time.sleep(POWER_OFF_DELAY)
             GPIO.output(POWER_BUTTON_PIN, 0)
+
 
 # When you press ctrl+c, this will be called
 finally:
