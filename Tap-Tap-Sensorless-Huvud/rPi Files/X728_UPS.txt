@@ -50,19 +50,19 @@ time.sleep(BUZZER_TIME/4)
 GPIO.output(BUZZER_PIN, 0)
 
 
-# Main loop for detecting power loss
+# Power loss detection loop
 try:
     while True:
-        power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING)
-        if power_loss:
-            logging.debug("Power loss detected.")
-            GPIO.output(BUZZER_PIN, 1)
-            time.sleep(BUZZER_TIME)
-            GPIO.output(BUZZER_PIN, 0)
-            GPIO.output(POWER_BUTTON_PIN, 1)
-            time.sleep(POWER_OFF_DELAY)
-            GPIO.output(POWER_BUTTON_PIN, 0)
-
+        power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING, timeout=60)  # Add a timeout of 60 seconds
+        if power_loss is None:
+            continue  # If no power loss is detected, move on to the next iteration
+        logging.debug("Power loss detected.")
+        GPIO.output(BUZZER_PIN, 1)
+        time.sleep(BUZZER_TIME)
+        GPIO.output(BUZZER_PIN, 0)
+        GPIO.output(POWER_BUTTON_PIN, 1)
+        time.sleep(POWER_OFF_DELAY)
+        GPIO.output(POWER_BUTTON_PIN, 0)
 
 # When you press ctrl+c, this will be called
 finally:
