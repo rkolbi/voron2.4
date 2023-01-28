@@ -12,7 +12,7 @@ import RPi.GPIO as GPIO
 import logging
 
 # Logging configuration
-logging.basicConfig(level=logging.DEBUG, filename='power_loss_detection.log')
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG, filename='/power_loss_detection.log')
 
 # Constants
 POWER_LOSS_PIN = 6
@@ -37,7 +37,7 @@ try:
     while True:
         power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING)
         if power_loss:
-            logging.debug("Power loss detected")
+            logging.debug("Power loss detected.")
             GPIO.output(BUZZER_PIN, 1)
             time.sleep(BUZZER_TIME)
             GPIO.output(BUZZER_PIN, 0)
@@ -48,7 +48,6 @@ try:
 # When you press ctrl+c, this will be called
 finally:
     GPIO.cleanup()
-
 
 
 
