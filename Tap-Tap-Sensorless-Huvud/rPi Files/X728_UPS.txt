@@ -13,6 +13,7 @@ import logging
 
 # Logging configuration
 logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG, filename='/power_loss_detection.log')
+logging.info("System started.")
 
 # Constants
 POWER_LOSS_PIN = 6
@@ -33,6 +34,17 @@ GPIO.setup(POWER_LOSS_PIN, GPIO.IN)
 GPIO.setup(POWER_BUTTON_PIN, GPIO.OUT)
 GPIO.setup(BUZZER_PIN, GPIO.OUT)
 
+# Alert that system is up and ready
+GPIO.output(BUZZER_PIN, 1)
+time.sleep(BUZZER_TIME/4)
+GPIO.output(BUZZER_PIN, 0)
+time.sleep(BUZZER_TIME)
+GPIO.output(BUZZER_PIN, 1)
+time.sleep(BUZZER_TIME/4)
+GPIO.output(BUZZER_PIN, 0)
+
+
+
 try:
     while True:
         power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING)
@@ -48,6 +60,8 @@ try:
 # When you press ctrl+c, this will be called
 finally:
     GPIO.cleanup()
+
+
 
 
 
