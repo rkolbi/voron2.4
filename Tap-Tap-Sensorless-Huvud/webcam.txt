@@ -21,7 +21,7 @@ camera="usb"
 #
 # Defaults to a resolution of 640x480 px and a framerate of 10 fps
 #
-camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_BD67909F-video-index0"
+camera_usb_options="-r 1280x720 -f 15 -d /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_BD67909F-video-index0"
 
 ### Additional webcam devices known to cause problems with -f
 #
