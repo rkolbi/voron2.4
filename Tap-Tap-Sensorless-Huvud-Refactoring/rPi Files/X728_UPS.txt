@@ -1,0 +1,88 @@
+# ----------------------------------------------------------------------------------
+# A simple power loss detection and shutdown script for a Raspberry Pi.
+# Upon start the script sends a signal to a buzzer to indicate that the system is ready.
+# The script then enters a loop that waits for a rising edge on the POWER_LOSS_PIN. If a
+# rising edge is detected, the script logs the power loss event, activates the buzzer for
+# a short period of time, sends a signal to the POWER_BUTTON_PIN to simulate a power
+# button press, which then safely shuts down the Raspberry Pi.
+#
+# File's reccomended location: /home/pi/UPS.py
+#
+# Product wiki: http://wiki.geekworm.com/X728#X728_V2.3
+# Base software: Follow x728 install directions (https://wiki.geekworm.com/X728-Software)
+# up until step 5.
+# ----------------------------------------------------------------------------------
+
+import time
+import RPi.GPIO as GPIO
+import logging
+
+# Logging configuration
+logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', level=logging.DEBUG, filename='/power_loss_detection.log')
+logging.info("System started.")
+
+# Constants
+POWER_LOSS_PIN = 6
+POWER_BUTTON_PIN = 26
+BUZZER_PIN = 20
+
+# Amount of time to alert with buzzer
+BUZZER_TIME = 0.2
+
+# Power off delay
+POWER_OFF_DELAY = 3
+
+GPIO.setwarnings(False)
+
+# Set up pins
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(POWER_LOSS_PIN, GPIO.IN)
+GPIO.setup(POWER_BUTTON_PIN, GPIO.OUT)
+GPIO.setup(BUZZER_PIN, GPIO.OUT)
+
+# Alert that system is up and ready
+GPIO.output(BUZZER_PIN, 1)
+time.sleep(BUZZER_TIME/4)
+GPIO.output(BUZZER_PIN, 0)
+time.sleep(BUZZER_TIME)
+GPIO.output(BUZZER_PIN, 1)
+time.sleep(BUZZER_TIME/4)
+GPIO.output(BUZZER_PIN, 0)
+
+
+# Power loss detection loop
+try:
+    while True:
+        power_loss = GPIO.wait_for_edge(POWER_LOSS_PIN, GPIO.RISING, timeout=60)  # Add a timeout of 60 seconds
+        if power_loss is None:
+            continue  # If no power loss is detected, move on to the next iteration
+        logging.debug("Power loss detected.")
+        GPIO.output(BUZZER_PIN, 1)
+        time.sleep(BUZZER_TIME)
+        GPIO.output(BUZZER_PIN, 0)
+        GPIO.output(POWER_BUTTON_PIN, 1)
+        time.sleep(POWER_OFF_DELAY)
+        GPIO.output(POWER_BUTTON_PIN, 0)
+
+# When you press ctrl+c, this will be called
+finally:
+    GPIO.cleanup()
+
+
+
+
+
+
+# ----------------------------------------------------------------------------------
+# x728 UPS Service - Uses above script to make a running UPS service
+# file location: /etc/systemd/system/ups.service
+# ----------------------------------------------------------------------------------
+
+[Unit]
+Description=UPS Script
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/UPS.py
+
+[Install]
+WantedBy=multi-user.target
