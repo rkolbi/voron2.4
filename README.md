@@ -2,7 +2,7 @@
 
 Main files:
 
-**[:zap:](Tap-Tap-Sensorless-Huvud)My currently running configuration setup (Gantry Mounted Euclid probe).**
+**[:zap:](Tap-Tap-Sensorless-Huvud)My currently running configuration setup (Voron Tap, Huvud, Sensorless XY).**
 
 **[:bulb:](gcode_folder_share.txt)How to network share your gcode folder.**
 
@@ -12,9 +12,9 @@ Main files:
 
 **[:bulb:](PA_CAL-V2)Pressure Advance Macro - version 2.**
 
-**[:wrench:](printer.cfg)Full Monolithic printer.cfg (Euclid probe with Z-Compensation).**
+**[:wrench:](printer.cfg)Full Monolithic printer.cfg.**
 
-**[:wrench:](Euclid)Portable Euclid probe macros with Z-Compensation.**
+**[:wrench:](Euclid)Portable Euclid probe macros.**
 
 <br><br>
 :hear_no_evil::see_no_evil::speak_no_evil: If you have any suggestions for a change, addition, or correction - please feel free to submit it [here](https://github.com/rkolbi/voron2.4/discussions/new?category=ideas). 
