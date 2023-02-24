@@ -1,4 +1,4 @@
-**TAP, SENSORLESS HOMING, HUVUD w/WAVESHARE HAT**  
+**VORON TAP, SENSORLESS X&Y HOMING, HUVUD w/U2C**  
 =================================================================================================================
 
 This Klipper configuration will pull all files from the ACTIVE directory that end in .*cfg*, ignoring any files in the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such, renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example, [do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba network sharing is below.  
@@ -107,9 +107,9 @@ $`sudo apt-get install samba winbind -y`
 $`sudo nano /etc/samba/smb.conf`  
 	
 ```
-[voron]  
+[Print_Files]  
    comment = Voron_gCode_files  
-   path = /home/pi/gcode_files  
+   path = /home/pi/printer_data/gcodes  
    browseable = Yes  
    writeable = Yes  
    only guest = no  
@@ -120,9 +120,9 @@ $`sudo nano /etc/samba/smb.conf`
    force user = root  
    force group = root  
 
-[voron-klipper_config]  
+[Klipper_Configs]  
    comment = Voron_Klipper  
-   path = /home/pi/klipper_config  
+   path = /home/pi/printer_data/config  
    browseable = Yes  
    writeable = Yes  
    only guest = no  
@@ -132,7 +132,7 @@ $`sudo nano /etc/samba/smb.conf`
    read only = no  
    force user = root  
    force group = root  
-   
+
 [Klipper_Storage]
    comment = Voron_Storage
    path = /home/pi/Storage
@@ -144,7 +144,7 @@ $`sudo nano /etc/samba/smb.conf`
    public = yes
    read only = no
    force user = root
-   force group = root  
+   force group = root
 ```
 
 

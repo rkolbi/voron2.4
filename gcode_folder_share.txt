@@ -11,9 +11,35 @@ $sudo apt-get install samba winbind -y
  -Configure file share.  Add the following to the end of the smb.conf file:
 $sudo nano /etc/samba/smb.conf
 
-[MYVORON]
-   comment = Voron gcode file directory
-   path = /home/pi/gcode_files/
+[Print_Files]  
+   comment = Voron_gCode_files  
+   path = /home/pi/printer_data/gcodes  
+   browseable = Yes  
+   writeable = Yes  
+   only guest = no  
+   create mask = 0777  
+   directory mask = 0777  
+   public = yes  
+   read only = no  
+   force user = root  
+   force group = root  
+
+[Klipper_Configs]  
+   comment = Voron_Klipper  
+   path = /home/pi/printer_data/config  
+   browseable = Yes  
+   writeable = Yes  
+   only guest = no  
+   create mask = 0777  
+   directory mask = 0777  
+   public = yes  
+   read only = no  
+   force user = root  
+   force group = root  
+
+[Klipper_Storage]
+   comment = Voron_Storage
+   path = /home/pi/Storage
    browseable = Yes
    writeable = Yes
    only guest = no
