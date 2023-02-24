@@ -107,9 +107,9 @@ $`sudo apt-get install samba winbind -y`
 $`sudo nano /etc/samba/smb.conf`  
 	
 ```
-[voron]  
+[Print_Files]  
    comment = Voron_gCode_files  
-   path = /home/pi/gcode_files  
+   path = /home/pi/printer_data/gcodes  
    browseable = Yes  
    writeable = Yes  
    only guest = no  
@@ -120,9 +120,9 @@ $`sudo nano /etc/samba/smb.conf`
    force user = root  
    force group = root  
 
-[voron-klipper_config]  
+[Klipper_Configs]  
    comment = Voron_Klipper  
-   path = /home/pi/klipper_config  
+   path = /home/pi/printer_data/config  
    browseable = Yes  
    writeable = Yes  
    only guest = no  
@@ -132,7 +132,7 @@ $`sudo nano /etc/samba/smb.conf`
    read only = no  
    force user = root  
    force group = root  
-   
+
 [Klipper_Storage]
    comment = Voron_Storage
    path = /home/pi/Storage
@@ -144,7 +144,7 @@ $`sudo nano /etc/samba/smb.conf`
    public = yes
    read only = no
    force user = root
-   force group = root  
+   force group = root
 ```
 
 
