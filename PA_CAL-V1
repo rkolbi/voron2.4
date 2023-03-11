@@ -22,8 +22,9 @@ gcode:
         {% set PA_STEP = params.PA_STEP|default(0.005)|float %}
         {% set NZL_CFG = printer.configfile.config["extruder"]["nozzle_diameter"]|float %}
         {% set NZL = params.NZL|default(NZL_CFG)|float %}
-        {% set E20 = (0.1147475 * NZL) * 20|float %}
-        {% set E40 = (0.1147475 * NZL) * 40|float %}
+	{% set EXM = params.EXM|default(100)|float %}
+        {% set E20 = ( (EXM/100) * ( (0.1147475 * NZL) * 20) )|float %}
+        {% set E40 = ( (EXM/100) * ( (0.1147475 * NZL) * 40) )|float %}
         {% set X_MID = printer.configfile.config["stepper_x"]["position_max"]|float / 2.0 %}
         {% set Y_MID = printer.configfile.config["stepper_y"]["position_max"]|float / 2.0 %}
 # For DELTA replace the previous two lines with:
