@@ -1,6 +1,7 @@
 Going from a blocking, uninterruptable, waiting routine to an interruptible, nonblocking, routine.  
-
-
+Can see this in use at:
+https://github.com/rkolbi/voron2.4/tree/main/Tap-Tap-Sensorless-Huvud
+In the above example, WAIT_Quit has been integrated with the normal resume function to make it more stream lined for user control.
 
 This first snippet is my heat-waiting routine, using for loops and G4 pauses. Minutes to wait are passed on macro call. While this works well and does it's job, there is no graceful way to exit this cycle.
 
