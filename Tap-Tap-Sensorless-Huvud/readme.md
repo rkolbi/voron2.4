@@ -9,19 +9,20 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 <br>
 
-**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
+**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. After the purge line is complete, a simple line-based pressure advance proof will follow. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
 
 -SuperSlicer's start print gcode should contain the following:  
 
   ```
 PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TEMP=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}_{first_layer_print_min[1]}_{first_layer_print_max[0]}_{first_layer_print_max[1]}
   ```
-  See `https://github.com/Frix-x/klipper-voron-V2/blob/main/macros/probing/bed_mesh.cfg`  
+  See `https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg`  
 
 -The following optional parameters can be specified. If not specified, the values set in printer.cfg will be used.  
    -PA, pressure advance, as `PA=0.045`  
    -ST, pressure advance smooth-time, as `ST=0.21`  
-   -SOAK, minutes to heat-soak prior to final G32, meshing, and printing, as `SOAK=15`  
+   -SOAK, minutes to heat-soak prior to final G32, meshing, and printing, as `SOAK=15`
+   -ENCLOSURE_TEMP, desired temperature for enclosure control - if enabled
 
 **PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
 
