@@ -9,7 +9,7 @@ Lastly, all the printer-specific configurations should be placed in a file such 
 
 <br>
 
-**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. After the purge line is complete, a simple line-based pressure advance proof will follow. *The heatsoak cycle can be terminated early by either selecting RUSUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
+**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. After the purge line is complete, a simple line-based pressure advance proof will follow. *The heatsoak cycle can be terminated early by either selecting RESUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
 
 -SuperSlicer's start print gcode should contain the following:  
 
