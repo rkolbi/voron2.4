@@ -20,7 +20,7 @@ Printer-specific configurations should be placed in a file named something like 
 1. Homes and levels the gantry.
 2. Performs a heatsoak. Note that the heatsoak cycle can be terminated early by selecting RESUME or executing the WAIT_QUIT macro.
 3. Re-homes and levels the gantry once heatsoaked.
-4. Applies Adaptive Mesh.
+4. Applies Adaptive Mesh. For more information, refer to Frix-x's github [here](https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg).
 5. Brings the hotend to temperature.
 6. Executes a purge line from the front left across the X-axis for easy verification. The extrusion rate of the purge line is calculated based on the [nozzle_diameter] value. 
 7. Performs a simple line-based pressure advance proof.
@@ -33,7 +33,6 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 ```
 
 
-For more information, refer to [this link](https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg).
 
 The following optional parameters can be specified, or the values set in "printer.cfg" will be used:
 
@@ -52,7 +51,9 @@ The following optional parameters can be specified, or the values set in "printe
 
 The end print G-code for SuperSlicer should contain the following line:
 
-```PRINT_END```
+```
+PRINT_END
+```
 
 
 :bulb: These configs utilize the Klipper LED Effects plugin, which can be found at [this GitHub repository](https://github.com/julianschill/klipper-led_effect).
