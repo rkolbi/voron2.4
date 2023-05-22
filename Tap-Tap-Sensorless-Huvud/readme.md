@@ -14,7 +14,8 @@ The "printer.cfg" file in the root directory loads all files with the ".cfg" ext
 **Printer-Specific Configurations:**
 
 Printer-specific configurations should be placed in a file named something like "CONFIG-VORON24_350.cfg" (you can choose a different name if desired). These configurations are specific to your core printer. If desired, you can further split the contents into separate files. Remember that "printer.cfg" will load all files from the ACTIVE directory with the ".cfg" extension, regardless of their names. Make sure the file names make sense to you and are easily portable for future use.
-
+<br>  
+<br>  
 **PRINT_START** performs the following steps:
 
 1. Homes and levels the gantry.
@@ -40,7 +41,8 @@ The following optional parameters can be specified, or the values set in "printe
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
 - **ENCLOSURE_TEMP**: Desired temperature for enclosure control (if enabled)
-
+<br>  
+<br>  
 **PRINT_END** performs the following steps:
 
 1. Raises the print by 10mm when completed.
