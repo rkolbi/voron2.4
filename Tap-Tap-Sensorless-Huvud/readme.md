@@ -1,37 +1,61 @@
-**VORON TAP, SENSORLESS X&Y HOMING, HUVUD w/U2C**  
+**Voron 2.4 with Tap, Sensorless X&Y Homing, and Huvud w/U2C**  
 =================================================================================================================
 
-This Klipper configuration will pull all files from the ACTIVE directory that end in .*cfg*, ignoring any files in the INACTIVE directory. Since I am using Samba networking file share, I can quickly move files back and forth and edit, just as they were in a folder on my desktop. If you cannot install Samba or access a network share as such, renaming any file's extension within the ACTIVE directory will prevent it from being pulled in Klipper. For example, [do_stuff.cfg] will be pulled into Klipper, while [do_stuff.cfgno] will not. Information on how to set up Samba network sharing is below.  
+This Klipper configuration is designed for the Voron 2.4 with Tap. It includes the following features:
 
-The [printer.cfg] in the root directory loads all the files ending with [.cfg] extension from the ACTIVE directory; the INACTIVE directory is merely a container to place the files that you may not want to be run at this particular time, such as [ARDU_ADXL.cfg]. [printer.cfg] contains all global variables needed and/or shared by the macros. Additionally, any saved parameters written by Klipper will be at the bottom of [printer.cfg].  
+**File Management:**
 
-Lastly, all the printer-specific configurations should be placed in a file such as [CONFIG-VORON24_350.cfg]; these are the Klipper configurations specific to your core printer. The contents can be further split if you wish; remember that the [printer.cfg] will load all files from the ACTIVE directory, regardless of name, just so long as they end with the [.cfg] extension. Make them something that makes sense to you and may be easily portable for an easy future.  
+The configuration will pull all files with the ".cfg" extension from the ACTIVE directory while ignoring any files in the INACTIVE directory. If you have Samba or other networking file share service set up, you can easily move and edit files as if they were on your desktop. If file sharing service is not available, you can prevent a file from being pulled into Klipper by renaming its extension within the ACTIVE directory. For example, renaming "do_stuff.cfg" to "do_stuff.cfgno" will exclude it. Instructions for setting up Samba network sharing can be found below.
 
-<br>
+**printer.cfg:**
 
-**PRINT_START** will home and the level the gantry, perform a heatsoak*, then G3201 with Adaptive Mesh*, and lastly bring the hotend to temperature and execute a purge line from the front left across X-axis to check/verify easily. The purge line extrusion rate will be calculated by using the [nozzle_diameter] value. After the purge line is complete, a simple line-based pressure advance proof will follow. *The heatsoak cycle can be terminated early by either selecting RESUME or by executing the WAIT_QUIT macro. The G3201 command does similar to G32 but adds adaptive mesh application.*
+The "printer.cfg" file in the root directory loads all files with the ".cfg" extension from the ACTIVE directory. "printer.cfg" also contains all the changeable global variables that the included macros use, keeping them in an easy to find spot. Saved parameters written by Klipper are also stored at the bottom of "printer.cfg."
 
--SuperSlicer's start print gcode should contain the following:  
+**Printer-Specific Configurations:**
 
-  ```
-PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TEMP=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}_{first_layer_print_min[1]}_{first_layer_print_max[0]}_{first_layer_print_max[1]}
-  ```
-  See `https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg`  
+Printer-specific configurations should be placed in a file named something like "CONFIG-VORON24_350.cfg" (you can choose a different name if desired). These configurations are specific to your core printer. If desired, you can further split the contents into separate files. Remember that "printer.cfg" will load all files from the ACTIVE directory with the ".cfg" extension, regardless of their names. Make sure the file names make sense to you and are easily portable for future use.
 
--The following optional parameters can be specified. If not specified, the values set in printer.cfg will be used.  
-   -PA, pressure advance, as `PA=0.045`  
-   -ST, pressure advance smooth-time, as `ST=0.21`  
-   -SOAK, minutes to heat-soak prior to final G32, meshing, and printing, as `SOAK=15`  
-   -ENCLOSURE_TEMP, desired temperature for enclosure control - if enabled
+**PRINT_START** performs the following steps:
 
-**PRINT_END** will raise by 10mm when the print has completed, then performs a cooling period by turning the fan fully on and then parks the toolhead at the top, front-right position. The parked Z position will be at least [ParkHeightPercentage] of the max axis height or at the printed object's Z height + 10 - whichever is taller. I reccomend setting [ParkHeightPercentage] to 0.5 - this allows for easy visual inspection of the toolhead/nozzle (and a reminder to do so) and removal of any debris. Additionally to note, PRINT_END will place the toolhead back at Y20 to allow room for the fan(s) to pull air without being blocked by being pressed up against the doors. 
+1. Homes and levels the gantry.
+2. Performs a heatsoak. Note that the heatsoak cycle can be terminated early by selecting RESUME or executing the WAIT_QUIT macro.
+3. Re-homes and levels the gantry once heatsoaked.
+4. Applies Adaptive Mesh.
+5. Brings the hotend to temperature.
+6. Executes a purge line from the front left across the X-axis for easy verification. The extrusion rate of the purge line is calculated based on the [nozzle_diameter] value. 
+7. Performs a simple line-based pressure advance proof.
+  
 
--SuperSlicer's end print gcode should contain the following:  
-  `PRINT_END`    
+The start print G-code for SuperSlicer should contain the following line:
+
+```PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TEMP=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}{first_layer_print_min[1]}{first_layer_print_max[0]}_{first_layer_print_max[1]}```
 
 
-:bulb: These configs use Klipper LED Effects plugin located here: https://github.com/julianschill/klipper-led_effect  
-:bulb: Sensorless homing based off Clee's work, found [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html) - Klipper documentation [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
+For more information, refer to [this link](https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg).
+
+The following optional parameters can be specified, or the values set in "printer.cfg" will be used:
+
+- **PA**: Pressure advance, e.g., `PA=0.045`
+- **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
+- **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
+- **ENCLOSURE_TEMP**: Desired temperature for enclosure control (if enabled)
+
+**PRINT_END** performs the following steps:
+
+1. Raises the print by 10mm when completed.
+2. Activates full cooling by turning the fan on.
+3. Parks the toolhead at the top, front-right position.
+  The parked Z position will be at least [ParkHeightPercentage] of the maximum axis height or at the printed object's Z height + 10 (whichever is taller). It is recommended to set [ParkHeightPercentage] to 0.5 to allow for easy visual inspection of the toolhead/nozzle and removal of debris. 
+4. Additionally, PRINT_END will move the toolhead back to Y20 to provide room for the fans to pull air without being blocked by the doors.
+
+The end print G-code for SuperSlicer should contain the following line:
+
+```PRINT_END```
+
+
+:bulb: These configs utilize the Klipper LED Effects plugin, which can be found at [this GitHub repository](https://github.com/julianschill/klipper-led_effect).
+
+:bulb: Sensorless homing is based on Clee's work. You can find more information on sensorless XY homing for Voron printers [here](https://docs.vorondesign.com/community/howto/clee/sensorless_xy_homing.html), and Klipper documentation on TMC Drivers [here](https://www.klipper3d.org/TMC_Drivers.html#sensorless-homing).
 
 <br>  
 <br>  
