@@ -3,11 +3,11 @@
 
 This Klipper configuration is designed for the Voron 2.4 with Tap. It includes the following features:
 
-**File Management:**
+**Macro File Management:**
 
 The configuration will pull all files with the ".cfg" extension from the ACTIVE directory while ignoring any files in the INACTIVE directory. If you have Samba or other networking file share service set up, you can easily move and edit files as if they were on your desktop. If file sharing service is not available, you can prevent a file from being pulled into Klipper by renaming its extension within the ACTIVE directory. For example, renaming "do_stuff.cfg" to "do_stuff.cfgno" will exclude it. Instructions for setting up Samba network sharing can be found below.
 
-**printer.cfg:**
+**Printer.cfg:**
 
 The "printer.cfg" file in the root directory loads all files with the ".cfg" extension from the ACTIVE directory. "printer.cfg" also contains all the changeable global variables that the included macros use, keeping them in an easy to find spot. Saved parameters written by Klipper are also stored at the bottom of "printer.cfg."
 
