@@ -26,12 +26,18 @@ Printer-specific configurations should be placed in a file named something like 
 5. Brings the hotend to temperature.
 6. Executes a purge line from the front left across the X-axis for easy verification. The extrusion rate of the purge line is calculated based on the [nozzle_diameter] value. 
 7. Performs a simple line-based pressure advance proof.
-  
 
-The start print G-code for SuperSlicer should contain the following line:
+
+The **Start G-code** block in SuperSlicer should contain the following line:
 
 ```
 PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TEMP=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}{first_layer_print_min[1]}{first_layer_print_max[0]}_{first_layer_print_max[1]}
+```
+
+The **After Layer Change G-code** block in SuperSlicer should contain the following to enable the Pause on the next Layer Change (LC_PAUSE) command:
+
+```
+LAYER_CHANGE
 ```
 
 
@@ -50,10 +56,10 @@ The following optional parameters can be specified, or the values set in "printe
 1. Raises the print by 10mm when completed.
 2. Activates full cooling by turning the fan on.
 3. Parks the toolhead at the top, front-right position.
-  The parked Z position will be at least [ParkHeightPercentage] of the maximum axis height or at the printed object's Z height + 10 (whichever is taller). It is recommended to set [ParkHeightPercentage] to 0.5 to allow for easy visual inspection of the toolhead/nozzle and removal of debris. 
+    The parked Z position will be at least [ParkHeightPercentage] of the maximum axis height or at the printed object's Z height + 10 (whichever is taller). It is recommended to set [ParkHeightPercentage] to 0.5 to allow for easy visual inspection of the toolhead/nozzle and removal of debris. 
 4. Additionally, PRINT_END will move the toolhead back to Y20 to provide room for the fans to pull air without being blocked by the doors.
 
-The end print G-code for SuperSlicer should contain the following line:
+The **End G-code** block in SuperSlicer should contain the following line:
 
 ```
 PRINT_END
