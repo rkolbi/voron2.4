@@ -20,8 +20,8 @@ Printer-specific configurations should be placed in a file named something like 
 **PRINT_START** performs the following steps:
 
 1. Homes and levels the gantry.
-2. Performs a heatsoak. Note that the heatsoak cycle can be terminated early by selecting RESUME or executing the WAIT_QUIT macro.
-3. Re-homes and levels the gantry once heatsoaked.
+2. Performs a heat-soak. Note that the heat-soak cycle can be terminated early by selecting RESUME or executing the WAIT_QUIT macro.
+3. Re-homes and levels the gantry once heat-soaked.
 4. Applies Adaptive Mesh.
 5. Brings the hotend to temperature.
 6. Executes a purge line from the front left across the X-axis for easy verification. The extrusion rate of the purge line is calculated based on the [nozzle_diameter] value. 
@@ -87,7 +87,7 @@ TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detai
 
 ​          
 
-**Solving Excessive CAN0 RX Errors, running rPi4 64bit, klipper latest 64bit**  
+**Solving Excessive CAN0 RX Errors, running rPi4 64bit, Klipper latest 64bit**  
 *-Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux*  
 *-WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal*  
 
@@ -117,7 +117,7 @@ iface can0 can static
 
 <br>
 
-May be releated to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`  
+May be related to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`  
 ```
 arm_freq=1200  
 core_freq=500  
@@ -140,7 +140,7 @@ exit 0
 **SAMBA Setup - GCODE File Network Share Setup**
 =================================================================================================================
 
-To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either windows or mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to restrict access to these samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
+To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either Windows or Mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to restrict access to these Samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
 
  -Install file serving smb service:  
 $`sudo apt-get install samba winbind -y`  
@@ -195,7 +195,7 @@ $`sudo nano /etc/samba/smb.conf`
 $`sudo reboot`  
 	
 
-In the event that windows shows a red-x through the mapped share, I have found the following helpful in restoring mapped network shares:  
+In the event that Windows shows a red-x through the mapped share, I have found the following helpful in restoring mapped network shares:  
 - Run `CMD` as administrator  
 - `net stop workstation /y`  
 - `net start workstation`  
