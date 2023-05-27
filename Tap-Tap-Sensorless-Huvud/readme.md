@@ -43,7 +43,7 @@ The following optional parameters can be specified, or the values set in "printe
 <br>  
 <br>
 
-**On Layer Change Pause**:
+**LC_PAUSE (On Layer Change Pause)**:
 
 LC_PAUSE macro will toggle on/off the Pause on the next layer flag. If no LAYER value is passed, the flag will be set to pause on the next layer change. If a LAYER is passed, a pause on layer change will occur when the slicer's passed layer value (_LAYER_CHANGE LAYER={layer_num}) is equal to the user's LAYER passed with this macro. If Pause on the next layer has already been set, executing the macro will toggle the Pause on the next layer to OFF.
 
