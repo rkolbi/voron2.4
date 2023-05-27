@@ -9,7 +9,7 @@ The configuration will pull all files with the ".cfg" extension from the ACTIVE 
 
 **Printer.cfg:**
 
-The "printer.cfg" file in the root directory loads all files with the ".cfg" extension from the ACTIVE directory. "printer.cfg" also contains all the changeable global variables that the included macros use, keeping them in an easy to find spot. Saved parameters written by Klipper are also stored at the bottom of "printer.cfg."
+The "printer.cfg" file in the root directory loads all files with the ".cfg" extension from the ACTIVE directory. "printer.cfg" also contains all the changeable global variables that the included macros use, keeping them in an easy-to-find spot. Saved parameters written by Klipper are also stored at the bottom of "printer.cfg."
 
 **Printer-Specific Configurations:**
 
@@ -34,22 +34,24 @@ The **Start G-code** block in SuperSlicer should contain the following line:
 PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TEMP=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}{first_layer_print_min[1]}{first_layer_print_max[0]}_{first_layer_print_max[1]}
 ```
 
-The **After Layer Change G-code** block in SuperSlicer should contain the following to enable the Pause on the next Layer Change (LC_PAUSE) command:
-
-```
-LAYER_CHANGE
-```
-
-
-
 The following optional parameters can be specified, or the values set in "printer.cfg" will be used:
 
 - **PA**: Pressure advance, e.g., `PA=0.045`
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
-- **ENCLOSURE_TEMP**: Desired temperature for enclosure control (if enabled)
+- **ENCLOSURE_TEMP**: The desired temperature for enclosure control (if enabled)
 <br>  
-<br>   
+<br>
+
+The **After Layer Change G-code** block in SuperSlicer should contain the following to enable the Pause on the next Layer Change (LC_PAUSE) command:
+
+```
+_LAYER_CHANGE LAYER={layer_num}
+```
+
+LC_PAUSE macro will toggle on/off the Pause on the next layer flag. If no LAYER value is passed, the flag will be set to pause on the next layer change. If a LAYER is passed, a pause on layer change will occur when the slicer's passed layer value (_LAYER_CHANGE LAYER={layer_num}) is equal to the user's LAYER passed with this macro. If Pause on the next layer has already been set, executing the macro will toggle the Pause on the next layer to OFF.
+<br>  
+<br>
 
 **PRINT_END** performs the following steps:
 
