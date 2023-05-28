@@ -1,0 +1,24 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+iwconfig wlan0 power off
+echo "performance" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+# The following two lines are for the 920 web camera
+v4l2-ctl --set-ctrl=auto_exposure=1,focus_automatic_continuous=0,white_balance_automatic=0,power_line_frequency=1
+v4l2-ctl --set-ctrl=exposure_time_absolute=600,focus_absolute=40,white_balance_temperature=4395
+exit 0
