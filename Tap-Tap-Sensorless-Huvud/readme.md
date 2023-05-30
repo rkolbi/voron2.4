@@ -102,7 +102,7 @@ Overall, the advantages of the PA_CAL macro lie in its simplified pressure advan
 <br>  
 <br>  
 
-#### **HUVUD Setup**
+### **HUVUD Setup**
 ------
 
 TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
@@ -162,7 +162,7 @@ exit 0
 
 <br>
 
-#### **SAMBA Setup - GCODE File Network Share Setup**
+### **SAMBA Setup - GCODE File Network Share Setup**
 ------
 
 To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either Windows or Mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to restrict access to these Samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
@@ -229,7 +229,7 @@ In the event that Windows shows a red-x through the mapped share, I have found t
 	
 
 
-#### **Links**
+### **Links**
 ------
 
 
