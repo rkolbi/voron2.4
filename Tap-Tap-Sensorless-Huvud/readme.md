@@ -17,7 +17,8 @@ To accommodate printer-specific settings, you can create a dedicated file such a
 <br>
 
 ### Configuration Bundle Highlights
-------
+=================================================================================================================
+
 
 #### **PRINT_START macro**:
 
