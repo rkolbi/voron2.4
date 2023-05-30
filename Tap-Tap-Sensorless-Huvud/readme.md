@@ -92,6 +92,9 @@ PRINT_END
 
 Overall, the advantages of the PA_CAL macro lie in its simplified pressure advance testing, customizable parameters, default values, and test validation. These features facilitate the optimization of pressure advance settings, allowing users to achieve better print quality and performance in their 3D prints.
 
+<br>  
+<br>
+
 ------
 
 :bulb: For more information on the adaptive mesh, refer to Frix-x's github [here](https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg).
