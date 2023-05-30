@@ -45,7 +45,6 @@ The following optional parameters can be specified, or the values set in "printe
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
 - **ENCLOSURE_TEMP**: The desired temperature for enclosure control (if enabled)
 <br>  
-<br>
 
 #### **LC_PAUSE (Layer Change) macro:**
 
@@ -63,7 +62,6 @@ _LAYER_CHANGE LAYER={layer_num}
 ```
 
 <br>  
-<br>
 
 #### **PRINT_END macro:**
 
@@ -82,7 +80,6 @@ PRINT_END
 ```
 
 <br>  
-<br>
 
 #### **PA_CAL (Pressure Advance) macro:**
 
