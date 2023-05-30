@@ -1,5 +1,5 @@
 ****Voron 2.4 Configuration with Tap, Sensorless X&Y Homing, and Huvud w/U2C****  
-=================================================================================================================
+------
 
 This Klipper configuration is tailored for the Voron 2.4 3D printer with Tap, offering a range of advanced features to optimize your printing experience. Here's an overview of the key enhancements:
 
@@ -17,7 +17,7 @@ To accommodate printer-specific settings, you can create a dedicated file such a
 <br>
 
 ### Configuration Bundle Highlights
-=================================================================================================================
+------
 
 
 #### **PRINT_START macro**:
