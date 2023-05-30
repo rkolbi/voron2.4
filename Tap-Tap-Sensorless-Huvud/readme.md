@@ -93,8 +93,6 @@ Overall, the advantages of the PA_CAL macro lie in its simplified pressure advan
 <br>  
 <br>
 
-------
-
 :bulb: For more information on the adaptive mesh, refer to Frix-x's github [here](https://github.com/Frix-x/klippain/blob/main/macros/calibration/adaptive_bed_mesh.cfg).
 
 :bulb: These configs utilize the Klipper LED Effects plugin, which can be found at [this GitHub repository](https://github.com/julianschill/klipper-led_effect).
