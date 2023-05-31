@@ -5,7 +5,7 @@ This Klipper configuration is tailored for the Voron 2.4 3D printer with Tap, of
 
 **Macro File Management:**
 
-The configuration simplifies file management by automatically pulling all ".cfg" files from the ACTIVE directory while excluding any files in the INACTIVE directory. You can conveniently move and edit files using Samba or other networking file share services, as if they were on your desktop. To exclude a file from Klipper, simply rename its extension within the ACTIVE directory (e.g., "do_stuff.cfg" to "do_stuff.cfgno"). If you require assistance in setting up Samba network sharing, please refer to the instructions provided below.
+The configuration simplifies file management by automatically pulling all ".cfg" files from the ACTIVE directory while excluding any files in the INACTIVE directory. You can conveniently move and edit files using Samba or other networking file-share services as if they were on your desktop. To exclude a file from Klipper, rename its extension within the ACTIVE directory (e.g., "do_stuff.cfg" to "do_stuff.cfgno"), or move it to the INACTIVE directory. Please refer to the instructions below if you require assistance setting up Samba network sharing.
 
 **printer.cfg:**
 
@@ -13,7 +13,7 @@ The root directory includes a "printer.cfg" file that loads all ".cfg" files fro
 
 **Printer-Specific Configurations:**
 
-To accommodate printer-specific settings, you can create a dedicated file such as "CONFIG-VORON24_350.cfg" (feel free to choose a different name if preferred). This configuration file is specific to your Voron 2.4 printer, allowing you to further organize the contents as desired. Remember that "printer.cfg" automatically loads all ".cfg" files from the ACTIVE directory, irrespective of their names. Therefore, it's crucial to use meaningful and portable filenames to ensure ease of use and future compatibility.<br>  
+To accommodate printer-specific settings, you can create a dedicated file such as "CONFIG-VORON24_350.cfg" (feel free to choose a different name if preferred). This configuration file is specific to your Voron 2.4 printer, allowing you to organize the contents further. Remember that "printer.cfg" automatically loads all ".cfg" files from the ACTIVE directory, irrespective of their names. Therefore, it's crucial to use meaningful and portable filenames to ensure ease of use and future compatibility.<br>  
 <br>
 
 ### Configuration Bundle Highlights
@@ -22,14 +22,14 @@ To accommodate printer-specific settings, you can create a dedicated file such a
 
 #### **PRINT_START macro**:
 
-1. Automation: The PRINT_START macro automates multiple steps typically required before starting a print, such as heat soaking, toolhead warming, gantry homing, and leveling. 
+1. Automation: The PRINT_START macro automates multiple steps before starting a print, such as heat soaking, toolhead warming, gantry homing, and leveling. 
 2. Heat-soak cycle: The macro includes a heat-soak cycle that allows the printer to stabilize its temperature before starting the actual print. This cycle is crucial for ensuring that the printer operates at the desired temperature, which is essential for successful printing and proper filament adhesion.
 3. Gantry homing and leveling: As the heat-soak cycle begins, the PRINT_START macro also performs gantry homing and leveling. This step prevents any undue stress on the gantry as chamber temperatures rise, ensuring that the gantry remains properly aligned.
 4. Flexibility: The heat-soak cycle can be terminated early by selecting RESUME or executing the WAIT_QUIT macro. This flexibility allows users to abort the heat-soak cycle if needed, for example, when encountering unexpected issues or when wanting to start the print sooner.
 5. Adaptive Mesh: The PRINT_START macro incorporates the use of Adaptive Mesh, which improves bed leveling and compensates for any imperfections in the printing surface within the print area of the object itself. This step enhances the first-layer adhesion and overall print quality by adjusting the printing parameters based on the actual surface conditions.
 6. Purge line and pressure advance proof: The macro includes a purge line and a simple line-based pressure advance proof. The purge line allows users to verify key aspects of the printer's performance, such as filament flow and pressure advance, ensuring that the printer is functioning correctly before starting the actual print.
 
-Overall, the advantages of the PRINT_START macro lie in its automation of critical steps, gantry leveling and temperature stabilization, flexibility in terminating the heat-soak cycle, the inclusion of Adaptive Mesh for improved bed leveling, and simplified verification of key printer parameters. These advantages contribute to a streamlined and efficient workflow, enhancing print quality and user experience.
+Overall, the advantages of the PRINT_START macro lie in its automation of critical steps, gantry leveling, and temperature stabilization, flexibility in terminating the heat-soak cycle, the inclusion of Adaptive Mesh for improved bed leveling, and simplified verification of key printer parameters. These advantages contribute to a streamlined and efficient workflow, enhancing print quality and user experience.
 
 
 The **Start G-code** block in SuperSlicer should contain the following line:
@@ -49,7 +49,7 @@ The following optional parameters can be specified, or the values set in "printe
 #### **LC_PAUSE (Layer Change) macro:**
 
 1. Convenience: The LC_PAUSE macro provides a simple and user-friendly mechanism for controlling the "Pause on the next layer" functionality. This functionality allows users to pause the printing process at a specific layer and perform certain actions or make adjustments as needed.
-2. Flexibility: The macro allows flexibility in how the pause functionality is applied. Users can either pause on the next layer change by not specifying a specific layer value or trigger a pause only when a specific layer number is passed as a parameter to the macro. This flexibility caters to different use cases and allows users to customize the behavior according to their requirements.
+2. Flexibility: The macro allows flexibility in how the pause functionality is applied. Users can either pause at the next layer change by not specifying a specific layer value or trigger a pause only when a specific layer number is passed as a parameter to the macro. This flexibility caters to different use cases and allows users to customize the behavior according to their requirements.
 3. Dynamic behavior: The LC_PAUSE macro considers the current state of the "Pause on the next layer" flag. If LC_PAUSE has already been set, executing the macro will toggle it off, effectively canceling the pause. This dynamic behavior ensures that users have control over the pause functionality and can easily modify it during runtime without complications.
 4. Integration with slicer functionality: The macro integrates with the slicer's layer change mechanism by checking the slicer's passed layer value and comparing it with the user's specified layer. This integration enhances the compatibility and interoperability between the macro and the slicer, resulting in a more seamless workflow when managing layer-based pausing in a slicer environment.
 
@@ -68,7 +68,7 @@ _LAYER_CHANGE LAYER={layer_num}
 1. Print clearance: When completed, the PRINT_END macro raises the toolhead by 10mm to prevent the nozzle from scarring or damaging the finished print. This step helps maintain the quality and appearance of the printed object, preventing accidental contact between the nozzle and the print.
 2. Cooling activation: The macro activates the part cooling fan to 100% after the print is finished. This helps cool down the hotend and reduces the chances of stringing or unwanted filament deposits that can occur when the nozzle remains hot after the print has ended.
 3. Toolhead parking: The macro parks the toolhead towards the printer's top, in the front-right position. This parking position is strategically chosen to provide optimal accessibility for visual inspection of the toolhead and nozzle, making it easier to identify and clean any debris or filament residue that may have accumulated during the print.
-4. Fan clearance: The macro moves the toolhead back to Y20, creating room for the fans to pull air without being obstructed by the printer's doors. This step ensures proper airflow and cooling efficiency by preventing any obstructions that may impede the fans' ability to circulate air effectively and cool down the printer components.
+4. Fan clearance: The macro moves the toolhead back to Y20, allowing the fans to pull air without being obstructed by the printer's doors. This step ensures proper airflow and cooling efficiency by preventing obstructions that may impede the fans' ability to circulate air effectively and cool down the printer components.
 5. Safety and maintenance: The actions performed by the PRINT_END macro contribute to the safety and maintenance aspects of 3D printing. Raising the toolhead reduces the risk of accidental damage or interference with the printed object when removing it from the build plate. Activating cooling helps prevent overheating of the printer components, which can lead to premature wear or malfunction. Parking the toolhead in a suitable position allows for easy inspection and cleaning, enhancing the longevity and reliability of the printer and preparing it for the next print job.
 
 Overall, the advantages of the PRINT_END macro lie in its print clearance, cooling activation, toolhead parking at an accessible position, and fan clearance for proper airflow. These advantages ensure a smooth and efficient end to the print job while promoting print quality, user convenience, and printer longevity.
@@ -83,7 +83,7 @@ PRINT_END
 
 #### **PA_CAL (Pressure Advance) macro:**
 
-1. Simplified Pressure Advance Testing: The PA_CAL macro enables users to perform a quick, straightforward, line-based pressure advance test. It prints a line with the current pressure advance (PA) setting, moves 30mm, and then prints 20 line segments, each 5mm apart, incrementing the PA value for each line. This simplified testing process allows users to assess and fine-tune their pressure advance settings more easily, leading to improved print quality.
+1. Simplified Pressure Advance Testing: The PA_CAL macro enables users to perform a quick, straightforward, line-based pressure advance test. It prints a line with the current pressure advance (PA) setting, moves 30mm, and then prints 20 line segments, each 5mm apart, incrementing the PA value for each line. This simplified testing process allows users to quickly assess and fine-tune their pressure advance settings more efficiently, leading to improved print quality.
 2. Customizable Parameters: The macro supports optional parameters for adjusting the test conditions. Users can specify the bed temperature (BED), extruder temperature (EXTRUDER_TEMP), initial PA value (PA_START), PA increment (PA_STEP), and nozzle diameter (NZL). This customization allows users to tailor the test conditions to their specific requirements and experiment with different settings, facilitating optimization.
 3. Default Values: If no parameters are specified, the macro provides default values for the optional parameters. These default values are retrieved from the printer's configuration file or other global variables, ensuring users can perform the test without specifying all the parameters. This feature makes the macro more user-friendly and accessible.
 4. Test Validation: The macro provides a mechanism to validate the test results by comparing the estimated PA threshold value with the user-specified PA threshold. This validation step helps users accurately identify the optimal PA setting and ensure reliable and consistent results during the pressure advance tuning process.
