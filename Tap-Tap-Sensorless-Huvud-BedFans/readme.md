@@ -48,11 +48,11 @@ The following optional parameters can be specified, or the values set in "printe
 
 #### **Bed-Fan macro set:**
 
-1. These Klipper macros control the bed fan speeds. The first set of macros (BEDFANSSLOW, BEDFANSMEDIUM, BEDFANSFAST, and BEDFANSOFF) adjust the inner and outer bed fans, allowing for slow, medium, and fast speeds, as well as turning the fans off completely.
-2. The SET_HEATER_TEMPERATURE and M190 macros handle the bed's temperature settings and control the bed fans. They set the target temperature for the bed heater and adjust the fan speed accordingly. If the target temperature is above a threshold, the fans run slowly during the bed heating process. Once the target temperature is reached, the fans switch to fast speed. If the enclosure temperature reaches the desired level, the fans operate at medium speed.
-3. The bedfanloop macro continuously monitors the enclosure temperature. When the target temperature is above the threshold, and the bed temperature is within 1 degree of the target, it checks the enclosure temperature. If the enclosure temperature is below the desired level, the bed fans are set to a fast speed. If the enclosure temperature is above the target, the bed fans switch to medium speed, a flag is raised, and the pre-print wait cycle is terminated.
-
-These macros work together to provide effective control over the bed-fans and enclosure temperature during printing.
+The Bed-Fan Macro Set offers enhanced functionality for the control of bed fans according to specific temperature conditions, providing effective control of the and enclosure temperature during print. 
+1. Dynamic Temperature Thresholds: This macro intelligently adjusts the fan behavior based on user-defined temperature thresholds. It ensures that the fans respond effectively to changing temperature conditions.
+2. Adaptive Fan Speed Control: With the macro activated, the bed fan speed seamlessly adapts to the current temperature conditions. It operates in three distinct speed modes: slow, medium, and fast, providing insitu optimal fan control. If the heater bed target temperature is below the bed-fan trigger threshold, the bed fans will be disabled.
+3. Enclosure Temperature Monitoring: The macro actively monitors the temperature within the enclosure, ensuring that the printing environment maintains an optimal temperature range. This feature helps to enhance print quality and prevent potential issues caused by temperature fluctuations.
+4. Heat-Soak Wait Cycle Termination: The macro automatically terminates the pre-print heat-soak wait cycle once the enclosure reaches the target temperature. By promptly initiating the print process, it effectively saves valuable time, allowing you to begin printing without unnecessary delays.
 
 <br>  
 
