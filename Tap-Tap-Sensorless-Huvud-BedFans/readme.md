@@ -35,7 +35,7 @@ Overall, the advantages of the PRINT_START macro lie in its automation of critic
 The **Start G-code** block in SuperSlicer should contain the following line:
 
 ```
-PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] ENCLOSURE_TARGET=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}{first_layer_print_min[1]}{first_layer_print_max[0]}_{first_layer_print_max[1]}
+PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_temperature] EXTRUDER_TEMP2=[temperature] CHAMBER_TARGET=[chamber_temperature] PA=0.045 ST=0.21 SIZE={first_layer_print_min[0]}{first_layer_print_min[1]}{first_layer_print_max[0]}_{first_layer_print_max[1]}
 ```
 
 The following optional parameters can be specified, or the values set in "printer.cfg" will be used:
@@ -43,16 +43,16 @@ The following optional parameters can be specified, or the values set in "printe
 - **PA**: Pressure advance, e.g., `PA=0.045`
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
-- **ENCLOSURE_TARGET**: The desired temperature for the enclosure
+- **CHAMBER_TARGET**: The desired temperature for the chamber
 <br>  
 
 #### **Bed-Fan macro set:**
 
-The Bed-Fan Macro Set offers enhanced functionality for the control of bed fans according to specific temperature conditions, providing effective control of the enclosure temperature during print. 
+The Bed-Fan Macro Set offers enhanced functionality for the control of bed fans according to specific temperature conditions, providing effective control of the chamber temperature during print. 
 1. Dynamic Temperature Thresholds: This macro intelligently adjusts the fan behavior based on user-defined temperature thresholds. It ensures that the fans respond effectively to changing temperature conditions.
 2. Adaptive Fan Speed Control: With the macro activated, the bed fan speed seamlessly adapts to the current temperature conditions. It operates in three distinct speed modes: slow, medium, and fast, providing insitu optimal fan control. If the heater bed target temperature is below the bed-fan trigger threshold, the bed fans will be disabled.
-3. Enclosure Temperature Monitoring: The macro actively monitors the temperature within the enclosure, ensuring that the printing environment maintains an optimal temperature range. This feature helps to enhance print quality and prevent potential issues caused by temperature fluctuations.
-4. Heat-Soak Wait Cycle Termination: The macro automatically terminates the pre-print heat-soak wait cycle once the enclosure reaches the target temperature. Then it then runs a second soak cycle for the chamber, set by the variable `EnclosureSoakMinutes` in the printer.cfg file, the minimum is 1 minute.  
+3. Chamber Temperature Monitoring: The macro actively monitors the temperature within the chamber, ensuring that the printing environment maintains an optimal temperature range. This feature helps to enhance print quality and prevent potential issues caused by temperature fluctuations.
+4. Heat-Soak Wait Cycle Termination: The macro automatically terminates the pre-print heat-soak wait cycle once the chamber reaches the target temperature. Then it then runs a second soak cycle for the chamber, set by the variable `ChamberSoakMinutes` in the printer.cfg file, the minimum is 1 minute.  
 
 <br>  
 
