@@ -158,7 +158,7 @@ $`sudo nano /etc/samba/smb.conf`
 
 Then create a Samba user for the pi user by running the following command.
 ```
-sudo smbpasswd -a root
+sudo smbpasswd -a pi
 ```
 
 Lastly, restart the Samba service to apply the changes.
