@@ -125,7 +125,7 @@ TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detai
 ### **SAMBA Setup - GCODE File Network Share Setup**
 ------
 
-To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either Windows or Mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to restrict access to these Samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
+To set up a network file share, making your gcode and Klipper config files available to all your network-attached devices - either Windows or Mac file explorers, perform the following once ssh'd into your Klipper rPi. Note that this samba configuration is 'open' and therefore accessible to any device attached to the same LAN, just as the Mainsail HTTP interface is. While it is possible to further restrict access to these Samba file shares, I feel it is a moot point given the nature of the rest of the software suite, so I will not cover that here. If this is worrisome to you, please research alternate configurations. 
 
  -Install file serving smb service:  
 $`sudo apt-get install samba winbind -y`  
@@ -134,50 +134,37 @@ $`sudo apt-get install samba winbind -y`
 $`sudo nano /etc/samba/smb.conf`  
 	
 ```
-[Print_Files]  
-   comment = Voron_gCode_files  
-   path = /home/pi/printer_data/gcodes  
-   browseable = Yes  
-   writeable = Yes  
-   only guest = no  
-   create mask = 0777  
-   directory mask = 0777  
-   public = yes  
-   read only = no  
-   force user = root  
-   force group = root  
+[Print_Files]
+   comment = Voron_gCode_files
+   path = /home/pi/printer_data/gcodes
+   browseable = Yes
+   writeable = Yes
+   valid users = @pi
 
-[Klipper_Configs]  
-   comment = Voron_Klipper  
-   path = /home/pi/printer_data/config  
-   browseable = Yes  
-   writeable = Yes  
-   only guest = no  
-   create mask = 0777  
-   directory mask = 0777  
-   public = yes  
-   read only = no  
-   force user = root  
-   force group = root  
+[Klipper_Configs]
+   comment = Voron_Klipper
+   path = /home/pi/printer_data/config
+   browseable = Yes
+   writeable = Yes
+   valid users = @pi
 
 [Klipper_Storage]
    comment = Voron_Storage
    path = /home/pi/Storage
    browseable = Yes
    writeable = Yes
-   only guest = no
-   create mask = 0777
-   directory mask = 0777
-   public = yes
-   read only = no
-   force user = root
-   force group = root
+   valid users = @pi
 ```
 
+Then create a Samba user for the pi user by running the following command.
+```
+sudo smbpasswd -a root
+```
 
-
- -Reboot rPi:  
-$`sudo reboot`  
+Lastly, restart the Samba service to apply the changes.
+```
+sudo service smbd restart
+```
 	
 
 In the event that Windows shows a red-x through the mapped share, I have found the following helpful in restoring mapped network shares:  
