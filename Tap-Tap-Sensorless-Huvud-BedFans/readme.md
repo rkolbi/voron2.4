@@ -50,9 +50,8 @@ The following optional parameters can be specified, or the values set in "printe
 
 The Bed-Fan Macro Set offers enhanced functionality for the control of bed fans according to specific temperature conditions, providing effective control of the chamber temperature during print. 
 1. Dynamic Temperature Thresholds: This macro intelligently adjusts the fan behavior based on user-defined temperature thresholds. It ensures that the fans respond effectively to changing temperature conditions.
-2. Adaptive Fan Speed Control: With the macro activated, the bed fan speed seamlessly adapts to the current temperature conditions. It operates in three distinct speed modes: slow, medium, and fast, providing insitu optimal fan control. If the heater bed target temperature is below the bed-fan trigger threshold, the bed fans will be disabled.
+2. Adaptive Fan Speed Control: With the macro activated, the bed fan speed seamlessly adapts to the current temperature conditions, using variable speeds to control chamber temperature while reducing temperature fluctuations witnessed on the bed. If the heater bed target temperature is below the bed-fan trigger threshold, the bed fans will be disabled.
 3. Chamber Temperature Monitoring: The macro actively monitors the temperature within the chamber, ensuring that the printing environment maintains an optimal temperature range. This feature helps to enhance print quality and prevent potential issues caused by temperature fluctuations.
-4. Heat-Soak Wait Cycle Termination: The macro automatically terminates the pre-print heat-soak wait cycle once the chamber reaches the target temperature. Then it then runs a second soak cycle for the chamber, set by the variable `ChamberSoakMinutes` in the printer.cfg file, the minimum is 1 minute.  
 
 <br>  
 
