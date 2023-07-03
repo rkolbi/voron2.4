@@ -43,8 +43,9 @@ The following optional parameters can be specified, or the values set in "printe
 - **PA**: Pressure advance, e.g., `PA=0.045`
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
-- **CHAMBER_TARGET**: The desired temperature for the chamber
-<br>  
+- **CHAMBER_TEMP**: The desired temperature for the chamber
+- **CHAMBER_WAIT**: Wait for the chamber to reach temp before starting soak
+<br>
 
 #### **Bed-Fan macro set:**
 
