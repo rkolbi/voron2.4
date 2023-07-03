@@ -40,6 +40,7 @@ PRINT_START BED_TEMP=[first_layer_bed_temperature] EXTRUDER_TEMP=[first_layer_te
 
 The following optional parameters can be specified, or the values set in "printer.cfg" will be used:
 
+- **EXTRUDER_WARM**: The nozzle temperature to be used when performing the heated homing and leveling, just before printing.
 - **PA**: Pressure advance, e.g., `PA=0.045`
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
