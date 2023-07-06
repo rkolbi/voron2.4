@@ -45,9 +45,8 @@ The following optional parameters can be specified, or the values set in "printe
 - **ST**: Pressure advance smooth-time, e.g., `ST=0.21`
 - **SOAK**: Minutes to heat-soak before final G32, meshing, and printing, e.g., `SOAK=15`
 - **CHAMBER_TEMP**: The desired temperature for the chamber, e.g., `CHAMBER_TEMP=50`
-- **CHAMBER_WAIT**: Wait for the chamber to reach temp before starting soak, e.g., `CHAMBER_WAIT=1` / `CHAMBER_WAIT=0` 
-- **fpline**: E value for first 120mm prime line, implemented as (fpline * NZLD)
-- **spline**: E value for second 120mm prime line, implemented as (spline * NZLD)
+- **fpline**: E value for first 120mm prime line, implemented as (fpline * NZLD), e.g., `fpline=37.5`
+- **spline**: E value for second 120mm prime line, implemented as (spline * NZLD), e.g., `spline=75.0`
 <br>
 
 #### **Bed-Fan macro set:**
