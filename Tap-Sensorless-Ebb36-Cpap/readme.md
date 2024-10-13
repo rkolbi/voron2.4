@@ -102,15 +102,8 @@ Overall, the advantages of the PA_CAL macro lie in its simplified pressure advan
 <br>  
 <br>  
 
-### **EBB36 Setup**
+### **Notes on CAN**
 ------
-
-TAP probe (optical) with Huvud toolhead controller wiring diagram follows. Detailed information on CAN [here](CAN-Application.pdf).
-
-![EBB36_TAP_Wiring](ebb36_tap_connection.jpg)
-
-
-​          
 
 **Solving Excessive CAN0 RX Errors, running rPi4 64bit, Klipper latest 64bit**  
 *-Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux*  
