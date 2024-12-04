@@ -1,7 +1,7 @@
 ****Voron 2.4 Configuration with Tap, Sensorless X&Y Homing, EBB36 w/U2C, and Cpap part cooling****  
 ------
 
-This Klipper configuration is tailored for the Voron 2.4 3D printer with Tap, offering a range of features to optimize your printing experience. Here's an overview of the key enhancements:
+This DangerKlipper configuration is tailored for the Voron 2.4 3D printer with Tap, offering a range of features to optimize your printing experience. Here's an overview of the key enhancements:
 
 **Macro File Management:**
 
@@ -101,59 +101,6 @@ Overall, the advantages of the PA_CAL macro lie in its simplified pressure advan
 
 <br>  
 <br>  
-
-### **Notes on CAN**
-------
-
-**Solving Excessive CAN0 RX Errors, running rPi4 64bit, Klipper latest 64bit**  
-*-Linux 5.15.84-v8+ #1613 SMP PREEMPT Thu Jan 5 12:03:08 GMT 2023 aarch64 GNU/Linux*  
-*-WaveShare RS485 CAN HAT for Raspberry Pi - 12M crystal*  
-
-I got many daily RX errors (`ip -details -statistics link show can0`). While not showing any errors in Klipper, I suffered a communication timeout error twice over the past few days. Through some internet diving, SPI speeds with 64bit OS are an issue, suggesting they are about halved and change based on the core speed of the rPi. I think this situation was made worse by WaveShare's documentation to set `spimaxfrequency=2000000`. As of now, I have been RX error free by using the following @ bitrate of 1,000,000.  
-
-:zap:*Please research these changes before implementing them, as I am no rPi expert - just letting you know what worked for me.*  
-<br>  
-To get the WaveShare canhat working properly, I set these in ` /boot/config.txt`  
-```
-dtparam=spi=on  
-dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=10000000  
-dtoverlay=spi0-hw-cs  
-enable_uart=0  
-```
-
-And also set `/etc/network/interfaces.d/can0` as:  
-```
-auto can0  
-iface can0 can static  
- bitrate 1000000  
- up ifconfig $IFACE txqueuelen 256  
- pre-up ip link set can0 type can bitrate 1000000  
- pre-up ip link set can0 txqueuelen 256  
-```
-
-<br>
-
-<br>
-
-May be related to WaveShare success - not sure, I lock my speed to 1200000 by adding the following to `/boot/config.txt`  
-```
-arm_freq=1200  
-core_freq=500  
-core_freq_min=500  
-```
-
-And made the following changes to `/etc/rc.local`  
-```
-_IP=$(hostname -I) || true  
-if [ "$_IP" ]; then  
-  printf "My IP address is %s\n" "$_IP"  
-fi  
-iwconfig wlan0 power off  
-echo "performance" | sudo tee /sys/devices/system/cpu/cpufreq/policy0/scaling_governor  
-exit 0  
-```
-
-<br>
 
 ### **SAMBA Setup - GCODE File Network Share Setup**
 ------
