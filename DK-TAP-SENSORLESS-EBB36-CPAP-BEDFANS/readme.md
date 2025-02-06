@@ -1,9 +1,7 @@
-****Voron 2.4: CNC TAP V2.0, Sensorless X/Y Homing, EBB36 w/U2C, Cpap part cooling, Quad Bedfans****  
+****Voron 2.4 Configuration with Tap, Sensorless X&Y Homing, EBB36 w/U2C, and Cpap part cooling****  
 ------
 
-This DangerKlipper configuration is my currently used configuration for my Voron 2.4.
-
-
+This DangerKlipper configuration is tailored for the Voron 2.4 3D printer with Tap, offering a range of features to optimize your printing experience. Here's an overview of the key enhancements:
 
 **Macro File Management:**
 
