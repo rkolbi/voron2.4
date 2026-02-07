@@ -2,7 +2,7 @@
 
 Main files:
 
-**[:zap:](TAP-SENSORLESS-EBB36-CPAP-BEDFANS)My currently running configuration setup (ChaoticLab Tap V2, EBB36 Can, Sensorless XY, CPAP Part Cooling, and Bedfans).**
+**[:zap:](DK-TAP-SENSORLESS-EBB36-CPAP-BEDFANS)My currently running configuration setup (Kalico, ChaoticLab Tap V2, EBB36 Can, Sensorless XY, CPAP Part Cooling, and Bedfans).**
 
 **[:bulb:](gcode_folder_share.txt)How to network share your gcode folder.**
 
